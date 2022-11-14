@@ -1,0 +1,131 @@
+<div class="modal-header bg-secondary">
+  <h5 class="modal-title text-white">Selection de Client</h5>
+  <div class="custom-control custom-switch ml-5">
+    <input type="checkbox" class="custom-control-input" id="customswitch2" [checked]="is_checked"
+    (change)="OnchangeStatut($event)">
+    <label class="custom-control-label text-white font-weight-bold" for="customswitch2">Entreprise</label>
+  </div>
+  <button type="button" class="close basic-close text-white" data-dismiss="modal" (click)="close()"
+    aria-label="Close"><span aria-hidden="true" class="text-white">&times;</span></button>
+</div>
+<div class="modal-body ">
+  <div class="row">
+    <div class="col-sm-4">
+      <h5>AJOUT DE CLIENT</h5>
+      <app-card [hidHeader]="true" blockClass="pt-0">
+        <form role="form" (ngSubmit)="save(customerForm.value)" #customerForm="ngForm" class="mt-4">
+        <div class="text-center">
+        </div>
+        <div *ngIf="!is_checked" class="row mt-1">
+          <div class="form-group mb-0 input-group col-sm-12 d-flex">
+            <button class="btn btn-secondary btn-sm col-4 font-weight-bold">Nom</button>
+            <input type="text" class="pl-2 form-control col-8" ngModel #lastName="ngModel"
+              placeholder="Nom du Client" name="lastName" required><span class="text-danger">*</span>
+            </div>
+            <small class="pl-3 error_msg text-danger font-italic" *ngIf="lastName.dirty && lastName.hasError('required')">Nom invalide!</small>
+        </div>
+        <div *ngIf="is_checked" class="row mt-1">
+          <div class="form-group mb-0 input-group col-sm-12 d-flex">
+            <button class="btn btn-secondary btn-sm col-4 font-weight-bold">R.Sociale</button>
+            <input type="text" class="pl-2 form-control col-8" ngModel #social_reason="ngModel"
+              placeholder="Raison Sociale" name="social_reason" required><span class="text-danger">*</span>
+            </div>
+            <small class="pl-3 error_msg text-danger font-italic" *ngIf="social_reason.dirty && social_reason.hasError('required')">Raison Sociale invalide!</small>
+        </div>
+        <div *ngIf="is_checked" class="row mt-3">
+          <div class="form-group mb-0 input-group col-sm-12 d-flex">
+            <button class="btn btn-secondary btn-sm col-4 font-weight-bold">IFU</button>
+            <input type="text" class="pl-2 form-control col-8" ngModel #num_ifu="ngModel"
+              placeholder="Numéro IFU" name="num_ifu" required><span class="text-danger">*</span>
+            </div>
+            <small class="pl-3 error_msg text-danger font-italic" *ngIf="num_ifu.dirty && num_ifu.hasError('required')">Format Numéro invalide!</small>
+        </div>
+        <div *ngIf="!is_checked" class="row mt-3">
+          <div class="form-group mb-0 input-group col-sm-12 d-flex">
+            <button class="btn btn-secondary btn-sm col-4 font-weight-bold">Prénoms</button>
+            <input type="text" class="pl-2 form-control col-8" ngModel #firstName="ngModel"
+              placeholder="Prénoms du Client" name="firstName" required> <span class="text-danger">*</span>
+            </div>
+            <small class="pl-3 error_msg text-danger font-italic" *ngIf="firstName.dirty && firstName.hasError('required')">Prénoms invalide!</small>
+        </div>
+        <div class="row mt-3">
+          <div class="form-group mb-0 input-group col-sm-12 d-flex">
+            <button class="btn btn-secondary btn-sm col-4 font-weight-bold">Telephone</button>
+            <input type="text" class="pl-2 form-control col-8" ngModel #telephone="ngModel"
+              placeholder="Numéro de Téléphone" name="telephone">
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="form-group mb-0 input-group col-sm-12 d-flex">
+            <button class="btn btn-secondary btn-sm col-4 font-weight-bold">Whatsapp</button>
+            <input type="text" class="pl-2 form-control col-8" ngModel #whatsapp="ngModel"
+              placeholder="Numéro Whatsapp" name="whatsapp">
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="form-group mb-0 input-group col-sm-12 d-flex">
+            <button class="btn btn-secondary btn-sm col-4 font-weight-bold">Email</button>
+            <input type="text" class="pl-2 form-control col-8" ngModel #email="ngModel"
+              placeholder="Adresse mail" name="email">
+          </div>
+        </div>
+        <div class="font-weight-bold text-primary text-center p-2">(Le signe <span class="text-danger font-weight-bold">"*"</span> indique un champ obligatoire)</div>
+        <div class="app-modal-footer row mt-3">
+          <div class="col-sm-12 d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary col-sm-6" [disabled]="show">
+              <span *ngIf="!show"><i class="fa fa-plus me-2 ms-n21"></i> Ajouter</span><span *ngIf="show">Veuillez
+                  Patientez... &nbsp;</span>
+              <span *ngIf="show" class="spinner-border" role="status" style="width: 1.3rem; height: 1.3rem;"></span>
+          </button>
+          </div>
+        </div>
+      </form>
+      </app-card>
+    </div>
+    <div class="col-sm-8 mb-3">
+      <h5>LISTE DES CLIENTS</h5>
+      <form action="" class="mb-4">
+        <div class="row">
+        <div class="font-weight-bold col-sm-2">Filtrer Par : </div>
+          <div class="form-group mb-0 input-group col-sm-5">
+            <button class="btn btn-success btn-sm font-weight-bold">Nom</button>
+            <input type="text" class="form-control pl-2" [(ngModel)]="customerLastName"  name="customeLastName"
+            placeholder="Nom du Client" #LastName>
+          </div>
+          <div class="form-group mb-0 input-group col-sm-5">
+            <button class="btn btn-success btn-sm font-weight-bold">Prénom</button>
+            <input type="text" class="form-control pl-2" [(ngModel)]="customerFirstName" name="customerFirstName"
+            placeholder="Prénoms du Client" #FirstName>
+          </div>
+      </div>
+      </form>
+      <app-card [hidHeader]="true" blockClass="pt-0">
+        <div class="table-responsive table-hover table-bordered mt-4">
+          <perfect-scrollbar [style.max-height]="'295px'">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="text-left">Nom</th>
+                  <th class="text-center">Téléphone</th>
+                  <th class="text-center">Email</th>
+                  <th class="text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of customers |customerByName : customerLastName : customerFirstName; trackBy: trackByFn; let i=index;">
+                  <td class="text-left p-0  pt-2 pl-2"> {{item.social_reason ? item.social_reason : item.nom +" "+item.prenom}}</td>
+                  <td class="text-center p-0  pt-2"> {{item.telephone}}</td>
+                  <td class="text-center p-0  pt-2"> {{item.email}}</td>
+                  <td class="text-center p-0  pt-1 pb-1">
+                    <button (click)="SaveSelectedCustomer(item)" [placement]="'left'" ngbTooltip="Sélectionner ce Client" class="btn btn-info btn-sm"
+                      (click)="0"><span class="fa fa-hand-point-up"></span></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </perfect-scrollbar>
+        </div>
+      </app-card>
+    </div>
+
+  </div>

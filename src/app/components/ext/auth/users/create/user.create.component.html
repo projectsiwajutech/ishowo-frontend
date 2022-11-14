@@ -1,0 +1,120 @@
+
+
+<!-- bouton de creation -->
+<section class="content-header"  >
+  <!-- ligne du bouton de creation-->
+  <div class="row">
+    <div class="col-lg-12">
+      <section class="panel">
+        <div class="panel-body">
+          <form class="form-horizontal" role="form" name="t">
+            <!-- 3e ligne -->
+            <div class="form-group">
+
+              <div class="col-lg-3 pull-right">
+                                <span class="input-group-btn">
+                                    <button   type='submit' (click)="showCreationForm()" name='search' id='search-btn' class="btn btn-primary pull-right"><i class="fa fa-save">&nbsp;</i>Créer</button>
+                                </span>
+              </div>
+
+            </div>
+          </form>
+
+
+          <!--zone de creation -->
+          <div class="row" *ngIf="visible">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="box box-primary">
+                <div class="box-header">
+                  <h3 class="box-title">Création {{subject}}</h3>
+
+                </div>
+
+                <!-- display message area -->
+                <message-area [acting]="isSaving" [completed]="isCompleted" [success]="isSuccess" [title]="'Création ' + subject" [message]="statusMessage"></message-area>
+
+
+
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" (ngSubmit)="save(userForm.value)" #userForm="ngForm">
+                  <!-- action zone-->
+                  <div class="box-footer text-right">
+                    <button type="button" (click)="hideForm()" class="btn btn-default">Annuler</button>
+                    <button type="submit" [disabled]="!userForm.valid"  class="btn btn-success">Enregistrer</button>
+                  </div>
+
+                  <div class="box-body">
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <!-- nom-->
+                        <div class="form-group">
+                          <label for="b">Nom</label>
+                          <input type="text" maxlength="25" class="form-control" [(ngModel)]="item.lastname" name="lastname"
+                                 placeholder="Nom"  required #lastname="ngModel">
+                          <div  class="error_msg text-danger font-italic" *ngIf="lastname.dirty && lastname.hasError('required')">Nom manquant</div>
+                        </div>
+
+                        <!-- prenom-->
+                        <div class="form-group">
+                          <label for="b">Prénoms</label>
+                          <input type="text" maxlength="25" class="form-control" [(ngModel)]="item.firstname" name="firstname"
+                                 placeholder="Prénoms"  required #firstname="ngModel">
+                          <div  class="error_msg text-danger font-italic" *ngIf="firstname.dirty && firstname.hasError('required')">Prénom manquant</div>
+                        </div>
+
+                        <!-- telephone-->
+                        <div class="form-group">
+                          <label for="s">Téléphone</label>
+                          <input type="text" maxlength="15" class="form-control" [(ngModel)]="item.phone" name="phone"
+                                 placeholder="Téléphone"  required #phone="ngModel">
+                          <div  class="error_msg text-danger font-italic" *ngIf="phone.dirty && phone.hasError('required')">Téléphone manquant</div>
+                        </div>
+
+                      </div>
+
+
+                      <div class="col-md-6">
+
+                        <div class="form-group">
+                          <label for="ss">Adresse Email</label>
+                          <input type="text" maxlength="25" class="form-control" name="email"
+                                 placeholder="Email" [(ngModel)]="item.email"  #email="ngModel">
+                        </div>
+
+                        <!-- address-->
+                        <div class="form-group">
+                          <label for="dd">Adresse</label>
+                          <input type="text" maxlength="25" class="form-control" [(ngModel)]="item.address" name="address"
+                                 placeholder="Adresse"  required #address="ngModel">
+                          <div  class="error_msg text-danger font-italic" *ngIf="address.dirty && address.hasError('required')">Adresse manquante</div>
+                        </div>
+
+                      </div>
+
+
+
+                    </div>
+
+
+                  </div>
+                  <!-- /.box-body -->
+
+                </form>
+              </div>
+              <!-- /.box -->
+            </div>
+          </div>
+          <!-- fin zone de creation -->
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+
+
+

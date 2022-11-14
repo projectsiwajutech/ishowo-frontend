@@ -1,0 +1,90 @@
+<app-card [options]="false" [customHeader]="true">
+  <div class="app-card-header">
+    <form role="form" #userForm="ngForm">
+      <hr>
+      <div class="row">
+        <div class="form-group mb-0 input-group col-sm-5">
+          <div class="input-group-append">
+            <button class="btn btn-info font-weight-bold btn-sm">Produit</button>
+          </div>
+          <input type="text" maxlength="30" class="form-control pl-2" [(ngModel)]="param.product" name="product"
+            (keydown.enter)="searchStockView()" placeholder="Nom du produit">
+        </div>
+        <div class="form-group mb-0 input-group col-sm-5">
+          <div class="input-group-append">
+            <button class="btn btn-secondary font-weight-bold btn-sm">T.Mesure</button>
+          </div>
+          <select class="form-control" name="measure_type" [(ngModel)]="param.measure_type">
+            <option *ngFor="let item of measureTypes" [ngValue]="item">{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="form-group mb-0 input-group col-sm-2">
+          <button class="btn btn-light" [routerLink]="['/stocks/main']">
+            <span class="fa fa-chevron-circle-left"></span> Retour</button>
+        </div>
+
+      </div>
+    </form>
+
+  </div>
+  <div class="row d-flex justify-content-center mb-5" style="margin-bottom: 10em;" *ngIf="isLoading">
+    <div class="col-md-12 text-center p-0">
+      <div class="p-20 pb-3">
+        <div class="risk-rate">
+          <img src="assets/images/params/spinner.gif" alt="" width="15%">
+        </div>
+      </div>
+      <p class="text-muted h3 mb-5">Veuillez Patientez...</p>
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center mb-5" style="margin-bottom: 10em;" *ngIf="noData && !isLoading">
+    <div class="col-md-12 text-center p-0">
+      <div class="p-20 pb-3">
+        <div class="risk-rate">
+          <img src="assets/images/params/liste_vide.png" alt="" width="15%">
+        </div>
+      </div>
+      <p class="text-muted h3 mb-5">Aucun résultat trouvé !</p>
+    </div>
+  </div>
+  <div class="table-responsive table-bordered table-hover" *ngIf="!isLoading && !noData">
+    <table id="report-table" class="table mb-0">
+      <thead class="thead-light">
+        <tr class="text-center">
+          <th>#</th>
+          <th>Référence</th>
+          <th class="text-left">Produit</th>
+          <th>Catégorie</th>
+          <th>U.Mesure</th>
+          <th class="text-center">Stock actuel</th>
+          <th class="text-center">Quantité Seuil</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="" *ngIf="isLoading">
+          <td colspan="13">
+            <div class="text-center alert-info"><strong> Affichage du stock des produits en cours </strong> </div>
+          </td>
+        </tr>
+        <tr
+          *ngFor="let item of underStockList | stockView: param.product: param.category.id: param.measure_type.id: param.location.id: param.agency.id: param.codebarre | slice: (page-1) * pageSize : page * pageSize; let i = index;"
+          class="text-center">
+          <td class="align-middle p-0">
+            {{i+1}}
+          </td>
+          <td>{{item.barcode}}</td>
+          <td class="text-left">{{item.product.product.name}}</td>
+          <td>{{item.product.product.category.name}}</td>
+          <td>{{item.product.measure_type.name}}</td>
+          <td class="text-center font-weight-bold text-danger">{{item.quantity}}</td>
+          <td class="text-center font-weight-bold text-danger">{{item.product.quantity}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ngb-pagination class="float-right mt-2" [collectionSize]="underStockList.length" [(page)]="page"
+      [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true">
+    </ngb-pagination>
+  </div>
+</app-card>

@@ -1,0 +1,33 @@
+
+
+
+<div class="complete-page" *ngIf="visible">
+
+
+  <!-- Content Header (Page header) -->
+  <section class="content-header  bg-green-active disabled color-palette">
+    <div class="row">
+      <div class="col-lg-10">   <h1>
+        {{pdfTitle}}
+      </h1></div>
+      <div class="col-lg-2">
+        <button type='button' (click)="closeViewer()" name='search' id='search-btn' class="btn btn-default pull-right"><i class="fa fa-close">&nbsp;</i>Fermer</button>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Main content -->
+  <section class="content" >
+    <!--boutons -->
+    <div class="box-body">
+      <!-- affichage de la piece scannee -->
+      <div > <br>
+        <iframe [src]="getURL()" width="100%" height="500px" id="scaled-frame" >
+        </iframe>
+      </div>
+    </div><!-- /.row -->
+  </section><!-- /.content -->
+
+</div>

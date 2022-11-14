@@ -1,0 +1,37 @@
+
+
+<div class="row">
+
+
+
+<!--donnees de licence    -->
+<div class="col-md-12" *ngIf="canShowLicence">
+<it-licence-current [visible]="false" (communicated)="onLicenceCommunicated($event)"></it-licence-current>
+</div>
+
+<!--ligne stats globales-->
+<div class="col-md-12">
+<it-stats-general [is_part_visible]="false" [title]="'Mes statistiques globales'"></it-stats-general>
+</div>
+
+<!--commandes non soldées-->
+<div class="col-md-12">
+     <it-order-notcompleted-list [visible]="false"></it-order-notcompleted-list>
+</div>
+
+<!--objectifs de vente-->
+<div class="col-md-12">
+<it-saletarget-single [title]="'Mes objectifs de vente'" ></it-saletarget-single>
+</div>
+
+<!--seuils d'alertes sur le stock-->
+<div class="col-md-12">
+   <it-understock-limit [isOnDashBoard]="false"></it-understock-limit>
+</div>
+
+<!--clients debiteurs-->
+<div class="col-md-12">
+   <it-customers [has_debt]="true"> </it-customers>
+</div>
+
+</div>

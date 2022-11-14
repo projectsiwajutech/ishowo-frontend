@@ -1,0 +1,135 @@
+<app-card [options]="false" [customHeader]="true">
+    <div class="app-card-header">
+        <form role="form" #userForm="ngForm">
+            <div class="row">
+                <div class="form-group mb-0 input-group col-sm-4">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary font-weight-bold btn-sm">DE</button>
+                    </div>
+                    <input type="date" name="dateStart" (change)="getSelectedDate1(userForm.value.dateStart)" [(ngModel)]="DefaultDateOne" #dateStart="ngModel" id="dateStart"
+                        class="pl-2 form-control">
+                </div>
+                <div class="form-group mb-0 input-group col-sm-4">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary font-weight-bold btn-sm">À</button>
+                    </div>
+                    <input type="date" name="dateEnd" (change)="getSelectedDate2(userForm.value.dateEnd)" [(ngModel)]="DefaultDateTwo" #dateEnd="ngModel" id="dateEnd"
+                        class="pl-2 form-control">
+                </div>
+                <div type="submit" class="col-sm-4">
+                    <button class="btn btn-primary float-right" (click)="getProductsStats()">
+                        <span class="fa fa-search"></span> Rechercher</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <app-card [options]="false" [customHeader]="true">
+                <div class="app-card-header">
+                    <form action="">
+                        <span class="font-weight-bold mr-2 text-c-blue">Les plus vendus par Quantité
+                        </span>
+                        <span>
+                            <input type="text"  class="form-control"  [(ngModel)]="productQtySearchName" name="productSearchName"
+                            placeholder="Recherche Produit"  #productQtyName>
+                        </span>
+                    </form>
+                </div>
+
+                <div class="table-responsive">
+                    <perfect-scrollbar [style.max-height]="'260px'">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-left p-0 pt-1 pl-1">#</th>
+                                    <th class="text-left p-0 pt-1 pl-1">Nom</th>
+                                    <th class="text-center p-0 pt-1">Qte.Vendue</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let p of reportProdQty | stockView: productQtySearchName , let i = index">
+                                    <td class="text-left p-0 pt-1 pl-1">{{i+1}}</td>
+                                    <td class="text-left p-0 pt-1 pl-1"> {{p.product.product.name}} /  {{p.product.measure_type.name}}</td>
+                                    <td class="text-center p-0 pt-1"> {{p.quantity | formatMoney}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </perfect-scrollbar>
+                </div>
+            </app-card>
+        </div>
+        <div class="col-sm-4">
+            <app-card [options]="false" [customHeader]="true">
+                <div class="app-card-header">
+                    <form action="">
+                        <span class="font-weight-bold mr-2 text-c-green">Les plus vendus par Chiffre d'Affaires
+                        </span>
+                        <span>
+                            <input type="text"  class="form-control"  [(ngModel)]="productCaSearchName" name="productSearchName"
+                            placeholder="Recherche Produit"  #productCaName>
+                        </span>
+                    </form>
+                </div>
+
+                <div class="table-responsive">
+                    <perfect-scrollbar [style.max-height]="'260px'">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-left p-0 pt-1 pl-1">#</th>
+                                    <th class="text-left p-0 pt-1 pl-1">Nom</th>
+                                    <th class="text-center p-0 pt-1">Qte.Vendue</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let p of reportProdCa | stockView: productCaSearchName, let i = index">
+                                    <td class="text-left p-0 pt-1 pl-1">{{i+1}}</td>
+                                    <td class="text-left p-0 pt-1 pl-1"> {{p.product.product.name}} /  {{p.product.measure_type.name}}</td>
+                                    <td class="text-center p-0 pt-1"> {{p.quantity | formatMoney}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </perfect-scrollbar>
+                </div>
+            </app-card>
+        </div>
+        <div class="col-sm-4">
+            <app-card [options]="false" [customHeader]="true">
+                <div class="app-card-header">
+                    <form action="">
+                        <span class="font-weight-bold mr-2 text-c-yellow">Les plus vendus par Bénéfice
+                        </span>
+                        <span>
+                            <input type="text"  class="form-control"  [(ngModel)]="productProfitSearchName" name="productSearchName"
+                            placeholder="Recherche Produit"  #productProfitName>
+                        </span>
+                    </form>
+                </div>
+
+                <div class="table-responsive">
+                    <perfect-scrollbar [style.max-height]="'260px'">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-left p-0 pt-1 pl-1">#</th>
+                                    <th class="text-left p-0 pt-1 pl-1">Nom</th>
+                                    <th class="text-center p-0 pt-1">Qte.Vendue</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let p of reportProdProfit | stockView: productProfitSearchName , let i = index">
+                                    <td class="text-left p-0 pt-1 pl-1">{{i+1}}</td>
+                                    <td class="text-left p-0 pt-1 pl-1"> {{p.product.product.name}} /  {{p.product.measure_type.name}}</td>
+                                    <td class="text-center p-0 pt-1"> {{p.quantity | formatMoney}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </perfect-scrollbar>
+                </div>
+            </app-card>
+        </div>
+    </div>
+
+</app-card>

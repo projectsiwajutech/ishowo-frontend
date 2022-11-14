@@ -1,0 +1,70 @@
+<div #createModal></div>
+<div class="modal-header">
+    <h5 class="modal-title">Nouveau Mouvement sur Compte</h5>
+    <button type="button" class="close basic-close" data-dismiss="modal" aria-lab0el="Close" (click)="close()"><span
+            aria-hidden="true">&times;</span></button>
+</div>
+<div class="modal-body">
+    <form role="form" (ngSubmit)="save(userForm.value)" #userForm="ngForm">
+        <div class="text-center">
+            <img class="rounded mb-3" src="assets/images/params/bank.jpg" width="40%" alt="">
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="df">Compte</label>
+                          <select class="form-control" name="account" id="account_name" [(ngModel)]="item.account"  required #account="ngModel">
+                      <option *ngFor="let item of accounts" [ngValue]="item">{{item.name}}</option>
+                    </select>
+                    <small class="error_msg text-danger font-italic" *ngIf="account.dirty && account.hasError('required')">Compte manquant</small>
+                  </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="vdfd">Type d'opération</label>
+                     <select class="form-control" name="operation_type" [(ngModel)]="item.operation_type"  required #operation_type="ngModel">
+                      <option *ngFor="let item of operation_types" [ngValue]="item">{{item}}</option>
+                    </select>
+                    <small class="error_msg text-danger font-italic" *ngIf="operation_type.dirty && operation_type.hasError('required')">Type d'opération manquant</small>
+                  </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="df">Montant</label>
+                     <input type="number" maxlength="10" class="form-control" [(ngModel)]="item.amount" name="amount"
+                           placeholder="Montant"  required #amount="ngModel">
+                    <small class="error_msg text-danger font-italic" *ngIf="amount.dirty && amount.hasError('required')">Montant manquant</small>
+                  </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group" >
+                    <label for="df">Motif de l'opération</label>
+                  <textarea type="text" maxlength="100" class="form-control" [(ngModel)]="item.description" name="description"
+                           placeholder="Motif de l'opération"  required #description="ngModel"></textarea>
+                 </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="df">Numéro pièce justificative</label>
+                     <input type="text" maxlength="30" class="form-control" [(ngModel)]="item.proof_number" name="proof_number"
+                           placeholder="Numéro pièce justificative"  required #proof_number="ngModel">
+                    <small class="error_msg text-danger font-italic" *ngIf="proof_number.dirty && proof_number.hasError('required')">Pièce justificative manquante</small>
+                  </div>
+            </div>
+        </div>
+
+        <div class="app-modal-footer row">
+            <button type="button" class="btn btn-light col-sm-6" data-dismiss="modal" (click)="close()"><i class="fa fa-times me-2 ms-n21"></i>&nbsp; Annuler</button>
+            <button type="submit" class="btn btn-primary col-sm-6" [disabled]="!userForm.valid || show">
+                <span *ngIf="!show"><i class="fa fa-save me-2 ms-n21"></i> Enregistrer</span><span *ngIf="show">Veuillez
+                    Patientez... &nbsp;</span>
+                <span *ngIf="show" class="spinner-border" role="status" style="width: 1.3rem; height: 1.3rem;"></span>
+            </button>
+        </div>
+
+    </form>
+</div>

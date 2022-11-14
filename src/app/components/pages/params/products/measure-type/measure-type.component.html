@@ -1,0 +1,33 @@
+<div *ngIf="isRemoving" class="row bg-info text-center"> Suppression d'un type de mesure en cours...</div>
+
+  <app-card cardTitle="Types de mesure" [options]="false">
+    <form class="form">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+          <select class="form-control" name="measureTypeEl" [(ngModel)]="selectedMeasureType" #measureTypeEl="ngModel">
+            <option *ngFor="let el of measureTypes" [ngValue]="el">{{el.name}}</option>
+          </select>
+        </div>
+        <div class="col-sm-6">
+          <button type='submit' (click)="addMesureType()" name='seach' id='search-btn' class=" btn btn-info"><i
+              class="fa fa-plus"></i> Ajouter</button>
+        </div>
+      </div>
+    </form>
+
+<table class="table table-bordered table-stripped border border-info rounded">
+  <tr class="bg-yellow">
+    <th style="width: 10px">#</th>
+    <th class="text-center">Libellé</th>
+    <th style="width: 40px">Retrait</th>
+  </tr>
+  <tr *ngFor="let mt of addedMeasureTypes, let i = index" class="bg-gray-light text-center">
+    <td>{{i+1}}</td>
+    <td class="text-center">{{mt.measure_type.name}}</td>
+    <td (click)="removeMeasureType(i, mt)" style="background-color: #ffe5e5;">
+      <a title="Retirer" (click)="removeMeasureType(i, mt)"> <i class="fa fa-trash text-danger error_msg2 bg-red"></i> </a>
+    </td>
+  </tr>
+</table>
+</app-card>
+<!-- /.box-body -->

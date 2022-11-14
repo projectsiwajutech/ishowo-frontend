@@ -1,0 +1,73 @@
+
+<section class="content-header" *ngIf="item">
+
+  <!--zone de modif -->
+  <div class="row" >
+    <!-- left column -->
+    <div class="col-md-12">
+      <!-- general form elements -->
+      <div class="box box-primary">
+        <div class="box-header">
+          <h3 class="box-title">Modification {{subject}}</h3>
+
+        </div>
+
+        <!-- display message area -->
+        <message-area [acting]="isSaving" [completed]="isCompleted" [success]="isSuccess" [title]="'Modification ' + subject" [message]="statusMessage"></message-area>
+
+
+
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form role="form" (ngSubmit)="save(userForm.value)" #userForm="ngForm">
+          <!-- action zone-->
+          <div class="box-footer text-right">
+            <button type="button" (click)="hideForm()" class="btn btn-default">Annuler</button>
+            <button type="submit" [disabled]="!userForm.valid"  class="btn btn-success">Enregistrer</button>
+          </div>
+
+          <div class="box-body">
+
+            <div class="row">
+              <div class="col-md-6">
+                <!-- description-->
+                <div class="form-group">
+                  <label for="fdf">Nom</label>
+                  <input type="text" maxlength="100" class="form-control" [(ngModel)]="item.name" name="name"
+                         placeholder="Nom"  required #name="ngModel">
+                  <small class="error_msg text-danger font-italic" *ngIf="name.dirty && name.hasError('required')">Nom de l'agence manquant</small>
+                </div>
+
+              </div>
+
+                <!-- zone de texte-->
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="vdfd">Agence</label>
+                  <select class="form-control" name="agency" [(ngModel)]="item.agency" #agency="ngModel" required>
+                    <option *ngFor="let item of agencies" [ngValue]="item">{{item.name}}</option>
+                  </select>
+                  <small class="error_msg text-danger font-italic" *ngIf="agency.dirty && agency.hasError('required')">Agence du rayon manquante</small>
+                </div>
+              </div>
+
+            </div>
+
+
+          </div>
+          <!-- /.box-body -->
+
+        </form>
+      </div>
+      <!-- /.box -->
+    </div>
+  </div>
+  <!-- fin zone de modif -->
+
+</section>
+
+
+
+
+
+

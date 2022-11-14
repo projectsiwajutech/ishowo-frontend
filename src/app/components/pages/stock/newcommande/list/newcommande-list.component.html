@@ -1,0 +1,152 @@
+<app-card cardClass="full-card" [options]="false" [customHeader]="true">
+  <div class="app-card-header">
+    <form role="form" #userForm="ngForm">
+      <div class="row">
+        <div class="form-group mb-0 input-group col-sm-3" *ngIf="dataIsAvailable">
+          <div class="input-group-append">
+            <button class="btn btn-success font-weight-bold btn-sm" type="submit">FOURNISSEUR</button>
+          </div>
+          <select class="form-control" name="supplier" ngModel="DefaultSupplier" required #supplier="ngModel">
+            <option style="background-color: #c1c1c1;" ngValue="DefaultSupplier" disabled selected>Veuillez choisir un
+              fournisseur</option>
+            <option *ngFor="let item of suppliers" [ngValue]="item">{{item.name}}</option>
+          </select>
+        </div>
+        <div class="form-group mb-0 input-group col-sm-3" *ngIf="dataIsAvailable">
+          <div class="input-group-append">
+            <button class="btn btn-success font-weight-bold btn-sm" type="submit">RAYON</button>
+          </div>
+          <select class="form-control" name="destination" ngModel="DefaultCompartment" required
+            #destination="ngModel">
+            <option style="background-color: #c1c1c1;" ngValue="DefaultCompartment" disabled selected>Veuillez choisir
+              un rayon</option>
+            <option *ngFor="let item of compartments" (select)="showAgency(item)" [ngValue]="item">{{item.name}}
+            </option>
+          </select>
+        </div>
+        <div class="form-group mb-0 input-group col-sm-2" *ngIf="dataIsAvailable">
+          <div class="input-group-append">
+            <button class="btn btn-success font-weight-bold btn-sm" type="submit">Mt.PAYÉ</button>
+          </div>
+          <input type="number" id="amount_paid" class="pl-2 pr-1 form-control rightnput" name="amount_paid"
+            ngModel="{{getTotal()}}" #amount_paid name="amount_paid">
+        </div>
+        <div class="form-group mb-0 input-group col-sm-2" *ngIf="dataIsAvailable">
+          <div class="input-group-append">
+            <button class="btn btn-success font-weight-bold btn-sm" type="submit">TOTAL</button>
+          </div>
+          <input type="text" id="total" disabled class="pl-2 pr-1 form-control rightnput" name="total"
+            ngModel="{{getTotal() |formatMoney}} FCFA" #total name="total">
+        </div>
+        <div class="form-group mb-0 input-group col-sm-2 d-flex justify-content-end" *ngIf="dataIsAvailable">
+          <div class="input-group-append">
+            <button class="btn btn-primary pl-2 pr-2 font-weight-bold" [disabled]="!userForm.valid || getTotal() < 1"
+              (click)="saveModal(userForm.value)">
+              <span class="feather icon-save"></span> Enregistrer</button>
+          </div>
+          <button class="btn btn-light float-right pl-1 pr-1 font-weight-bold" [routerLink]="['/stocks/main']">
+            <span class="fa fa-chevron-circle-left"></span> Retour</button>
+        </div>
+
+      </div>
+
+    </form>
+
+    <div class="row">
+      <div class="d-flex justify-content-start col-sm-6" *ngIf="!dataIsAvailable">
+        <button class="btn btn-primary font-weight-bold" (click)="launchSavedOrderModal()">
+          <span class="fas fa-file-import"></span> Importer une Sauvegarde</button>
+      </div>
+      <div class="col-sm-6 font-weight-bold text-primary pt-4" *ngIf="dataIsAvailable">LISTE DES PRODUITS AJOUTES</div>
+      <div class="d-flex justify-content-end col-sm-6" *ngIf="!dataIsAvailable">
+        <button class="btn btn-light font-weight-bold" [routerLink]="['/stocks/main']">
+          <span class="fa fa-chevron-circle-left"></span> Retour</button>
+      </div>
+      <div class="d-flex justify-content-end col-sm-6 pt-4" *ngIf="dataIsAvailable">
+        <button class="btn btn-warning font-weight-bold" (click)="saveForLaterModal()">
+          <span class="fas fa-file-download"></span> Sauvegarder pour plus tard</button>
+        <button class="btn btn-primary font-weight-bold" (click)="launchSavedOrderModal()">
+          <span class="fas fa-file-import"></span> Importer une Sauvegarde</button>
+      </div>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <perfect-scrollbar [style.max-height]="'440px'">
+      <table class="table table-hover table-bordered" *ngIf="dataIsAvailable">
+        <thead class="thead-light">
+          <tr class="text-center">
+            <th>#</th>
+            <th>Produit</th>
+            <th>Unité Mesure</th>
+            <th>Code Barre</th>
+            <th>Quantité</th>
+            <th>Prix Achat</th>
+            <th>Prix Vente</th>
+            <th>Prix Total</th>
+            <th>Date Expiration</th>
+            <th>Retrait</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of OrderListProducts; let i = index;">
+            <td class=" pt-2 pb-2 pl-1 pr-1 bg-light">
+              {{i+1}}
+            </td>
+            <td class=" pt-2 pb-2 pl-1 pr-1 bg-light" style="width: 20%;">
+              <input type="text" [(ngModel)]="item.product.product.name" disabled name="name" #name
+                class="form-control">
+            </td>
+            <td class=" pt-2 pb-2 pl-1 pr-1 bg-light" style="width: 10%;">
+              <input type="text" [(ngModel)]="item.product.measure_type.name" disabled name="type_measure" #type_measure
+                class="form-control centerinput">
+            </td>
+            <td class=" pt-2 pb-2 pl-1 pr-1 bg-light" style="width: 12%;">
+              <input type="text" placeholder="Champ vide!" disabled [(ngModel)]="item.barcode" name="barcode" #barcode
+                class="form-control centerinput">
+            </td>
+            <td class=" pt-2 pb-2 pl-1 pr-1 bg-light">
+              <input type="number" [(ngModel)]="item.quantity" name="quantity" #quantity
+                class="form-control centerinput">
+            </td>
+            <td class=" pt-2 pb-2 pl-1 pr-1 bg-light">
+              <input type="number" [(ngModel)]="item.purchase_price" name="purchase_price" #purchase_price
+                class="form-control centerinput">
+            </td>
+            <td class=" pt-2 pb-2 pl-1 pr-1 bg-light">
+              <input type="number" [(ngModel)]="item.selling_price" name="selling_price" #selling_price
+                class="form-control centerinput">
+            </td>
+            <td class="pt-2 pb-2 pl-1 pr-1 bg-light">
+              <input type="text" disabled ngModel="{{item.purchase_price * item.quantity |formatMoney}}"
+                name="prix_total" #prix_total class="form-control font-weight-bold text-right centerinput"
+                style="background-color: #38ff0024;">
+            </td>
+            <td class=" pt-2 pb-2 bg-light" style="width: 100px;">
+              <input type="date" style="width: 100px;" [(ngModel)]="item.expiration_date" name="expiration_date"
+                #expiration_date class="form-control">
+            </td>
+            <td class="bg-faded-danger" (click)="confirmProdRemoveModal(i)">
+              <button class="btn bg-faded-danger font-weight-bold p-0 m-0" (click)="confirmProdRemoveModal(i)"
+                data-bs-toggle="tooltip" title="Supprimer"><i class="fa fa-trash text-danger"></i>
+                RETIRER</button>
+          </tr>
+        </tbody>
+      </table>
+    </perfect-scrollbar>
+  </div>
+
+  <div class="row justify-content-center" *ngIf="!dataIsAvailable">
+    <div class="col-md-12 text-center p-0">
+      <div class="p-20 pb-3">
+        <div class="risk-rate">
+          <img src="assets/images/params/liste_vide.png" alt="" width="20%">
+        </div>
+      </div>
+      <p class="text-muted">Aucun Produit à Afficher</p>
+      <button class="btn btn-primary mb-5" (click)="createModal()">Ajouter</button>
+    </div>
+  </div>
+</app-card>
+<button style="z-index: 99999;" class="btn btn-primary text-center btn-sm btn-round has-ripple float"
+  (click)="createModal()">
+  <i class="feather icon-plus my-float text-center pb-3"></i></button>

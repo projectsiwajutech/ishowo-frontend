@@ -1,0 +1,98 @@
+<app-card [options]="false" [customHeader]="true">
+  <div class="app-card-header">
+    <div class="font-weight-bold mb-3">DETAILS VENTE DU
+      <span class="text-danger font-weight-bold">{{item.date | date:'dd/MM/yyyy'}}</span>
+    </div>
+    <form role="form" #userForm="ngForm">
+      <div class="row">
+        <div class="form-group input-group col-md-4">
+          <div class="input-group-append">
+            <button class="btn btn-info font-weight-bold btn-sm">Client</button>
+          </div>
+          <input type="text" name="customer" ngModel="{{getCustomer(item.customer)}}"  disabled #customer="ngModel" id="customer"
+            class="form-control pl-1">
+        </div>
+        <div class="form-group input-group col-md-4">
+          <div class="input-group-append">
+            <button class="btn btn-info font-weight-bold btn-sm">Caissier</button>
+          </div>
+          <input type="text" name="seller" ngModel="{{getSeller(item.agent)}}"  disabled #seller="ngModel" id="seller"
+            class="form-control pl-1">
+        </div>
+
+        <div class="form-group input-group col-md-2 d-flex justify-content-end">
+          <button class="btn btn-primary font-weight-bold" (click)="printData()">
+            <span class="fa fa-print"></span> Imprimer</button>
+        </div>
+        <div class="col-md-2">
+          <button (click)="close()" class="btn btn-light float-right">
+            Fermer </button>
+        </div>
+      </div>
+    </form>
+
+    <hr>
+    <div class="row">
+      <div class="form-group input-group col-md-4">
+        <div class="input-group-append">
+          <button class="btn  btn-warning font-weight-bold btn-sm">MONTANT VENTE</button>
+        </div>
+        <input type="text" name="amount" disabled ngModel="{{item.amount_to_pay | formatMoney}} Fcfa" #amount="ngModel" id="amount"
+          class="form-control pr-2 rightnput">
+      </div>
+
+      <div class="form-group input-group col-md-4" *ngIf="canShowBalanceBtn()">
+        <div class="input-group-append">
+          <button class="btn  btn-warning font-weight-bold btn-sm">Reste</button>
+        </div>
+        <input type="text" name="amount_to_pay" [(ngModel)]="amountToPay" #amount_to_pay id="amount_to_pay"
+          class="form-control pl-1">
+      </div>
+
+      <div class="form-group input-group col-md-2 d-flex justify-content-end" *ngIf="canShowBalanceBtn()">
+        <button class="btn btn-success font-weight-bold" (click)="payBalance()">
+          <span *ngIf="!show"><i class="fa fa-dollar-sign me-2 ms-n21"></i> Solder</span>
+          <span *ngIf="show">Veuillez Patientez... &nbsp;</span>
+          <span *ngIf="show" class="spinner-border" role="status" style="width: 1.3rem; height: 1.3rem;"></span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+  <div class="table-responsive table-bordered">
+    <table id="report-table" class="table mb-0">
+      <thead class="thead-light">
+        <tr class="text-center">
+          <th>#</th>
+          <th>Produit</th>
+          <th>Quantité</th>
+          <th>Prix achat</th>
+          <th>Prix vente</th>
+          <th>total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of item.lines; let i=index" class="text-center">
+          <td class="align-middle p-0">
+            {{i+1}}
+          </td>
+          <td>
+            {{p.product.product.name}} ({{p.product.measure_type.name}})
+          </td>
+          <td class="align-middle p-0">
+            {{p.quantite | formatMoney}}
+          </td>
+          <td class="align-middle p-0">
+            {{p.p_achat | formatMoney}} <small>FCFA</small>
+          </td>
+          <td class="align-middle p-0">
+            {{p.p_vente | formatMoney}} <small>FCFA</small>
+          </td>
+          <td class="align-middle p-0">
+            {{(p.p_vente * p.quantite) | formatMoney}} <small>FCFA</small>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</app-card>

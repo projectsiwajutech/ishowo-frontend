@@ -1,0 +1,60 @@
+<app-card [options]="false" [customHeader]="true">
+    <div class="app-card-header">
+            <div class="col-md-12"><span class="lead">Mise en Détail du Produit : </span>
+          <span class="lead text-primary font-weight-bold">{{item.product.product.name}}</span></div>
+    </div>
+    <div class="row mb-3">
+        <div class="form-group mb-0 input-group col-md-12 d-flex justify-content-end">
+            <div class="input-group-append">
+                <button class="btn btn-success" (click)="save()" [disabled]="!canExpandStock()">
+                    <span class="fa fa-save"></span> Enregistrer</button>
+            </div>
+            <button class="btn btn-light" (click)="close()">
+                <span class="fa fa-chevron-circle-left"></span> Retour</button>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="form-group col-sm-3">
+            <label for="" class="DetailTitle"> NOM DU PRODUIT</label>
+            <input type="text" disabled class="form-control pl-2" [(ngModel)]="item.product.product.name" name="product"
+                placeholder="">
+        </div>
+        <div class="form-group col-sm-3">
+            <label for="" class="DetailTitle"> CATÉGORIE</label>
+            <input type="text" disabled class="form-control pl-2" [(ngModel)]="item.product.product.category.name"
+                name="category" placeholder="">
+        </div>
+        <div class="form-group col-sm-3">
+            <label for="" class="DetailTitle"> TYPE DE MESURE</label>
+            <input type="text" disabled class="form-control pl-2" [(ngModel)]="item.product.measure_type.name"
+                name="measure_type" placeholder="">
+        </div>
+        <div class="form-group col-sm-3">
+            <label for="" class="DetailTitle"> RAYON</label>
+            <input type="text" disabled class="form-control pl-2" [(ngModel)]="item.compartment.name" name="compartment"
+                placeholder="">
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="form-group col-sm-3">
+            <label for="" class="DetailTitle"> PRIX D'ACHAT</label>
+            <input type="number" disabled class="form-control pl-2" [(ngModel)]="item.purchase_price" name="apurchase_p"
+                placeholder="Prix d'achat" #purchase_p>
+        </div>
+        <div class="form-group col-sm-3">
+            <label for="" class="DetailTitle"> PRIX DE VENTE</label>
+            <input type="number" disabled class="form-control pl-2" [(ngModel)]="item.selling_price" name="aselling_p"
+                placeholder="Prix de vente" #selling_p>
+        </div>
+        <div class="form-group col-sm-2">
+            <label for="" class="DetailTitle"> STOCK ACTUEL</label>
+            <input type="number" disabled maxlength="5" class="form-control pl-2" [(ngModel)]="item.quantity"
+                name="aquant" placeholder="Quantité" #quant>
+        </div>
+        <div class="form-group col-sm-4">
+            <label for="" class="DetailTitle"> QUANTITÉ DU GROS À METTRE EN DÉTAIL</label>
+            <input type="number" maxlength="5" class="form-control pl-2" [(ngModel)]="quantity" name="aquantite"
+                placeholder="Quantité" #quant>
+        </div>
+    </div>
+</app-card>

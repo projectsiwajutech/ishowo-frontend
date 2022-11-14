@@ -1,0 +1,101 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>Objectifs de vente
+    <small></small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Accueil</a></li>
+    <li><a href="#">Objectifs de vente</a></li>
+    <li class="active"></li>
+  </ol>
+</section>
+
+ <!--component for creation-->
+<it-saletarget-create (created)="updateOnCreate($event)" [subject]="'Objectif de vente'" ></it-saletarget-create>
+
+<!-- component for update -->
+<it-saletarget-update *ngIf="selectedUpObject" [item]="selectedUpObject" (updated)="updateOnUpdate($event)" [subject]="'Objectif de vente'" ></it-saletarget-update>
+
+<!-- component for delete -->
+<it-saletarget-delete *ngIf="selectedDelObject" [item]="selectedDelObject" (deleted)="updateOnDelete($event)" [subject]="'Objectif de vente'" ></it-saletarget-delete>
+
+
+
+
+<!-- zone de liste -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">Liste des objectifs de vente <strong>({{saleTargetList.length}})</strong></h3>
+          <hr>
+
+          <div class="row">
+            <div class="col-md-3">
+              <it-datepicker (selected)="getSelectedDateStart($event)"></it-datepicker>
+            </div>
+            <div class="col-md-3">
+              <it-datepicker (selected)="getSelectedDateEnd($event)"></it-datepicker>
+            </div>
+            <div class="col-md-6">
+              <button type="button" (click)="searchData()" class="btn btn-success"><i class="fa fa-search"></i> Rechercher</button>
+            </div>
+          </div>
+
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <table id="example2" class="table table-striped table-hover">
+            <thead>
+            <tr class="info">
+              <th>#</th>
+              <th>De</th>
+              <th>A</th>
+              <th>Profil</th>
+              <th class="text-right">Montant objectif</th>
+              <th class="text-right">Montant atteint</th>
+              <th class="text-center">Objectif atteint</th>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr class="" *ngIf="isLoading">
+              <td colspan="9"> <div class="text-center alert-info"><strong> Affichage de la liste des objectifs de vente en cours </strong> </div> </td>
+            </tr>
+
+            <tr *ngFor="let item of saleTargetList | itPaginator:pageStartIndex:pageLimit; trackBy: trackByFn; let i = index" >
+              <td>{{i+1}}</td>
+              <td>{{item.start_date | date:'dd/MM/yyyy'}}</td>
+              <td>{{item.end_date | date:'dd/MM/yyyy'}}</td>
+              <td>{{item.agent.login}} ({{item.agent.user.firstname + " " + item.agent.user.lastname}}) </td>
+              <td class="text-right">{{item.amount_target | formatMoney}}</td>
+              <td class="text-right">{{item.amount_obtained | formatMoney}}</td>
+              <td class="text-center">{{item.is_reached | itBoolean}}</td>
+              <td>
+                <a  title="Modifier" class="item-click" (click)="selectForUpdate(item)"> <i class="glyphicon glyphicon-pencil"></i> </a>
+
+              </td>
+              <td>
+                <a title="Supprimer" class="item-click" (click)="selectForDelete(item)"> <i class="glyphicon glyphicon-remove error_msg2"></i> </a>
+              </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            </tfoot>
+          </table>
+
+          <p-paginator [rows]="pageLimit" [totalRecords]="saleTargetList.length" (onPageChange)="paginate($event)" [rowsPerPageOptions]="limitTable"></p-paginator>
+
+        </div>
+        <!-- /.box -->
+
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+</section>
+<!-- /.content -->

@@ -1,0 +1,53 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>Ventes
+    <small></small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Accueil</a></li>
+    <li><a href="#">Ventes</a></li>
+    <li class="active"></li>
+  </ol>
+</section>
+
+
+<section class="content-header">
+  <!-- -->
+  <div class="row">
+    <div class="col-lg-12">
+<section class="panel">
+      <div class="panel-body">
+
+        <div class="box">
+
+          <div class="box-body">
+            <a class="btn btn-app bg-orange" (click)="createSale()">
+              <i class="fa fa-plus"></i> Nouvelle vente
+            </a>
+            <a class="btn btn-app bg-orange" (click)="createSalePartial()">
+              <i class="fa fa-plus"></i> Nouvelle vente à crédit
+            </a>
+            <a class="btn btn-app bg-orange" (click)="listSale()">
+              <span class="badge bg-teal"></span>
+              <i class="fa fa-inbox"></i> Recherche vente
+            </a>
+            <a class="btn btn-app bg-orange" (click)="listCostEstimate()">
+              <span class="badge bg-teal"></span>
+              <i class="fa fa-inbox"></i> Recherche devis
+            </a>
+
+          </div>
+          <!-- /.box-body -->
+        </div>
+
+
+      </div>
+  </section>
+      </div>
+    </div>
+  </section>
+
+
+<router-outlet></router-outlet>
+
+

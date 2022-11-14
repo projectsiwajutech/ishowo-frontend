@@ -1,0 +1,86 @@
+<app-card [options]="false" [customHeader]="true">
+    <div class="app-card-header">
+        <div class="row mb-3">
+            <div class="col-sm-6"><span class="lead">Détails du Produit : </span><span
+                    class="lead text-success font-weight-bold">{{item.product.product.name}}</span></div>
+            <div class="col-sm-6 d-flex  justify-content-end">
+                <button class="btn btn-sm btn-light" (click)="close()">
+                    <span class="fa fa-chevron-circle-left"></span> Retour</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="form-group mb-0 input-group col-sm-6 d-flex">
+                <button class="btn btn-primary col-4">
+                    Référence </button>
+                <input type="text" class="form-control col-8 rightnput2 pr-2" disabled ngModel="{{item.barcode}}" #ref="ngModel"
+                name="ref">
+        </div>
+        <div class="form-group mb-0 input-group col-sm-6 d-flex">
+                <button class="btn btn-primary col-4">
+                   Date Expiration </button>
+            <input type="text" class="form-control col-8 rightnput2 pr-2" disabled
+                ngModel="{{item.expiration_date | date: 'dd/MM/yyyy'}}" #exp="ngModel" name="exp">
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="form-group mb-0 input-group col-sm-6 d-flex">
+                <button class="btn btn-primary col-4">
+                    Nom</button>
+            <input type="text" class="form-control col-8 rightnput2 pr-2" disabled ngModel="{{item.product.product.name}}"
+                #nom="ngModel" name="nom">
+        </div>
+        <div class="form-group mb-0 input-group col-sm-6 d-flex">
+                <button class="btn btn-primary col-4">
+                    Catégorie</button>
+            <input type="text" class="form-control col-8 rightnput2 pr-2" disabled
+                ngModel="{{item.product.product.category.name}}" #categ="ngModel" name="categ">
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="form-group mb-0 input-group col-sm-6 d-flex">
+                <button class="btn btn-primary col-4">
+                    Rayon</button>
+            <input type="text" class="form-control col-8 rightnput2 pr-2" disabled ngModel="{{item.compartment.name}}"
+                #rayon="ngModel" name="rayon">
+        </div>
+        <div class="form-group mb-0 input-group col-sm-6 d-flex">
+                <button class="btn btn-primary col-4">
+                    Agence</button>
+            <input type="text" class="form-control col-8 rightnput2 pr-2" disabled ngModel="{{item.compartment.agency.name}}"
+                #agence="ngModel" name="agence">
+        </div>
+    </div>
+    <div class="row mt-3">
+
+        <div class="form-group mb-0 input-group col-sm-6 d-flex">
+                <button class="btn btn-primary col-4">
+                    Prix d'Achat</button>
+            <input type="text" class="form-control col-8 rightnput2 pr-2" disabled
+                ngModel="{{item.purchase_price | formatMoney}}" #p_achat="ngModel" name="p_achat">
+        </div>
+        <div class="form-group mb-0 input-group col-sm-6 d-flex">
+                <button class="btn btn-primary col-4">
+                    Prix de Vente</button>
+            <input type="text" class="form-control col-8 rightnput2 pr-2" disabled
+                ngModel="{{item.selling_price | formatMoney}}" #p_vente="ngModel" name="p_vente">
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="form-group mb-0 input-group col-sm-6 d-flex">
+                <button class="btn btn-primary col-4">
+                    Unité de Mesure</button>
+            <input type="text" class="form-control col-8 rightnput2 pr-2" disabled
+                ngModel="{{item.product.measure_type.name}}" #unite="ngModel" name="unite">
+        </div>
+
+        <div class="form-group mb-0 input-group col-sm-6 d-flex">
+                <button class="btn btn-primary col-4">
+                    Quantité Actuelle</button>
+            <input type="text" class="form-control col-8 rightnput2 pr-2" disabled ngModel="{{item.quantity}}" #qte="ngModel"
+                name="qte">
+        </div>
+    </div>
+
+</app-card>

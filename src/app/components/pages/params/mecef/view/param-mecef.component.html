@@ -1,0 +1,173 @@
+<app-card [customHeader]="true" [options]="false">
+
+  <div class="app-card-header">
+    <div class="row ">
+      <div class="col-sm-7 d-flex justify-content-start">
+        <h5>
+          PARAMÉTRAGE DE NORMALISATION DES FACTURES DE VENTE
+        </h5>
+      </div>
+      <div class="col-sm-5 d-flex justify-content-end">
+        <button class="btn btn-primary font-weight-bold" (click)="save()" [disabled]="!Changed">
+          <span class="fa fa-save"></span> Enregistrer les Modifications
+        </button>
+        <button class="btn btn-light font-weight-bold" [routerLink]="['/stocks/main']">
+          <span class="fas fa-chevron-circle-left"></span> Retour
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card bg-info text-white text-center">
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <h3 class="text-white">Numéro de Port de la Machine de Facturation</h3>
+            <footer>
+              <h5 class="text-white text-center pt-1"> <span class="fas fa-arrow-alt-circle-right"></span>
+                Il s'agit du port sur lequel votre machine de facturation est actuellement connectée.</h5>
+            </footer>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="row pt-4 mt-3">
+        <div class="col-sm-4 d-flex justify-content-center">
+          <button (click)="DecrementNumber()" class="btn btn-primary text-center"><span
+              class="fas fa-minus-square"></span></button>
+        </div>
+        <div class="col-sm-4 d-flex justify-content-center">
+          <input type="number" style="font-size: 3em;" [(ngModel)]="portMecef" (keyup)="CheckNumber()" name="quantite" #quantite="ngModel"
+            class="form-control text-center">
+        </div>
+        <div class="col-sm-4 d-flex justify-content-center">
+          <button (click)="IncrementNumber()" class="btn btn-primary text-center"><span
+              class="fas fa-plus-square"></span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card bg-info text-white text-center">
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <h3 class="text-white">Activation du MECeF</h3>
+            <footer>
+              <h5 class="text-white text-center pt-1"> <span class="fas fa-arrow-alt-circle-right"></span>
+                Activer ou Désactiver la normalisation des factures de ventes via votre module de contrôle de facturation.</h5>
+            </footer>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="row pt-2 mt-2 d-flex justify-content-center">
+        <section id="task-container" class="mecef">
+          <ul id="task-list">
+            <li appTodoCardComplete (click)="OnchangeStatut()" [ngClass]="{'complete': !setMecef}">
+              <h4 class="text-center">{{setMecef ? 'Le MECeF est Activée' : 'Le MECeF a été Désactivée'}}</h4>
+              <h6 class="text-center text-warning pt-3">{{setMecef ? '-- Veuillez cliquer pour désactiver --' : '-- Veuillez cliquer pour activer --'}}</h6>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card bg-info text-white text-center">
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <h3 class="text-white">Activation de l'e-MeCEF</h3>
+            <footer>
+              <h5 class="text-white text-center pt-1"> <span class="fas fa-arrow-alt-circle-right"></span>
+                Activer ou Désactiver la normalisation en ligne des factures de ventes.</h5>
+            </footer>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="row pt-2 mt-2 d-flex justify-content-center">
+        <section id="task-container" class="mecef">
+          <ul id="task-list">
+            <li appTodoCardComplete (click)="OnchangeStatutEmecef()" [ngClass]="{'complete': !setEMecef}">
+              <h4 class="text-center">{{setEMecef ? 'L\'e-MECeF est Activée' : 'L\'e-MECeF a été Désactivée'}}</h4>
+              <h6 class="text-center text-warning pt-3">{{setEMecef ? '-- Veuillez cliquer pour désactiver --' : '-- Veuillez cliquer pour activer --'}}</h6>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card bg-info text-white text-center">
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <h3 class="text-white">GROUPE DE TAXE PAR DEFAUT</h3>
+            <footer>
+              <h5 class="text-white text-center pt-1"> <span class="fas fa-arrow-alt-circle-right"></span>
+                Modifier ici la taxe d'imposition par défaut de vos produits.</h5>
+            </footer>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="row pt-3 mt-2">
+        <div class="col-sm-4 d-flex justify-content-center">
+          <button (click)="ChangeTaxGroupLeft()" class="btn btn-primary text-center"><span
+              class="fas fa-caret-square-left"></span></button>
+        </div>
+        <div class="col-sm-4 d-flex justify-content-center">
+          <input type="text" style="font-size: 3em; background-color: white;" disabled [(ngModel)]="setGroup" name="group" #group="ngModel"
+            class="form-control text-center">
+        </div>
+        <div class="col-sm-4 d-flex justify-content-center">
+          <button (click)="ChangeTaxGroupRight()" class="btn btn-primary text-center"><span
+              class="fas fa-caret-square-right"></span></button>
+        </div>
+      </div>
+       <h6 class="text-center text-warning pt-3">-- {{ShowGroupText()}} --</h6>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card bg-info text-white text-center">
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <h3 class="text-white">TAUX AIB</h3>
+            <footer>
+              <h5 class="text-white text-center pt-1"> <span class="fas fa-arrow-alt-circle-right"></span>
+                Il s'agit du taux d'Imposition Assis sur les Bénéfices (AIB).  Elle est de 1% si le Client dispose d'un Numéro IFU
+                et 5% dans le cas contraire. L'application de ce taux n'est pas obligatoire.
+              </h5>
+            </footer>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="row pt-3 mt-2">
+        <div class="col-sm-4 d-flex justify-content-center">
+          <button (click)="ChangeAIBLeft()" class="btn btn-primary text-center"><span
+              class="fas fa-caret-square-left"></span></button>
+        </div>
+        <div class="col-sm-4 d-flex justify-content-center">
+          <input type="text" style="font-size: 3em; background-color: white;" disabled [(ngModel)]="setAIB" name="aib" #aib="ngModel"
+            class="form-control text-center">
+        </div>
+        <div class="col-sm-4 d-flex justify-content-center">
+          <button (click)="ChangeAIBRight()" class="btn btn-primary text-center"><span
+              class="fas fa-caret-square-right"></span></button>
+        </div>
+      </div>
+       <h6 class="text-center text-warning pt-3">-- {{ShowAIBText()}} --</h6>
+    </div>
+  </div>
+</app-card>

@@ -1,0 +1,87 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>Mouvements sur les comptes
+    <small></small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Accueil</a></li>
+    <li><a href="#">Mouvements sur les comptes</a></li>
+    <li class="active"></li>
+  </ol>
+</section>
+
+<!-- component for creation -->
+<it-fin-operation-create (created)="updateOnCreate($event)" [subject]="'Opération'" ></it-fin-operation-create>
+
+
+
+<!-- zone de liste -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">Liste des opérations <strong>({{operations.length}})</strong></h3>
+              <hr>
+
+                <div class="row">
+                  <div class="col-md-3">
+                    <it-datepicker (selected)="getSelectedDateStart($event)"></it-datepicker>
+                  </div>
+                  <div class="col-md-3">
+                    <it-datepicker (selected)="getSelectedDateEnd($event)"></it-datepicker>
+                  </div>
+                  <div class="col-md-6">
+                    <button type="button" (click)="searchData()" class="btn btn-success"><i class="fa fa-search"></i> Rechercher</button>
+                    <!--<button type="button" (click)="printData()" class="btn btn-primary"><i class="fa fa-print"></i> Imprimer</button>-->
+                  </div>
+                </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <table id="example2" class="table table-striped table-hover">
+            <thead>
+            <tr class="info">
+              <th>#</th>
+              <th>Date</th>
+              <th>Compte</th>
+              <th class="text-center">Type d'opération</th>
+              <th>Profil</th>
+              <th class="text-right">Montant</th>
+              <th class="text-right">Solde</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr class="" *ngIf="isLoading">
+              <td colspan="8"> <div class="text-center alert-info"><strong> Affichage de la liste des opérations en cours </strong> </div> </td>
+            </tr>
+
+            <tr *ngFor="let item of operations | itPaginator:pageStartIndex:pageLimit; trackBy: trackByFn; let i = index" >
+              <td>{{i+1}}</td>
+              <td>{{item.operation_date | date:'dd/MM/yyyy HH:mm'}}</td>
+              <td>{{item.account.name}}</td>
+              <td class="text-center">{{item.operation_type | finOpType}}</td>
+              <td>{{item.agent.login}} ({{item.agent.user.firstname + " " + item.agent.user.lastname}})</td>
+              <td class="text-right">{{item.amount | formatMoney}}</td>
+              <td class="text-right">{{item.remaining | formatMoney}}</td>           
+            </tr>
+            </tbody>
+            <tfoot>
+            </tfoot>
+          </table>
+        <p-paginator [rows]="pageLimit" [totalRecords]="(operations).length" (onPageChange)="paginate($event)" [rowsPerPageOptions]="limitTable"></p-paginator>
+
+          <div>
+            <br>
+          </div>
+        </div>
+        <!-- /.box -->
+
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+</section>
+<!-- /.content -->

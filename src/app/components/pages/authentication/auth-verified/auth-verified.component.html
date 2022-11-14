@@ -1,0 +1,20 @@
+<div class="auth-wrapper">
+  <!-- [ reset-password ] start -->
+  <div class="auth-content">
+    <div class="card">
+      <div class="row align-items-center text-center">
+        <div class="col-md-12">
+          <div class="card-body">
+            <img src="assets/images/logo-dark.png" alt="" class="img-fluid mb-4">
+            <h4 class="mb-3 f-w-400">Vérification de compte</h4>
+            <p *ngIf="response!= '' && isLoading == true">Votre comptre viens d'être activé {{response.data}}</p>
+
+            <a class="btn btn-block btn-primary mb-4 text-white" [routerLink]="['/auth/connection']">Connexion</a>
+            <p class="mb-0 text-muted">Don’t have an account? <a [routerLink]="['/auth/new-licence']" class="f-w-400">New licence</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- [ reset-password ] end -->
+</div>

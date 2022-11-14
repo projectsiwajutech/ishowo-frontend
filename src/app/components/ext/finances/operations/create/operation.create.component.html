@@ -1,0 +1,130 @@
+
+
+<!-- bouton de creation -->
+<section class="content-header"  >
+  <!-- ligne du bouton de creation-->
+  <div class="row">
+    <div class="col-lg-12">
+      <section class="panel">
+        <div class="panel-body">
+          <form class="form-horizontal" role="form" name="t">
+            <!-- 3e ligne -->
+            <div class="form-group">
+
+              <div class="col-lg-3 pull-right">
+                                <span class="input-group-btn">
+                                    <button type='submit' (click)="showCreationForm()" name='search' id='search-btn' class="btn btn-primary pull-right"><i class="fa fa-save">&nbsp;</i>Créer</button>
+                                </span>
+              </div>
+
+            </div>
+          </form>
+
+
+          <!--zone de creation -->
+          <div class="row" *ngIf="visible">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="box box-primary">
+                <div class="box-header">
+                  <h3 class="box-title">Création {{subject}}</h3>
+
+                </div>
+
+                <!-- display message area -->
+                <message-area [acting]="isSaving" [completed]="isCompleted" [success]="isSuccess" [title]="'Création ' + subject" [message]="statusMessage"></message-area>
+
+
+
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form"  #userForm="ngForm">
+                  <!-- action zone-->
+                  <div class="box-footer text-right">
+                    <button type="button" (click)="hideForm()" class="btn btn-default">Annuler</button>
+                    <button type="submit" [disabled]="!userForm.valid" (click)="save(userForm.value)"  class="btn btn-success">Enregistrer</button>
+                  </div>
+
+                  <div class="box-body">
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <!-- description-->
+                        <div class="form-group">
+                          <label for="df">Compte</label>
+                                <select class="form-control" name="account" [(ngModel)]="item.account"  required #account="ngModel">
+                            <option *ngFor="let item of accounts" [ngValue]="item">{{item.name}}</option>
+                          </select>
+                          <div  class="error_msg text-danger font-italic" *ngIf="account.dirty && account.hasError('required')">Compte manquant</div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <!-- zone de texte-->
+                        <div class="form-group">
+                          <label for="vdfd">Type d'opération</label>
+                           <select class="form-control" name="account_type" [(ngModel)]="item.operation_type"  required #operation_type="ngModel">
+                            <option *ngFor="let item of operation_types" [ngValue]="item">{{item}}</option>
+                          </select>
+                          <div  class="error_msg text-danger font-italic" *ngIf="operation_type.dirty && operation_type.hasError('required')">Type d'opération manquant</div>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <!-- description-->
+                        <div class="form-group">
+                          <label for="df">Montant</label>
+                           <input type="number" maxlength="10" class="form-control" [(ngModel)]="item.amount" name="amount"
+                                 placeholder="Montant"  required #amount="ngModel">
+                          <div  class="error_msg text-danger font-italic" *ngIf="amount.dirty && amount.hasError('required')">Montant manquant</div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="form-group" >
+                          <label for="df">Motif de l'opération</label>
+                        <textarea type="number" maxlength="100" class="form-control" [(ngModel)]="item.description" name="description"
+                                 placeholder="Motif de l'opération"  required #description="ngModel"></textarea>
+                       </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <!-- description-->
+                        <div class="form-group">
+                          <label for="df">Numéro pièce justificative</label>
+                           <input type="text" maxlength="30" class="form-control" [(ngModel)]="item.proof_number" name="proof_number"
+                                 placeholder="Numéro pièce justificative"  required #proof_number="ngModel">
+                          <div  class="error_msg text-danger font-italic" *ngIf="proof_number.dirty && proof_number.hasError('required')">Pièce justificative manquante</div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                      
+                      </div>
+                    </div>
+
+
+                  </div>
+                  <!-- /.box-body -->
+
+                </form>
+              </div>
+              <!-- /.box -->
+            </div>
+          </div>
+          <!-- fin zone de creation -->
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+
+
+

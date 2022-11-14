@@ -1,0 +1,18 @@
+<table class="table">
+  <tr class="text-center">
+    <th> {{index+1}}</th>
+    <th>  <select class="form-control" name="bulk" [(ngModel)]="item.bulk" #bulk="ngModel" (change)="updateInternalComponent()">
+      <option *ngFor="let el of measure_types" [ngValue]="el">{{el.measure_type.name}}</option>
+    </select> </th>
+    <th> contient </th>
+    <th>  <input type="number" class="form-control" (keyup)="updateInternalComponent()" [(ngModel)]="item.quantity" name="quantity" maxlength="5" placeholder=""/></th>
+    <th>  <select class="form-control" name="retail" [(ngModel)]="item.retail" #retail="ngModel" (change)="updateInternalComponent()">
+      <option *ngFor="let el of measure_types" [ngValue]="el">{{el.measure_type.name}}</option>
+    </select></th>
+    <th (click)="removeAssociation($event)" style="background-color: #ffe5e5;">
+      <a title="Retirer" class="item-click text-center" (click)="removeAssociation($event)"> <i class="fa pt-3 fa-trash text-danger error_msg2 bg-red"></i> </a>
+    </th>
+  </tr>
+  </table>
+
+

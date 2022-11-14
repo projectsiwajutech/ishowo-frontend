@@ -1,0 +1,122 @@
+<app-card [options]="false" [customHeader]="true">
+    <div class="app-card-header">
+        <form role="form" #userForm="ngForm">
+            <div class="row">
+                <div class="form-group mb-0 col-sm-12 d-flex justify-content-end">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary font-weight-bold" (click)="generateBarCodes()">
+                            <span class="fas fa-magic"></span> GENERER</button>
+                    </div>
+                    <button class="btn btn-light font-weight-bold" [routerLink]="['/stocks/main']">
+                      <span class="fas fa-chevron-circle-left"></span> RETOUR</button>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="form-group mb-0 input-group col-sm-3">
+                    <div class="input-group-append">
+                        <button class="btn btn-info font-weight-bold btn-sm">Produit</button>
+                    </div>
+                    <input type="text" maxlength="30" class="form-control pl-2" [(ngModel)]="param.product"
+                        name="product" (keydown.enter)="0" placeholder="Nom du produit">
+                </div>
+                <div class="form-group mb-0 input-group col-sm-3">
+                    <div class="input-group-append">
+                        <button class="btn btn-info font-weight-bold btn-sm">Catégorie</button>
+                    </div>
+                    <select class="form-control" name="cat_prod" [(ngModel)]="param.category">
+                        <option *ngFor="let item of categories" [ngValue]="item">{{item.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group mb-0 input-group col-sm-2">
+                    <div class="input-group-append">
+                        <button class="btn btn-info font-weight-bold btn-sm">T.Mesure</button>
+                    </div>
+                    <select class="form-control" name="measure_type" [(ngModel)]="param.measure_type">
+                        <option *ngFor="let item of measureTypes" [ngValue]="item">{{item.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group mb-0 input-group col-sm-2">
+                    <div class="input-group-append">
+                        <button class="btn btn-info font-weight-bold btn-sm">Rayon</button>
+                    </div>
+                    <select class="form-control" name="location" [(ngModel)]="param.location">
+                        <option *ngFor="let item of compartments" [ngValue]="item">{{item.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group mb-0 input-group col-sm-2">
+                    <div class="input-group-append">
+                        <button class="btn btn-info font-weight-bold btn-sm">Agence</button>
+                    </div>
+                    <select class="form-control" name="agency" [(ngModel)]="param.agency">
+                        <option *ngFor="let item of agencies" [ngValue]="item">{{item.name}}</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row d-flex justify-content-center mb-5"  style="margin-bottom: 10em;" *ngIf="isLoading">
+        <div class="col-md-12 text-center p-0">
+            <div class="p-20 pb-3">
+                <div class="risk-rate">
+                    <img src="assets/images/params/spinner.gif" alt="" width="15%">
+                </div>
+            </div>
+            <p class="text-muted h3 mb-5">Veuillez Patientez...</p>
+        </div>
+      </div>
+      <div class="row d-flex justify-content-center mb-5"  style="margin-bottom: 10em;" *ngIf="noData && !isLoading">
+        <div class="col-md-12 text-center p-0">
+            <div class="p-20 pb-3">
+                <div class="risk-rate">
+                    <img src="assets/images/params/liste_vide.png" alt="" width="15%">
+                </div>
+            </div>
+            <p class="text-muted h3 mb-5">Aucun résultat trouvé !</p>
+        </div>
+      </div>
+    <div class="table-responsive table-bordered table-hover" *ngIf="!isLoading && !noData">
+        <table id="report-table" class="table mb-0">
+            <thead class="thead-light">
+                <tr class="text-center">
+                    <th>#</th>
+                    <th>Référence</th>
+                    <th class="text-left">Produit</th>
+                    <th>Catégorie</th>
+                    <th>U.Mesure</th>
+                    <th>P.Achat </th>
+                    <th>P.Vente </th>
+                    <th class="text-center">Stock actuel</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of stock_view | stockView: param.product: param.category.id: param.measure_type.id: param.location.id: param.agency.id | slice: (page-1) * pageSize : page * pageSize; let i = index;"
+                    class="text-center">
+                    <td class="align-middle p-0">
+                        {{i+1}}
+                    </td>
+                    <td>{{item.barcode}}</td>
+                    <td class="text-left">{{item.product.product.name}}</td>
+                    <td>{{item.product.product.category.name}}</td>
+                    <td>{{item.product.measure_type.name}}</td>
+                    <td class="font-weight-bold">{{item.purchase_price | formatMoney}}</td>
+                    <td class="font-weight-bold">{{item.selling_price | formatMoney}}</td>
+                    <td class="text-center font-weight-bold text-danger">{{item.quantity}}</td>
+                    <td class="align-middle p-0 pt-1 pb-1">
+                        <a class="btn btn-icon btn-outline-info mr-1" [placement]="'top'" ngbTooltip="Voir Plus"
+                            (click)="ViewProduct(item)"><i class="fa fa-folder-open"></i></a>
+                        <a class="btn btn-icon" [placement]="'top'" ngbTooltip="générer un codeBarre">
+                            <input type="checkbox" class="form-control" (change)="setCheckState($event, item)"
+                                [checked]="item.is_checked">
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+            <ngb-pagination class="float-right mt-2" [collectionSize]="stock_view.length" [(page)]="page"
+            [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true">
+          </ngb-pagination>
+    </div>
+</app-card>

@@ -1,0 +1,33 @@
+
+
+<div *ngIf="isRemoving" class="row bg-info text-center"> Suppression d'une association en cours...</div>
+
+
+<app-card cardTitle="Associations Gros - détail" [options]="false">
+  <form class="form">
+  <div class="row mb-2">
+      <div class="col-sm-12">
+        <button type='submit' (click)="addLine()" name='seach' id='search-btn' class=" btn btn-info float-right"><i
+            class="fa fa-plus"></i> Ajouter</button>
+      </div>
+    </div>
+  </form>
+
+<table class="table table-bordered table-stripped border border-info rounded">
+<tr class="bg-yellow">
+  <th style="width: 10px">#</th>
+  <th class="text-center">Gros</th>
+  <th class="text-center"></th>
+  <th class="text-center">Quantité</th>
+  <th class="text-center">Détail</th>
+  <th style="width: 40px">Retrait</th>
+</tr>
+ </table>
+ <app-contenance *ngFor="let item of associations; let i = index; trackBy: trackByFn;" [measure_types]="measure_types"
+ [item]="item"  [index]="i" (item_changed)="getItem($event, i)" (item_removed) = "onItemRemove($event, i)"></app-contenance>
+
+</app-card>
+
+
+
+

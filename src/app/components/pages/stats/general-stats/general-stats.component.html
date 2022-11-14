@@ -1,0 +1,115 @@
+<app-card [options]="false" [customHeader]="true">
+    <div class="app-card-header">
+        <form role="form" #userForm="ngForm">
+            <div class="row">
+                <div class="form-group mb-0 input-group col-sm-4">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary font-weight-bold btn-sm">DE</button>
+                    </div>
+                    <input type="date" name="dateStart" [(ngModel)]="DefaultDateOne"  #dateStart="ngModel" id="dateStart" class="pl-2 form-control">
+                </div>
+                <div class="form-group mb-0 input-group col-sm-4">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary font-weight-bold btn-sm">À</button>
+                    </div>
+                    <input type="date" name="dateEnd"[(ngModel)]="DefaultDateTwo"  #dateEnd="ngModel" id="dateEnd" class="pl-2 form-control">
+                </div>
+                <div type="submit" class="col-sm-4">
+                    <button class="btn btn-primary float-right" (click)="getStatsByPeriod(userForm.value)">
+                        <span class="fa fa-search"></span> Rechercher</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+<div class="row">
+    <div class="col-md-6 col-lg-3">
+        <app-card [hidHeader]="true" cardClass="statustic-card" blockClass="text-center" [isCardFooter]="true"
+            footerClass="bg-light border-0">
+            <h5 class="text-left">Commandes</h5>
+            <p class="m-b-0">Total</p>
+            <span class="d-block text-c-green f-30 font-weight-bold">{{(report.totalOrder || '0') | formatMoney}}</span><span class="badge badge-info">FCFA</span>
+            <div class="app-card-footer">
+            </div>
+        </app-card>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <app-card [hidHeader]="true" cardClass="statustic-card" blockClass="text-center" [isCardFooter]="true"
+            footerClass="bg-light border-0">
+            <h5 class="text-left">Ventes</h5>
+            <p class="m-b-0">Total</p>
+            <span class="d-block text-c-blue f-30 font-weight-bold">{{(report.totalSell || '0') | formatMoney}}</span><span class="badge badge-info">FCFA</span>
+            <div class="app-card-footer">
+            </div>
+        </app-card>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <app-card [hidHeader]="true" cardClass="statustic-card" blockClass="text-center" [isCardFooter]="true"
+            footerClass="bg-light border-0">
+            <h5 class="text-left">Bénéfices</h5>
+            <p class="m-b-0">Total</p>
+            <span class="d-block text-c-yellow f-30 font-weight-bold">{{(report.totalProfit || '0') | formatMoney}}</span><span class="badge badge-info">FCFA</span>
+            <div class="app-card-footer bg-primary">
+            </div>
+        </app-card>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <app-card [hidHeader]="true" cardClass="statustic-card" blockClass="text-center" [isCardFooter]="true"
+            footerClass="bg-light border-0">
+            <h5 class="text-left">Produits Vendus</h5>
+            <p class="m-b-0">Total</p>
+            <span class="d-block text-c-red f-30 font-weight-bold">{{report.qtySold || '0'}}</span><span class="badge badge-info">Produits Vendus</span>
+            <div class="app-card-footer">
+            </div>
+        </app-card>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-xl-4">
+        <app-card [hidHeader]="true" cardClass="widget-statstic-card">
+            <div class="card-header-left mb-3">
+                <h5 class="mb-0">Produit le Plus Vendu</h5>
+                <h5 class="mb-0">(en Quantité)</h5>
+                <p class="p-t-10 m-b-0 text-c-yellow">Total</p>
+
+            </div>
+            <i class="fa fa-trophy st-icon bg-c-blue"></i>
+            <div class="text-left">
+                <h3 class="d-inline-block">{{getProductQA(report.mostSoldProd) | formatMoney}}</h3>
+                <i class="feather icon-arrow-up f-20 text-c-blue"></i>
+                <span class="float-right text-center bg-c-blue w-50">{{getProductName(report.mostSoldProd)}}</span>
+            </div>
+        </app-card>
+    </div>
+    <div class="col-md-12 col-xl-4">
+        <app-card [hidHeader]="true" cardClass="widget-statstic-card">
+            <div class="card-header-left mb-3">
+                <h5 class="mb-0">Produit le Plus Vendu</h5>
+                <h5 class="mb-0">(en Chiffre d'Affaires)</h5>
+                <p class="p-t-10 m-b-0 text-c-yellow">Total</p>
+            </div>
+            <i class="fa fa-trophy st-icon bg-c-green"></i>
+            <div class="text-left">
+                <h3 class="d-inline-block">{{getProductQA(report.mostIncomeProd) | formatMoney}}</h3>
+                <i class="feather f-3 font-weight-bold text-c-green pl-2 pb-5">FCFA</i>
+                <span class="float-right text-center bg-c-green w-50">{{getProductName(report.mostIncomeProd)}}</span>
+            </div>
+        </app-card>
+    </div>
+    <div class="col-md-12 col-xl-4">
+        <app-card [hidHeader]="true" cardClass="widget-statstic-card">
+            <div class="card-header-left mb-3">
+                <h5 class="mb-0">Produit le Plus Rentable</h5><br>
+                <p class="p-t-10 m-b-0 text-c-yellow">Total</p>
+            </div>
+            <i class="fa fa-trophy st-icon bg-c-yellow"></i>
+            <div class="text-left">
+                <h3 class="d-inline-block">{{getProductQA(report.mostProfitableProd) | formatMoney}}</h3>
+                <i class="feather f-3 font-weight-bold text-c-yellow pl-2 pb-5">FCFA</i>
+                <span class="float-right text-center bg-c-yellow w-50">{{getProductName(report.mostProfitableProd)}}</span>
+            </div>
+        </app-card>
+    </div>
+</div>
+</app-card>

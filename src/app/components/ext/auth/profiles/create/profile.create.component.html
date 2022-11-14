@@ -1,0 +1,121 @@
+
+
+<!-- bouton de creation -->
+<section class="content-header"  >
+  <!-- ligne du bouton de creation-->
+  <div class="row">
+    <div class="col-lg-12">
+      <section class="panel">
+        <div class="panel-body">
+          <form class="form-horizontal" role="form" name="t">
+            <!-- 3e ligne -->
+            <div class="form-group">
+
+              <div class="col-lg-3 pull-right">
+                                <span class="input-group-btn">
+                                    <button type='submit' (click)="showCreationForm()" name='search' id='search-btn' class="btn btn-primary pull-right"><i class="fa fa-save">&nbsp;</i>Créer</button>
+                                </span>
+              </div>
+
+            </div>
+          </form>
+
+
+          <!--zone de creation -->
+          <div class="row" *ngIf="visible">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="box box-primary">
+                <div class="box-header">
+                  <h3 class="box-title">Création {{subject}}</h3>
+
+                </div>
+
+                <!-- display message area -->
+                <message-area [acting]="isSaving" [completed]="isCompleted" [success]="isSuccess" [title]="'Création ' + subject" [message]="statusMessage"></message-area>
+
+
+
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" (ngSubmit)="save(userForm.value)" #userForm="ngForm">
+                  <!-- action zone-->
+                  <div class="box-footer text-right">
+                    <button type="button" (click)="hideForm()" class="btn btn-default">Annuler</button>
+                    <button type="submit" [disabled]="!userForm.valid"  class="btn btn-success">Enregistrer</button>
+                  </div>
+
+                  <div class="box-body">
+
+                    <div class="row">
+                      <div class="col-md-6">
+
+                        <!-- zone de texte-->
+                        <div class="form-group">
+                          <label for="vdfd">Utilisateur</label>
+                          <select class="form-control" name="user" [(ngModel)]="item.user"  required #user="ngModel">
+                            <option *ngFor="let item of users" [ngValue]="item">{{item.lastname + " " + item.firstname}}</option>
+                          </select>
+                          <div  class="error_msg text-danger font-italic" *ngIf="user.dirty && user.hasError('required')">Utilisateur manquant</div>
+                        </div>
+
+                        <!-- description-->
+                        <div class="form-group">
+                          <label for="df">Login</label>
+                          <input type="text" maxlength="10" class="form-control" [(ngModel)]="item.login" name="login"
+                                  placeholder="Login"  required #login="ngModel">
+                          <div  class="error_msg text-danger font-italic" *ngIf="login.dirty && login.hasError('required')">Login manquant</div>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="df">Password</label>
+                          <input type="password" maxlength="30" class="form-control" [(ngModel)]="item.code" name="code"
+                                 placeholder="Mot de passe"  required #code="ngModel">
+                          <div  class="error_msg text-danger font-italic" *ngIf="code.dirty && code.hasError('required')">Mot de passe manquant</div>
+                        </div>
+
+                      </div>
+
+
+                      <div class="col-md-6">
+
+                        <!-- zone de texte-->
+                        <div class="form-group">
+                          <label for="vdfd">Agence</label>
+                          <select class="form-control" name="user" [(ngModel)]="item.agency"  required #agency="ngModel">
+                            <option *ngFor="let item of agencies" [ngValue]="item">{{item.name }}</option>
+                          </select>
+                          <div  class="error_msg text-danger font-italic" *ngIf="agency.dirty && agency.hasError('required')">Agence manquante</div>
+                        </div>
+
+                        <!-- zone de texte-->
+                        <div class="form-group">
+                          <label for="vdfd">Groupe</label>
+                          <select class="form-control" name="user" [(ngModel)]="item.group"  required #group="ngModel">
+                            <option *ngFor="let item of groups" [ngValue]="item">{{item.name }}</option>
+                          </select>
+                          <div  class="error_msg text-danger font-italic" *ngIf="group.dirty && group.hasError('required')">Groupe manquant</div>
+                        </div>
+                      </div>
+
+                    </div>
+
+                  </div>
+                  <!-- /.box-body -->
+
+                </form>
+              </div>
+              <!-- /.box -->
+            </div>
+          </div>
+          <!-- fin zone de creation -->
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+
+
+

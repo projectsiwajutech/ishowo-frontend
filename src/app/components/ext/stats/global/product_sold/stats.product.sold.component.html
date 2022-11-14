@@ -1,0 +1,209 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>Produits les plus vendus
+    <small></small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Accueil</a></li>
+    <li><a href="#">Produits les plus vendus</a></li>
+    <li class="active"></li>
+  </ol>
+</section>
+
+
+<!-- zone de liste -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+
+          <div class="row">
+            <div class="col-md-12">
+              <br>
+              <!-- /.box-header -->
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-1 text-right">
+                    De
+                  </div>
+                  <div class="col-md-2">
+                    <it-datepicker (selected)="getSelectedDate1($event)"></it-datepicker>
+                  </div>
+                  <div class="col-md-1 text-right">
+                    A
+                  </div>
+                  <div class="col-md-2">
+                    <it-datepicker (selected)="getSelectedDate2($event)"></it-datepicker>
+                  </div>
+                  <div class="col-md-offset-1 col-md-2">
+                    <button type="button" (click)="getProductsStats()" class="btn btn-success"><i class="fa fa-search"></i> Afficher</button>
+                  </div>
+                </div>
+              </div>
+              <!-- /.box-body -->
+            </div>
+          </div>
+
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+
+          <div class="row">
+
+            <!-- zone des produits plus vendus par quantité-->
+            <div class="col-md-4">
+              <div class="box">
+                <div class="box-header">
+
+                  <!-- Zone de recherche de produit -->
+                  <div class="row">
+                    <div class="col-md-12">
+                      <label for="qty">Produits plus vendus par quantité</label>
+                      <input type="text"  class="form-control"  [(ngModel)]="productQtySearchName" name="productSearchName"
+                             placeholder="Recherche Produit"  #productQtyName>
+                    </div>
+                  </div>
+                  <!-- fin zone de texte de recherche-->
+
+                  <div class="prod_list">
+                    <table class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th>Produit </th>
+                        <th class="text-center">Quantité vendue </th>
+                      </tr>
+                      </thead>
+
+                      <tr class="" *ngIf="isLoadingStatsQty">
+                        <td colspan="8"> <div class="text-center alert-info"><strong> Chargement des données en cours... </strong> </div> </td>
+                      </tr>
+
+                      <tbody *ngIf="isLoadingStatsQty===false">
+                      <tr class=""  *ngFor="let p of reportProdQty | stockView: productQtySearchName , let i = index" >
+                        <td>
+                          {{p.product.product.name}} /  {{p.product.measure_type.name}}
+                        </td>
+                        <td class="text-center">
+                          {{p.quantity | formatMoney}}
+                        </td>
+                      </tr>
+                      </tbody>
+
+                    </table>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+            <!-- fin zone des produits plus vendus par quantité-->
+
+            <!-- zone des produits plus vendus par CA-->
+            <div class="col-md-4">
+              <div class="box">
+                <div class="box-header">
+
+                  <!-- Zone de recherche de produit -->
+                  <div class="row">
+                    <div class="col-md-12">
+                      <label for="qty">Produits plus vendus par chiffre d'affaires</label>
+                      <input type="text"  class="form-control"  [(ngModel)]="productCaSearchName" name="productSearchName"
+                             placeholder="Recherche Produit"  #productCaName>
+                    </div>
+                  </div>
+                  <!-- fin zone de texte de recherche-->
+
+                  <div class="prod_list">
+                    <table class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th>Produit </th>
+                        <th class="text-right">Montant vendu </th>
+                      </tr>
+                      </thead>
+
+                      <tr class="" *ngIf="isLoadingStatsCa">
+                        <td colspan="8"> <div class="text-center alert-info"><strong> Chargement des données en cours... </strong> </div> </td>
+                      </tr>
+
+                      <tbody *ngIf="isLoadingStatsCa===false">
+                      <tr class=""  *ngFor="let p of reportProdCa | stockView: productCaSearchName, let i = index" >
+                        <td>
+                          {{p.product.product.name}} /  {{p.product.measure_type.name}}
+                        </td>
+                        <td class="text-right">
+                          {{p.quantity | formatMoney}}
+                        </td>
+                      </tr>
+                      </tbody>
+
+                    </table>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+            <!-- fin zone des produits plus vendus par CA-->
+
+            <!-- zone des produits plus vendus par CA-->
+            <div class="col-md-4">
+              <div class="box">
+                <div class="box-header">
+
+                  <!-- Zone de recherche de produit -->
+                  <div class="row">
+                    <div class="col-md-12">
+                      <label for="qty">Produits plus vendus par bénéfice</label>
+                      <input type="text"  class="form-control"  [(ngModel)]="productProfitSearchName" name="productSearchName"
+                             placeholder="Recherche Produit"  #productProfitName>
+                    </div>
+                  </div>
+                  <!-- fin zone de texte de recherche-->
+
+                  <div class="prod_list">
+                    <table class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th>Produit </th>
+                        <th class="text-right">Bénéfice </th>
+                      </tr>
+                      </thead>
+
+                      <tr class="" *ngIf="isLoadingStatsProfit">
+                        <td colspan="8"> <div class="text-center alert-info"><strong> Chargement des données en cours... </strong> </div> </td>
+                      </tr>
+
+                      <tbody *ngIf="isLoadingStatsProfit===false">
+                      <tr class=""  *ngFor="let p of reportProdProfit | stockView: productProfitSearchName , let i = index" >
+                        <td>
+                          {{p.product.product.name}} /  {{p.product.measure_type.name}}
+                        </td>
+                        <td class="text-right">
+                          {{p.quantity | formatMoney}}
+                        </td>
+                      </tr>
+                      </tbody>
+
+                    </table>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+            <!-- fin zone des produits plus vendus par CA-->
+
+          </div>
+
+        </div>
+        <!-- /.box -->
+
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+</section>
+<!-- /.content -->

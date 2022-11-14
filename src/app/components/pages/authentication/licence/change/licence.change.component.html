@@ -1,0 +1,208 @@
+
+
+<div class="layout-top-nav">
+  <div class="wrapper">
+
+    <header class="main-header">
+      <nav class="navbar navbar-static-top">
+        <div class="container">
+          <div class="navbar-header">
+            <a href="#" class="navbar-brand"><b>IT</b>COMMERCE</a>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+              <i class="fa fa-bars"></i>
+            </button>
+          </div>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"><a (click)="loginNow()">Connexion <span class="sr-only">(current)</span></a></li>
+            </ul>
+            <form class="navbar-form navbar-left" role="search">
+
+            </form>
+          </div>
+          <!-- /.navbar-collapse -->
+          <!-- Navbar Right Menu -->
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+
+
+            </ul>
+          </div>
+          <!-- /.navbar-custom-menu -->
+        </div>
+        <!-- /.container-fluid -->
+      </nav>
+    </header>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper height">
+
+
+      <!-- bouton de creation -->
+      <section class="content-header"  >
+        <!-- ligne du bouton de creation-->
+        <div class="row">
+          <div class="col-lg-12">
+            <section class="panel">
+              <div class="panel-body">
+
+                <!--zone de creation -->
+                <div class="row">
+                  <!-- left column -->
+                  <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="box box-danger">
+                      <div class="box-header bg-yellow">
+                        <h3 class="box-title">Mise à jour de licence</h3>
+                      </div>
+
+                      <!-- display message area -->
+                      <!--<message-area [acting]="isSaving" [completed]="isCompleted" [success]="isSuccess" [title]="'Nouvelle licence'" [message]="statusMessage"></message-area>-->
+
+
+
+                      <!-- /.box-header -->
+                      <!-- form start -->
+                      <form role="form" (ngSubmit)="askForLicence()" #userForm="ngForm">
+                        <!-- action zone-->
+                        <div class="box-footer text-right">
+                          <button type="button" (click)="loginNow()" class="btn btn-default">Connexion</button>
+                          <button type="button" (click)="refresh()" class="btn btn-default">Actualiser</button>
+                          <button type="submit" [disabled]="!canUserAskLicence() || isLoading"  class="btn btn-success">Enregistrer</button>
+                        </div>
+
+                        <div class="box-body">
+
+                          <div class="row">
+                            <!--left area-->
+                            <div class="col-md-4">
+                              <!-- nom-->
+                              <div class="form-group">
+                                <label for="b">Nom de l'entreprise</label>
+                                <input type="text" [disabled]="true" maxlength="100" class="form-control" [(ngModel)]="user.agency.company.name" name="nom_company"
+                                       placeholder="Nom de l'entreprise"  required #nom_company="ngModel">
+                             </div>
+
+                              <!-- adresse-->
+                              <div class="form-group">
+                                <label for="s">Adresse de l'entreprise</label>
+                                <input type="text" [disabled]="true" maxlength="100" class="form-control" [(ngModel)]="user.agency.company.address" name="adresse_company"
+                                       placeholder="Adresse de l'entreprise"  required #adresse_company="ngModel">
+                              </div>
+
+                              <!-- telephone-->
+                              <div class="form-group">
+                                <label for="s">Téléphone de l'entreprise</label>
+                                <input type="text" [disabled]="true" maxlength="100" class="form-control" [(ngModel)]="user.agency.company.phone" name="telephone_company"
+                                       placeholder="Téléphone de l'entreprise"  required #telephone_company="ngModel">
+                             </div>
+
+                              <!-- secteur-->
+                              <div class="form-group">
+                                <label for="s">Secteur d'activité</label>
+                                <input type="text" [disabled]="true" maxlength="100" class="form-control" [(ngModel)]="user.agency.company.description" name="secteur"
+                                       placeholder="Secteur d'activité"  required #secteur="ngModel">
+                            </div>
+
+                            </div>
+
+                            <!--middle area-->
+                            <div class="col-md-4">
+
+                              <!-- nom-->
+                              <div class="form-group">
+                                <label for="b">Nom de l'administrateur</label>
+                                <input type="text" [disabled]="true" maxlength="100" class="form-control" [(ngModel)]="user.user.lastname" name="nom_admin"
+                                       placeholder="Nom de l'administrateur"  required #nom_admin="ngModel">
+                              </div>
+
+                              <!-- adresse-->
+                              <div class="form-group">
+                                <label for="s">Prénoms de l'administrateur</label>
+                                <input type="text" [disabled]="true" maxlength="100" class="form-control" [(ngModel)]="user.user.firstname" name="prenom_admin"
+                                       placeholder="Prénoms de l'administrateur"  required #prenom_admin="ngModel">
+                             </div>
+
+                              <!-- telephone-->
+                              <div class="form-group">
+                                <label for="s">Téléphone de l'administrateur</label>
+                                <input type="text" [disabled]="true" maxlength="100" class="form-control" [(ngModel)]="user.user.phone" name="telephone_admin"
+                                       placeholder="Téléphone de l'administrateur"  required #telephone_admin="ngModel">
+                            </div>
+
+                              <!-- secteur-->
+                              <div class="form-group">
+                                <label for="s">Module choisi</label>
+                                <select class="form-control" name="user" [(ngModel)]="request.module"  required #module="ngModel">
+                                  <option *ngFor="let item of modulesList" [ngValue]="item">{{item.nom }} / {{item.montant }} FCFA / {{item.duree }} jours</option>
+                                </select>
+                                <div  class="text-center text-green module_desc" >{{getDescription()}}</div>
+                              </div>
+
+                            </div>
+
+                            <!--right area-->
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <div *ngIf="isLoading" class="text-center text-green">Veuillez patientez pendant l'activation de votre licence...</div>
+
+                                <div class="info-box bg-green" *ngIf="isLicenceOk">
+                                  <div class="info-box-content">
+                                    <span class="info-box-text">Code client</span>
+                                    <span class="info-box-number">{{iLicence.code}}</span>
+                                  </div>
+                                  <div class="info-box-content">
+                                    <span class="info-box-text">Votre licence est</span>
+                                    <span class="info-box-number">{{getLicenceStatus(iLicence.isActive)}}</span>
+                                  </div>
+                                  <div class="info-box-content">
+                                    <span class="info-box-text">Commence le</span>
+                                    <span class="info-box-number">{{iLicence.activationDate | date:'dd/MM/yyyy' }}</span>
+                                  </div>
+                                  <div class="info-box-content">
+                                    <span class="info-box-text">Expire le</span>
+                                    <span class="info-box-number">{{iLicence.expiryDate | date:'dd/MM/yyyy' }}</span>
+                                  </div>
+                                  <!-- /.info-box-content -->
+                                </div>
+
+                              </div>
+                              </div>
+
+                          </div>
+
+
+                        </div>
+                        <!-- /.box-body -->
+
+                      </form>
+                    </div>
+                    <!-- /.box -->
+                  </div>
+                </div>
+                <!-- fin zone de creation -->
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+
+    </div>
+
+    <!-- /.content-wrapper -->
+
+
+    <footer class="main-footer">
+      <div class="container">
+        <div class="pull-right hidden-xs">
+          <b>Version</b> 1.0
+        </div>
+        <strong>Copyright &copy; 2017 <a href="http://iwajutech.com">Iwaju Tech</a>.</strong> Tous droits réservés.
+      </div>
+      <!-- /.container -->
+    </footer>
+  </div>
+</div>

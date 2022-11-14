@@ -1,0 +1,47 @@
+
+
+
+<!-- zone de suppression -->
+<section class="content-header"  *ngIf="item">
+  <!-- ligne-->
+  <div class="row">
+    <div class="col-lg-12">
+      <section class="panel">
+        <div class="panel-body">
+
+
+          <!-- display message area -->
+          <div class="margin_div_left_2">
+            <message-area [acting]="isDeleting" [completed]="isCompleted" [success]="isSuccess" [title]="'Suppression ' + subject" [message]="statusMessage"></message-area>
+          </div>
+
+
+          <div>
+            <!--message de demande de confirmation de suppression -->
+            <div class="row alertMsgArea margin_div_left" ng-show="canShowDeletionConfirmation">
+              <div class="col-lg-6">
+
+                <div class="row ">
+                  <div class="col-lg-12 alert alert-warning">
+                    <p class=""><i class="icon fa fa-warning"></i> &nbsp; Confirmez-vous la suppression de la banque <strong>{{item.name }}</strong> ?</p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-12">
+                    <button type='submit' (click)="hideForm()" name='search' id='Button1' class=" pull-left btn btn-default col-lg-2"><i class="fa fa-cancel">&nbsp;</i>Non</button>
+                    <div class="col-lg-6"></div>
+                    <button type='submit' (click)="delete()" name='search' id='Button2' class="pull-right btn btn-warning col-lg-2"><i class="fa fa-confirm">&nbsp;</i>Oui</button>
+                    <div class="col-lg-1"></div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+  </div>
+</section>

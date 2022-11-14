@@ -1,0 +1,173 @@
+<app-card cardTitle="Nouvelle Liste de Commandes" cardClass="full-card" [customHeader]="true">
+  <div class="app-card-header">
+    <form #paramForm="ngForm">
+    <div class="row">
+      <div class="font-weight-bold col-sm-10">NOUVELLE LISTE DE COMMANDES</div>
+        <div class="form-group mb-0 input-group col-sm-2 d-flex justify-content-end">
+            <button type="button" class="btn btn-warning float-right btn-sm" data-dismiss="modal"
+            [routerLink]="['/stocks/listnew']"><i class="fa fa-chevron-circle-left"></i>&nbsp; Retour</button>
+        </div>
+      </div>
+    </form>
+    </div>
+  <form role="form">
+    <div class="row">
+      <div class="col-sm-8">
+        <app-card [options]="false" [customHeader]="true">
+          <div class="app-card-header">
+            <form action="">
+              <span class="font-weight-bold mr-2">Recherche de Produits Par :
+              </span>
+              <span>
+                <input type="text" class="form-control mr-3" style="width: 23%; display: inline;"
+                  [(ngModel)]="productSearchName" name="productSearchName" placeholder="Produit" #productName>
+                <input type="text" class="form-control mr-3" style="width: 23%; display: inline;"
+                  [(ngModel)]="productSearchCode" name="productSearchCode" placeholder="Code Barre" #productCode>
+                <input type="number" class="form-control" style="width: 23%; display: inline;"
+                  [(ngModel)]="productSearchQte" name="productSearchQte" placeholder="Qté en Stock" #productQte>
+              </span>
+            </form>
+          </div>
+
+          <div class="table-responsive">
+            <perfect-scrollbar [style.max-height]="'285px'">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="text-left p-0 pt-1 pl-1">Action</th>
+                    <th class="text-left p-0 pt-1">Produit</th>
+                    <th class="text-left p-0 pt-1">Type Mesure</th>
+                    <th class="text-center p-0 pt-1">Code Barre</th>
+                    <th class="text-center p-0 pt-1">Quantité</th>
+                    <th class="text-center p-0 pt-1">Edition</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let item of stock_view | productbyNameAndCode: productSearchName : productSearchCode : productSearchQte;let i = index">
+                    <td class="text-center p-0 pl-1 pt-2">
+                      <div class="chk-option" [placement]="'right'" ngbTooltip="Cochez pour ajouter ce produit">
+                        <label
+                          class="check-task custom-control custom-checkbox d-flex justify-content-center done-task">
+                          <input type="checkbox" [value]="item.id" [checked]="item.is_checked"
+                            (change)="OnchangeStatut($event, item)" class="custom-control-input" width="70px"
+                            height="70px">
+                          <span class="custom-control-label"></span>
+                        </label>
+                      </div>
+                    </td>
+                    <td class="text-left p-0  pt-1"> {{item.product.product.name}}</td>
+                    <td class="text-left p-0  pt-1"> {{item.product.measure_type.name}}</td>
+                    <td class="text-center p-0  pt-1"> {{item.barcode}}</td>
+                    <td class="text-center p-0  pt-1">{{item.quantity}}</td>
+                    <td class="text-center p-0  pt-1 ">
+                      <button [placement]="'top'" ngbTooltip="Editer ce Produit" class="btn btn-info btn-sm"
+                        (click)="getSelectedProd(item);"><span class="feather icon-edit"></span> Editer </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </perfect-scrollbar>
+          </div>
+        </app-card>
+        <app-card [customHeader]="true" [options]="false" *ngIf="productSelected">
+          <div class="app-card-header">
+            <div class="row">
+              <h6 class="col-md-3 ">Formulaire d'Ajout
+                <span *ngIf=""><img src="assets/images/params/warno.png" alt="" width="15%"></span>
+                <span *ngIf=""><img src="assets/images/params/checko.png" alt="" width="15%"></span>
+              </h6>
+              <h6 class="col-md-2 ">Quantité
+                <span *ngIf="QtInValid"><img src="assets/images/params/warno.png" alt="" width="15%"></span>
+                <span *ngIf="!QtInValid"><img src="assets/images/params/checko.png" alt="" width="15%"></span>
+              </h6>
+              <h6 class="col-md-2">P. Achat
+                <span *ngIf="PaInValid"><img src="assets/images/params/warno.png" alt="" width="15%"></span>
+                <span *ngIf="!PaInValid"><img src="assets/images/params/checko.png" alt="" width="15%"></span>
+              </h6>
+              <h6 class="col-md-2">P. Vente
+                <span *ngIf="PvInValid"><img src="assets/images/params/warno.png" alt="" width="15%"></span>
+                <span *ngIf="!PvInValid"><img src="assets/images/params/checko.png" alt="" width="15%"></span>
+              </h6>
+              <h6 class="col-md-3">Date Exp.
+                <span *ngIf="date_exp"><img src="assets/images/params/checko.png" alt="" width="10%"></span>
+              </h6>
+            </div>
+          </div>
+          <form (ngSubmit)="addProductLine(userForm.value, productSelected)" #userForm="ngForm">
+            <div class="row">
+              <div class="form-group mb-0  col-sm-3">
+                <input type="text-center" class="form-control pl-1" name="name" #name="ngModel"
+                  [(ngModel)]="productSelected.product.product.name + '&nbsp;&nbsp;' +'/'+ productSelected.product.measure_type.name"
+                  required disabled>
+              </div>
+              <div class="form-group mb-0  col-sm-2">
+                <input type="number" class="form-control" (keyup)="inputQTE(userForm.value.quantity)" name="quantity"
+                  #quantity="ngModel" [(ngModel)]="DefautQte" required>
+              </div>
+              <div class="form-group mb-0  col-sm-2">
+                <input type="number" class="form-control" (keyup)="inputPA(userForm.value.p_achat)"
+                  [(ngModel)]="productSelected.purchase_price" name="p_achat" #p_achat="ngModel" required>
+              </div>
+              <div class="form-group mb-0  col-sm-2">
+                <input type="number" class="form-control" (keyup)="inputPV(userForm.value.p_vente)"
+                  [(ngModel)]="productSelected.selling_price" name="p_vente" #p_vente="ngModel" required>
+              </div>
+              <div class="form-group mb-0 input-group col-sm-3">
+                <input type="date" class="form-control" name="date_exp" [(ngModel)]="productSelected.date_exp"
+                  #date_exp="ngModel">
+                <div class="input-group-append">
+                  <button class="btn btn-primary btn-sm" type="submit"
+                    [disabled]="(QtInValid) || (PaInValid) || (PvInValid)">Ajouter</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </app-card>
+      </div>
+      <div class="col-sm-4">
+        <app-card cardTitle="Produits Ajoutés" [options]="false" [customHeader]="true">
+          <div class="app-card-header">
+            <span class="font-weight-bold">Produits Ajoutés</span>
+            <span class="btn-group mb-2 mr-2 float-right" ngbDropdown [placement]="'bottom-left'">
+              <button type="button" class="btn btn-primary btn-sm" (click)="addSuggestedProduct()">Suggestions</button>
+              <button type="button" class="btn btn-primary btn-sm dropdown-toggle-split" ngbDropdownToggle><span
+                  class="sr-only">Toggle Dropdown</span></button>
+              <button type="button" class="btn btn-success" (click)="sendOrderListProducts()">
+                <i class="fa fa-plus me-2 ms-n21"></i>&nbsp; Ajouter</button>
+            </span>
+          </div>
+          <div class="table-responsive">
+            <perfect-scrollbar [style.max-height]="'450px'">
+              <table class="table table-hover table-bordered">
+                <thead>
+                  <tr>
+                    <th class="text-center p-0  pt-1"></th>
+                    <th class="text-center p-0  pt-1">Nom</th>
+                    <th class="text-center p-0  pt-1">Qte</th>
+                    <th class="text-right p-0  pt-1">PA</th>
+                    <th class="text-right p-0  pt-1">PV</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="item">
+                  <tr *ngFor="let p of item, let i = index">
+                    <td class="p-0 bg-light showPointer  align-middle text-center" (click)="RemoveProduct(i)">
+                      <a title="Retirer" class="p-2 btn btn-sm btn-light text-center">
+                        <i class="fa fa-trash text-danger"></i> </a>
+                    </td>
+                    <td class="align-middle p-1"> {{p.product.product.name}} <span
+                        class="font-weight-bold text-primary">({{p.product.measure_type.name}})</span></td>
+                    <td class="text-center align-middle p-1"> {{p.quantity}}</td>
+                    <td class="text-right align-middle p-1"> {{p.purchase_price |formatMoney}}</td>
+                    <td class="text-right align-middle p-1"> {{p.selling_price |formatMoney}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </perfect-scrollbar>
+          </div>
+        </app-card>
+      </div>
+    </div>
+
+  </form>
+</app-card>

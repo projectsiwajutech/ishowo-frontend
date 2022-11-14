@@ -1,0 +1,96 @@
+<div class="row btn-page">
+    <div class="col-sm-12">
+      <app-card [options]="false" [customHeader]="true" cardClass="card-datatable">
+        <div class="app-card-header">
+          <form role="form" #userForm="ngForm">
+            <div class="row">
+              <div class="form-group mb-0 input-group col-sm-4">
+                <div class="input-group-append">
+                  <button class="btn btn-primary font-weight-bold btn-sm">DE</button>
+                </div>
+                <input type="date" name="dateStart" [(ngModel)]="DefaultDateOne" #dateStart="ngModel" id="dateStart"
+                  class="pl-2 form-control">
+              </div>
+              <div class="form-group mb-0 input-group col-sm-4">
+                <div class="input-group-append">
+                  <button class="btn btn-primary font-weight-bold btn-sm">À</button>
+                </div>
+                <input type="date" name="dateEnd" [(ngModel)]="DefaultDateTwo" #dateEnd="ngModel" id="dateEnd"
+                  class="pl-2 form-control">
+              </div>
+              <div type="submit" class="col-sm-4">
+                <button class="btn btn-success float-right" (click)="searchData(userForm.value)">
+                  <span class="fa fa-search"></span> Rechercher</button>
+              </div>
+            </div>
+          </form>
+
+        </div>
+        <div class="row d-flex justify-content-center mb-5"  style="margin-bottom: 10em;" *ngIf="isLoading ">
+          <div class="col-md-12 text-center p-0">
+              <div class="p-20 pb-3">
+                  <div class="risk-rate">
+                      <img src="assets/images/params/spinner.gif" alt="" width="15%">
+                  </div>
+              </div>
+              <p class="text-muted h3 mb-5">Veuillez Patientez...</p>
+          </div>
+        </div>
+        <div class="row d-flex justify-content-center mb-5"  style="margin-bottom: 10em;" *ngIf="noData && !isLoading">
+          <div class="col-md-12 text-center p-0">
+              <div class="p-20 pb-3">
+                  <div class="risk-rate">
+                      <img src="assets/images/params/liste_vide.png" alt="" width="15%">
+                  </div>
+              </div>
+              <p class="text-muted h3 mb-5">Aucun résultat trouvé !</p>
+          </div>
+        </div>
+        <div class="table-responsive" *ngIf="!isLoading && !noData">
+          <table id="report-table" class="table mb-0">
+            <thead class="thead-light">
+            <tr class="text-center">
+              <th>#</th>
+              <th>Date</th>
+              <th>Compte</th>
+              <th>Type Opération</th>
+              <th>Profil</th>
+              <th>Montant</th>
+              <th>Solde</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of operations | slice: (page-1) * pageSize : page * pageSize; trackBy: trackByFn; let i = index" class="text-center">
+              <td class="align-middle p-0">
+                {{i+1}}
+              </td>
+              <td class="align-middle p-0">
+                {{item.operation_date}}
+              </td>
+              <td class="align-middle p-0">
+                {{item.account.name}}
+              </td>
+              <td class="align-middle p-0">
+                {{item.operation_type}}
+              </td>
+              <td class="align-middle p-0">
+                {{item.agent.login}} ({{item.agent.user.firstname + " " + item.agent.user.lastname}})
+              </td>
+              <td class="p-0 font-weight-bold text-right text-secondary">
+                {{item.amount |formatMoney}} <small>FCFA</small>
+              </td>
+              <td class="p-0 font-weight-bold text-right text-primary">
+                {{item.remaining |formatMoney}} <small>FCFA</small>
+              </td>
+            </tr>
+          </tbody>
+          </table>
+          <ngb-pagination class="float-right mt-2" [collectionSize]="operations.length" [(page)]="page"  [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true">
+          </ngb-pagination>
+        </div>
+      </app-card>
+    </div>
+  </div>
+
+  <button class="btn btn-primary text-center btn-sm btn-round has-ripple float" (click)="createModal()">
+    <i class="feather icon-plus my-float text-center pb-3"></i></button>

@@ -1,0 +1,137 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>Transferts de stock
+    <small></small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Accueil</a></li>
+    <li><a href="#">Transferts de stock</a></li>
+    <li class="active"></li>
+  </ol>
+</section>
+
+<!-- component for creation -->
+<it-stock-transfer-create (created)="updateOnCreate($event)" (visibility_change)="updateOnVisibilityChange($event)" [subject]="'Transfert de stock'" ></it-stock-transfer-create>
+
+<!-- component for update -->
+<it-stock-transfer-details *ngIf="selectedUpObject" [item]="selectedUpObject" (closed)="updateOnClose($event)" [subject]="'Transfer de stock'" ></it-stock-transfer-details>
+
+
+<!-- zone de liste -->
+<section class="content" *ngIf="isListVisible">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header bg-gray disabled color-palette">
+          <h3 class="box-title ">Transferts de stock <strong>({{ (stockTransfers  | stockTransfer: filterParam.source.id: filterParam.destination.id).length}})</strong></h3>
+
+        </div>
+
+        <!-- zone de filtre-->
+        <div class="box-header">
+
+          <div class="row">
+            <div class="col-md-2">
+              De <it-datepicker (selected)="getSelectedDate1($event)"></it-datepicker>
+            </div>
+            <div class="col-md-2">
+              A <it-datepicker (selected)="getSelectedDate2($event)"></it-datepicker>
+            </div>
+
+            <div class="col-md-3 col-lg-offset-4">
+              <button type="button" (click)="searchData()" class="btn btn-success"><i class="fa fa-search"></i> Rechercher</button>
+             <button type="button" (click)="printData()" class="btn btn-primary"><i class="fa fa-print"></i> Imprimer</button>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <br>
+              <div class="box box-default collapsed-box box-solid">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Filtre</h3>
+
+                  <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                    </button>
+                  </div>
+                  <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="ho">Source </label>
+                        <select class="form-control" name="location" [(ngModel)]="filterParam.source" >
+                          <option *ngFor="let item of compartments" [ngValue]="item">{{item.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="ho">Destination </label>
+                        <select class="form-control" name="location" [(ngModel)]="filterParam.destination" >
+                          <option *ngFor="let item of compartments" [ngValue]="item">{{item.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.box-body -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- zone de filtre-->
+
+          <!-- pdf file printed -->
+          <div *ngIf="isPrinting" class="text-center alert-info"><strong> Génération de la liste des transferts en cours... </strong> <hr> </div>
+
+          <div *ngIf="isPrinting===false">
+            <it-pdfviewer [visible]="isTransfersListPdfVisible" [title]="'Liste des transferts'" [file]="generatedTransfersListPdf" (closed)="updateOnPdfClose($event)" ></it-pdfviewer>
+          </div>
+
+
+        <!-- /.box-header -->
+        <div class="box-body">
+          <table id="example2" class="table table-striped table-hover">
+            <thead>
+            <tr class="info">
+              <th>#</th>
+              <th>Date</th>
+              <th>Rayon source</th>
+              <th>Rayon destination</th>
+              <th>&nbsp;Auteur</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="" *ngIf="isLoading">
+              <td colspan="6"> <div class="text-center alert-info"><strong> Affichage des transferts de stock en cours </strong> </div> </td>
+            </tr>
+
+            <tr *ngFor="let item of stockTransfers | stockTransfer: filterParam.source.id: filterParam.destination.id  | itPaginator:pageStartIndex:pageLimit; trackBy: trackByFn; let i = index" >
+              <td>{{i+1}}</td>
+              <td>{{item.date | date:'dd/MM/yyyy HH:mm'}}</td>
+              <td>{{item.source.name}}</td>
+              <td>{{item.destination.name}}</td>
+              <td>{{getAuthor(item.agent)}}</td>
+              <td>
+                <a  title="Détails" class="item-click" (click)="viewDetails(item)"> <i class="glyphicon glyphicon-folder-open"></i> </a>
+              </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            </tfoot>
+          </table>
+          <p-paginator [rows]="pageLimit" [totalRecords]="(stockTransfers  | stockTransfer: filterParam.source.id: filterParam.destination.id).length" (onPageChange)="paginate($event)" [rowsPerPageOptions]="limitTable"></p-paginator>
+
+        </div>
+
+
+      </div>
+</div>
+  </div>
+</section>
+<!-- /.content -->

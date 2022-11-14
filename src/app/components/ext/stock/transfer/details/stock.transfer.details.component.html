@@ -1,0 +1,130 @@
+
+
+<!-- bouton de creation -->
+<section class="content-header"  >
+
+
+  <!--zone de creation -->
+  <div class="row" >
+    <!-- left column -->
+    <div class="col-md-12">
+      <!-- general form elements -->
+      <div class="box box-primary">
+        <div class="box-header">
+          <h3 class="box-title">Transfert de stock du <strong>{{item.date | date:"dd/MM/yyyy"}}</strong> par <strong>{{getAuthor(item.agent)}}</strong></h3>
+
+        </div>
+
+
+
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form role="form"  #userForm="ngForm">
+          <!-- action zone-->
+          <div class="box-footer text-right">
+            <button type="button" (click)="printData()" class="btn btn-primary"><i class="fa fa-print"></i> Imprimer</button>
+            <button type="button" (click)="hideForm()" class="btn btn-default"><i class="fa fa-arrow-left"></i> Fermer</button>
+          </div>
+
+          <!-- pdf file printed -->
+          <div *ngIf="isPrinting" class="text-center alert-info"><strong> Génération du transfert en cours... </strong> </div>
+
+          <div *ngIf="isPrinting===false">
+            <it-pdfviewer [visible]="isTransferPdfVisible" [title]="'Détail Transfert'" [file]="generatedTransferPdf" (closed)="updateOnPdfClose($event)" ></it-pdfviewer>
+          </div>
+
+          <div class="box-body">
+
+            <!-- donnees -->
+            <div class="row">
+              <div class="col-md-3">
+                <!-- -->
+                <div class="form-group">
+                  <label for="hu">Rayon source</label>
+                  <input type="text" disabled class="form-control" [(ngModel)]="item.source.name" name="source"
+                         placeholder=""  #source>
+                </div>
+
+              </div>
+
+              <div class="col-md-6">
+
+              </div>
+
+              <div class="col-md-3">
+
+                <div class="form-group">
+                  <label for="hu">Rayon destination</label>
+                  <input type="text" disabled class="form-control" [(ngModel)]="item.destination.name" name="dest"
+                         placeholder=""  #dest>
+                </div>
+
+              </div>
+
+            </div>
+            <!-- fin donnees -->
+            <br>
+
+
+            <div class="row">
+
+              <div class="col-md-12">
+                <div class="box">
+                  <div class="box-header">
+                    <h3 class="box-title">Liste des produits (<strong>{{(item.lines!==undefined)? item.lines.length : 0}}</strong>)</h3>
+                  </div>
+
+                  <!-- lines -->
+                  <!-- /.box-header -->
+                  <div class="box-body no-padding">
+                    <table class="table table-striped">
+                      <tr>
+                        <th style="width: 10px">#</th>
+                        <th>Produit</th>
+                        <th>Type Mesure</th>
+                        <th class="text-center">Quantité transférée</th>
+                      </tr>
+
+                      <tr  *ngFor="let p of item.lines, let i = index">
+                        <td>{{i+1}}</td>
+                        <td>
+                          {{p.product.product.name}}
+                        </td>
+                        <td>
+                        {{p.product.measure_type.name}}
+                        </td>
+                        <td class="text-center">
+                          {{p.quantity_transfer}}
+                        </td>
+                      </tr>
+
+                    </table>
+                  </div>
+                  <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+              </div>
+              <!-- /.col -->
+
+            </div>
+            <!-- fin type mesure et assoc. -->
+
+          </div>
+          <!-- /.box-body -->
+
+        </form>
+      </div>
+      <!-- /.box -->
+    </div>
+  </div>
+  <!-- fin zone de creation -->
+
+
+</section>
+
+
+
+
+
+
+

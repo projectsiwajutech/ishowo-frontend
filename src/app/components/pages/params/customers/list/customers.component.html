@@ -1,0 +1,78 @@
+<div class="row btn-page">
+  <div class="col-sm-12">
+    <app-card [hidHeader]="true" cardClass="card-datatable">
+      <div class="row align-items-center m-l-0">
+      </div>
+      <div class="row d-flex justify-content-center mb-5"  style="margin-bottom: 10em;" *ngIf="isLoading">
+        <div class="col-md-12 text-center p-0">
+            <div class="p-20 pb-3">
+                <div class="risk-rate">
+                    <img src="assets/images/params/spinner.gif" alt="" width="15%">
+                </div>
+            </div>
+            <p class="text-muted h3 mb-5">Veuillez Patientez...</p>
+        </div>
+      </div>
+      <div class="row d-flex justify-content-center mb-5"  style="margin-bottom: 10em;" *ngIf="noData && !isLoading">
+        <div class="col-md-12 text-center p-0">
+            <div class="p-20 pb-3">
+                <div class="risk-rate">
+                    <img src="assets/images/params/liste_vide.png" alt="" width="15%">
+                </div>
+            </div>
+            <p class="text-muted h3 mb-5">Aucun résultat trouvé !</p>
+        </div>
+      </div>
+      <div class="table-responsive" *ngIf="!isLoading && !noData">
+        <table id="report-table" class="table mb-0">
+          <thead class="thead-light">
+            <tr class="text-center">
+              <th>#</th>
+              <th>Identité</th>
+              <th>telephone</th>
+              <th>Whatsapp</th>
+              <th>Numéro IFU</th>
+              <th>email</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of customers | slice: (page-1) * pageSize : page * pageSize; trackBy: trackByFn; let i = index" class="text-center">
+              <td class="align-middle p-0">
+                {{i+1}}
+              </td>
+              <td class="align-middle p-0">
+                {{item.social_reason ? item.social_reason : item.nom +" "+item.prenom}}
+              </td>
+              <td class="align-middle p-0">
+                {{item.telephone}}
+              </td>
+              <td class="align-middle p-0">
+                {{item.whatsapp}}
+              </td>
+              <td class="align-middle p-0">
+                {{item.num_ifu}}
+              </td>
+              <td class="align-middle p-0">
+                {{item.email}}
+              </td>
+              <td class="align-middle p-1">
+                <a href="javascript:" class="btn btn-icon btn-outline-success" (click)="updateModal(item)"><i
+                    class="feather icon-edit"></i></a>
+                <a href="javascript:" class="btn btn-icon btn-outline-danger" (click)="deleteModal(item)"><i
+                    class="feather icon-trash-2"></i></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <ngb-pagination class="float-right mt-2" [collectionSize]="customers.length" [(page)]="page"
+        [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true">
+      </ngb-pagination>
+      </div>
+    </app-card>
+  </div>
+</div>
+
+<button class="btn btn-primary text-center btn-sm btn-round has-ripple float" (click)="createModal()">
+  <i class="feather icon-plus my-float text-center pb-3"></i></button>

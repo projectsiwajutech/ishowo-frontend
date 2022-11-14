@@ -1,0 +1,310 @@
+<app-card cardClass="full-card" [options]="false" [customHeader]="true" headerClass="border-0 pt-0 pb-0">
+  <div class="app-card-header">
+    <div class="row ">
+      <div class="form-group mb-0 col-sm-4 input-group d-flex justify-content-around"
+        *ngIf="checkIfCustomerExist() == false">
+        <button class="btn btn-light btn-sm col-9 text-left text-muted"><span
+            class="text-primary font-weight-bold">CLIENT :&nbsp;&nbsp;</span> (Veuillez ajouter un
+          Client)</button>
+        <button class="btn btn-primary btn-sm col-3 font-weight-bold" (click)="AddNewCustomer()"><span
+            class="fa fa-plus"></span>
+          Ajouter</button>
+      </div>
+      <div class="form-group mb-0 col-sm-4 input-group d-flex justify-content-around"
+        *ngIf="checkIfCustomerExist() == true">
+        <button class="btn btn-light btn-sm col-6 text-left text-muted"><span
+            class="text-primary font-weight-bold">CLIENT :&nbsp;&nbsp;</span>{{getSelectedCustomer()}}</button>
+        <button class="btn btn-primary btn-sm col-3 font-weight-bold" (click)="AddNewCustomer()"><span
+            class="fa fa-edit"></span>
+          Modifier</button>
+        <button (click)="deleteCustomer()" class="btn btn-danger col-3 btn-sm "><span class="fa fa-trash"></span>
+          Effacer</button>
+      </div>
+
+      <div class="mb-0 col-sm-8 d-flex justify-content-around">
+        <button (click)="giveUpSale()" class="btn btn-light btn-sm font-weight-bold" *ngIf="!is_checked"><span
+            class="fa feather icon-refresh-ccw"></span> Annuler la Vente</button>
+        <button (click)="giveUpSale()" class="btn btn-light btn-sm font-weight-bold" *ngIf="is_checked"><span
+            class="fa feather icon-refresh-ccw"></span> Annuler le Devis</button>
+        <button class="btn btn-light btn-sm font-weight-bold" (click)="printData()"><span class="fa fa-print"></span>
+          Dernier Ticket</button>
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="customswitch1" [checked]="is_checked"
+            (change)="OnchangeStatut($event)">
+          <label class="custom-control-label font-weight-bold" for="customswitch1">Devis</label>
+        </div>
+        <button class="btn btn-danger  btn-sm text-center" *ngIf="setAIB !== '0%'">AIB: {{setAIB}}</button>
+        <button class="btn btn-light btn-sm font-weight-bold" [routerLink]="['/ventes/main']"><span
+            class="fa fa-chevron-circle-left"></span> Retour</button>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-9">
+      <app-card [options]="false" [customHeader]="true" [hidHeader]="true" blockClass="pt-0 ">
+        <form #filterForm="ngForm" class="mb-3">
+          <div class="row">
+            <div class="col-sm-2">
+              <span class="badge badge-primary mt-3">{{(stock_view | stockView: param.product:
+                param.category.id: param.measure_type.id: param.location.id: param.agency.id:
+                param.codebarre).length}} Produits trouvés</span>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group mb-0 input-group">
+                <button class="btn btn-light btn-sm col-4">C.Barre</button>
+                <input type="text" id="code_barre" class="form-control input-sm pl-2 col-8"
+                  [(ngModel)]="param.codebarre" placeholder="Code Barre" name="barre_code">
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group mb-0 input-group">
+                <button class="btn btn-light btn-sm col-4">Nom</button>
+                <input type="text" class="form-control input-sm pl-2 col-8" [(ngModel)]="param.product"
+                  placeholder="Nom du Produit" name="name">
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group mb-0 input-group">
+                <button class="btn btn-light btn-sm col-4">Catégorie</button>
+                <select name="" id="" class="form-control col-8" name="cat_prod" [(ngModel)]="param.category">
+                  <option *ngFor="let item of categories" [ngValue]="item">{{item.name}}</option>
+                </select>
+                <button (click)="resetFilterForm()" class="btn btn-warning btn-sm col-2" [placement]="'top'"
+                  ngbTooltip="Réinitialiser le filtre"> <span class="feather icon-refresh-ccw"></span></button>
+
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="table-responsive">
+          <perfect-scrollbar [style.max-height]="'115px'">
+            <div class="row">
+              <div class="col-sm-2 col-product mb-3" #productsList
+                *ngFor="let item of stock_view | stockView: param.product: param.category.id: param.measure_type.id: param.location.id: param.agency.id: param.codebarre; let i=index;">
+                <app-card [hidHeader]="true" (click)="addProductLine(item)" cardClass="user-card user-card-1 mt-1 mb-0"
+                  blockClass="p-1 mb-0">
+                  <div class="user-about-block text-center pt-4">
+                    <div class="row align-items-end">
+                      <div class="col notSelected"><img class="img-radius img-fluid wid-40"
+                          src="assets/images/user/img-avatar-1.jpg" alt="User image">
+                      </div>
+                      <span class="badge bg-white text-danger" style="border-right: 1px solid gray;"><span
+                          class="fa fa-database"></span> {{item.quantity}}</span>
+                    </div>
+                  </div>
+                  <div class="text-center pt-1">
+                    <p class="mb-0 notSelected"><b>{{item.product.product.name}}&nbsp;</b></p>
+                    <br *ngIf="addBreakOrNot(item.product.product.name)">
+                    <p class="mb-1 notSelected">
+                      <span class="badge badge-primary">{{item.selling_price}}<small>f</small>
+                        ({{item.product.measure_type.name}})</span>
+                    </p>
+                  </div>
+                </app-card>
+              </div>
+            </div>
+          </perfect-scrollbar>
+        </div>
+        <hr>
+        <span class="badge badge-warning float-left mb-2">{{lineSize}} Produits Ajoutés</span>
+        <div class="table-responsive" *ngIf="lineSize > 0">
+          <table class="table table-hover table-borderless mb-0">
+            <perfect-scrollbar [style.max-height]="'300px'">
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Libellé / Type de Mesure</th>
+                  <th class="text-center">TAX</th>
+                  <th class="text-center">Moins</th>
+                  <th class="text-center">Quantité</th>
+                  <th class="text-center">Plus</th>
+                  <th class="text-center">Total (<small>Fcfa</small>)</th>
+                  <th class="text-center">Retrait</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of item.lines; let i = index;">
+                  <td class="pt-1 pb-1">
+                    <div class="d-inline-block align-middle">
+                      <img src="assets/images/user/img-avatar-1.jpg" data-toggle="tooltip" title="John Deo"
+                        data-placement="top" alt="user image" class="img-radius wid-40 align-top m-r-15">
+                    </div>
+                  </td>
+                  <td class="pt-1 pb-1">
+                    <div class="d-inline-block align-middle">
+                      <h6>{{item.product.product.name}}</h6>
+                      <p class="text-muted m-b-0">{{item.product.measure_type.name}} <span
+                          class="text-info font-weight-bold">({{item.prod.quantity}} en stock)</span></p>
+                    </div>
+                  </td>
+                  <td class="text-center pt-1 pb-1">
+                    <button (click)="changeTax(item.id, item.tax)" class="btn btn-light text-center"><input disabled
+                        type="text" (click)="changeTax(item.id, item.tax)"
+                        class="font-weight-bold text-primary text-center notSelected" [(ngModel)]="item.tax"
+                        style="width: 30px;"></button>
+                  </td>
+                  <td class="text-center pt-1 pb-1"><button
+                      (click)="DecrementQuantity(item, quantiteForm.value.quantite)"
+                      class="btn btn-warning text-center"><span class="fas fa-minus-square"></span></button></td>
+                  <td class="text-center pt-1 pb-1" width="13%">
+                    <form role="form" #quantiteForm="ngForm">
+                      <input type="number" [(ngModel)]="item.quantite"
+                        (keyup)="CheckQuantity(item, quantiteForm.value.quantite)" name="quantite" #quantite="ngModel"
+                        class="form-control text-center">
+                    </form>
+                  </td>
+                  <td class="text-center pt-1 pb-1"><button (click)="IncrementQuantity(item.prod)"
+                      class="btn btn-warning text-center"><span class="fas fa-plus-square"></span></button></td>
+                  <td class="text-right pt-1 pb-1 bg-light"><button
+                      class="btn text-dark font-weight-bold">{{item.p_vente * quantiteForm.value.quantite|formatMoney}}
+                      <small> FCFA</small></button></td>
+                  <td class="text-center pt-1 pb-1"><button (click)="confirmProdRemoveModal(item, i)"
+                      class="btn btn-danger text-center"><span class="fas fa-times-circle"></span></button></td>
+                </tr>
+              </tbody>
+            </perfect-scrollbar>
+          </table>
+        </div>
+      </app-card>
+    </div>
+    <div class="col-sm-3">
+      <app-card [options]="false" [hidHeader]="true" blockClass="pl-2 pr-2 pt-3 mb-0 pb-0">
+        <div *ngIf="!is_checked" class="font-weight-bold">Montant Reçu <span class="badge badge-info notSelected"
+            (click)="ResetNumPad()"><span class="feather icon-refresh-cw"></span> Réinitialiser</span></div>
+        <div class="row" *ngIf="!is_checked">
+          <form #AmountForm="ngForm">
+            <div class="form-group mb-0 input-group col-sm-12 d-flex pad">
+              <input type="number" class="col-10 padAmount" id="numPadAmount" (keyup)="inputValidator($event)"
+                [(ngModel)]="numPadAmount" placeholder="Montant Reçu" #num_PadAmount="ngModel" name="numPadAmount">
+              <button class="notSelected btn bg-danger btn-sm col-2 font-weight-bold text-white"
+                (click)="RemoveOnPad()">X</button>
+            </div>
+          </form>
+        </div>
+        <div class="row mt-3" *ngIf="!is_checked">
+          <div class="col-sm-12 d-flex justify-content-around">
+            <div class="notSelected card bg-c-green p-1 mb-0 number_pad text-white text-center"
+              (click)="NumPadAdd('1')">
+              1
+            </div>
+            <div class="notSelected card bg-c-green p-1 mb-0 number_pad text-white text-center"
+              (click)="NumPadAdd('2')">
+              2
+            </div>
+            <div class="notSelected card bg-c-green p-1 mb-0 pb-0 number_pad text-white text-center"
+              (click)="NumPadAdd('3')">
+              3
+            </div>
+            <div class="notSelected card bg-c-green p-1 mb-0 number_pad text-white text-center"
+              (click)="NumPadAdd('4')">
+              4
+            </div>
+            <div class="notSelected card bg-c-green p-1 mb-0 number_pad text-white text-center"
+              (click)="NumPadAdd('5')">
+              5
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3 mb-3" *ngIf="!is_checked">
+          <div class="col-sm-12 d-flex justify-content-around">
+            <div class="notSelected card bg-c-green p-1 mb-0 number_pad text-white text-center"
+              (click)="NumPadAdd('6')">
+              6
+            </div>
+            <div class="notSelected card bg-c-green p-1 mb-0 number_pad text-white text-center"
+              (click)="NumPadAdd('7')">
+              7
+            </div>
+            <div class="notSelected card bg-c-green p-1 mb-0 number_pad text-white text-center"
+              (click)="NumPadAdd('8')">
+              8
+            </div>
+            <div class="notSelected card bg-c-green p-1 mb-0 number_pad text-white text-center"
+              (click)="NumPadAdd('9')">
+              9
+            </div>
+            <div class="notSelected card bg-c-green p-1 mb-0 number_pad text-white text-center"
+              (click)="NumPadAdd('0')">
+              0
+            </div>
+          </div>
+        </div>
+        <div class="row mt-0">
+          <div class="form-group mb-0 input-group col-sm-12 d-flex">
+            <button class="btn btn-primary col-4 pl-2 font-weight-bold text-left">TOTAL HT</button>
+            <button class="btn saleAmount btn-light col-8 font-weight-bold text-right">
+              {{getTotal() |formatMoney}} <small>FCFA</small></button>
+          </div>
+        </div>
+        <form role="form" #SaleForm="ngForm">
+          <div class="row mt-2">
+            <div class="form-group mb-0 input-group col-sm-12 d-flex">
+              <button class="btn btn-info btn-sm col-5 font-weight-bold text-left">REMISE</button>
+              <input type="number" name="remise" #remise="ngModel" [(ngModel)]="Defremise" (keyup)="updateAllProducts()" (change)="updateAllProducts()"
+                class="col-5 text-right pr-0 customInput" required>
+              <select class="col-2 p-0 customInput" name="type_remise" #type_remise="ngModel" [(ngModel)]="typeRemise"
+                required>
+                <option [ngValue]="typeRemise1">%</option>
+                <option [ngValue]="typeRemise2"><small>FCFA</small></option>
+              </select>
+            </div>
+          </div>
+          <!-- <div class="row mt-2">
+            <div class="form-group mb-0 input-group col-sm-12 d-flex">
+              <button class="btn btn-info btn-sm col-5 font-weight-bold text-left">TVA</button>
+              <select class="col-5 p-0 customInput text-right" name="tva" #tva="ngModel" [(ngModel)]="Deftva" required>
+                <option [ngValue]="tva1">0</option>
+                <option [ngValue]="tva2">18</option>
+              </select>
+              <button class="btn btn-info btn-sm col-2 font-weight-bold">%</button>
+            </div>
+          </div> -->
+          <div class="row mt-2">
+            <div class="form-group mb-0 input-group col-sm-12 d-flex">
+              <button class="btn btn-info btn-sm col-5 font-weight-bold text-left">TOTAL TVA <span style="font-size: 0.7em;">18%</span></button>
+              <button class="btn btn-light btn-sm col-7 font-weight-bold text-right">
+                {{getTVA().toFixed(0) |formatMoney}} <small>FCFA</small></button>
+            </div>
+          </div>
+        </form>
+        <div class="row mt-2">
+          <div class="form-group mb-0 input-group col-sm-12 d-flex">
+            <button class="btn btn-success col-4 pl-2 font-weight-bold text-center" style="font-size: 1.4em;">NET A PAYER</button>
+            <button class="btn btn-light col-8 saleAmount font-weight-bold text-right">{{(getNap(SaleForm.value).toFixed(0) || 0) |formatMoney}} <small>FCFA</small> </button>
+          </div>
+        </div>
+        <div class="row mt-2" *ngIf="!is_checked">
+          <div class="form-group mb-0 input-group col-sm-12 d-flex">
+            <button class="btn btn-warning btn-sm col-5 font-weight-bold text-left">RELIQUAT</button>
+            <button class="btn btn-light btn-sm col-7 font-weight-bold text-right">
+              {{getReliquat().toFixed(0) |formatMoney}} <small>FCFA</small></button>
+          </div>
+        </div>
+        <div class="row mt-2" *ngIf="!is_checked">
+          <div class="form-group mb-0 input-group col-sm-12 d-flex">
+            <button class="btn btn-danger col-5 btn-sm font-weight-bold text-left">RESTE</button>
+            <button class="btn btn-light col-7 btn-sm font-weight-bold text-right">{{getRestToPaid().toFixed(0)}}
+              <small>FCFA</small></button>
+          </div>
+        </div>
+
+        <div class="row mt-3 mb-3" *ngIf="!is_checked">
+          <div class="col-sm-12  d-flex justify-content-center">
+            <button class="btn btn-lg btn-primary text-white font-weight-bold" (click)="saveSale()">
+              <span class="fa fa-money-bill-wave"></span>
+              ENCAISSER</button>
+          </div>
+        </div>
+        <div class="row mt-3 mb-3" *ngIf="is_checked">
+          <div class="col-sm-12  d-flex justify-content-center">
+            <button class="btn btn-lg btn-primary text-white font-weight-bold" (click)="saveDevis()">
+              <span class="fa fa-file-invoice-dollar"></span>
+              ENREGISTRER</button>
+          </div>
+        </div>
+      </app-card>
+
+    </div>
+  </div>
+
+</app-card>

@@ -1,0 +1,134 @@
+<app-card [options]="false" [customHeader]="true">
+  <div class="app-card-header">
+    <form role="form" #userForm="ngForm">
+      <div class="row">
+        <div class="form-group mb-0 input-group col-sm-4">
+          <div class="input-group-append">
+            <button class="btn btn-primary font-weight-bold btn-sm">DE</button>
+          </div>
+          <input type="date" name="dateStart" (change)="getSelectedDate1(userForm.value.dateStart)" [(ngModel)]="DefaultDateOne" #dateStart="ngModel" id="dateStart"
+            class="pl-2 form-control">
+        </div>
+        <div class="form-group mb-0 input-group col-sm-4">
+          <div class="input-group-append">
+            <button class="btn btn-primary font-weight-bold btn-sm">À</button>
+          </div>
+          <input type="date" name="dateEnd" (change)="getSelectedDate2(userForm.value.dateEnd)" [(ngModel)]="DefaultDateTwo" #dateEnd="ngModel" id="dateEnd"
+            class="pl-2 form-control">
+        </div>
+        <div type="submit" class="col-sm-4">
+          <button class="btn btn-primary float-right" (click)="getStatsByPeriod()">
+            <span class="fa fa-search"></span> Rechercher</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <app-card [options]="false" [customHeader]="true">
+        <div class="app-card-header">
+          <form action="">
+            <span class="font-weight-bold mr-2 text-c-blue">RECHERCHER UN PRODUIT
+            </span>
+            <span>
+              <input type="text" class="form-control mr-3" [(ngModel)]="productSearchName" name="productSearchName"
+                placeholder="Recherche Produit" #productName>
+            </span>
+          </form>
+        </div>
+
+        <div class="table-responsive">
+          <perfect-scrollbar [style.max-height]="'260px'">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="text-left p-0 pt-1 pl-1">Nom</th>
+                  <th class="text-center p-0 pt-1">T.Mesure</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let p of product_types | prodMeasureType: productSearchName , let i = index"
+                  (click)="selectProd(p)">
+                  <td class="text-left p-0 pt-1 pl-1"> {{p.product.name}}</td>
+                  <td class="text-center p-0 pt-1">{{p.measure_type.name}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </perfect-scrollbar>
+        </div>
+      </app-card>
+    </div>
+
+    <div class="col-sm-8">
+      <app-card [hidHeader]="true" cardClass="user-card-full" blockClass="p-0">
+        <div class="row m-l-0 m-r-0">
+          <div class="col-sm-4 bg-c-blue user-profile-side">
+            <div class="p-20 text-center text-white">
+              <div class="m-b-25">
+                <img src="assets/images/params/apple.jpg" width="100%" class="img-radius" alt="User-Profile-Image">
+              </div>
+              <h6 class="f-w-600 text-white">{{ getProductSelectedName()}}</h6>
+              <p>({{getProductSelectedMeasureType() || "Veuillez sélectionner un Produit"}})</p>
+            </div>
+          </div>
+          <div class="col-sm-8">
+            <div class="p-10">
+              <h6 class="d-flex justify-content-center m-b-20 p-b-5 b-b-default f-w-600">
+                <button class="btn btn-sm btn-light font-weight-bold">DU {{(param.startDate || DefaultDateOne) | date:'dd/MM/yyyy'}}</button>
+                <button class="btn btn-sm btn-light font-weight-bold">AU {{(param.endDate || DefaultDateTwo) | date:'dd/MM/yyyy'}}</button>
+              </h6>
+              <div class="row">
+                <div class="col-sm-6">
+                  <app-card [hidHeader]="true" cardClass="bg-c-green text-white p-0 widget-visitor-card"
+                    blockClass="text-center p-2">
+                    <h4 class="text-white">{{ (report.totalOrder || '0') | formatMoney}} <small>FCFA</small> </h4>
+                    <h6 class="text-white">Total des Commandes</h6>
+                    <i class="feather icon-file-text"></i>
+                  </app-card>
+                </div>
+                <div class="col-sm-6">
+                  <app-card [hidHeader]="true" cardClass="bg-warning text-white p-0 widget-visitor-card"
+                    blockClass="text-center p-2">
+                    <h4 class="text-white">{{report.qtyOrder || '0'}}</h4>
+                    <h6 class="text-white">Total commandés</h6>
+                    <i class="feather icon-file-text"></i>
+                  </app-card>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <app-card [hidHeader]="true" cardClass="bg-info text-white p-0 widget-visitor-card"
+                    blockClass="text-center p-2">
+                    <h4 class="text-white">{{ (report.totalSell || '0') | formatMoney}}<small>FCFA</small></h4>
+                    <h6 class="text-white">Total des ventes</h6>
+                    <i class="feather icon-file-text"></i>
+                  </app-card>
+                </div>
+                <div class="col-sm-6">
+                  <app-card [hidHeader]="true" cardClass="bg-c-yellow bg-gold text-white p-0 widget-visitor-card"
+                    blockClass="text-center p-2">
+                    <h4 class="text-white">{{ (report.totalProfit || '0') | formatMoney}}<small>FCFA</small></h4>
+                    <h6 class="text-white">Total des Bénéfices</h6>
+                    <i class="feather icon-file-text"></i>
+                  </app-card>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <app-card [hidHeader]="true" cardClass="bg-c-blue text-white p-0 widget-visitor-card"
+                    blockClass="text-center p-2">
+                    <h4 class="text-white">{{report.qtySold || '0' }}</h4>
+                    <h6 class="text-white">Total Vendus</h6>
+                    <i class="feather icon-file-text"></i>
+                  </app-card>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </app-card>
+    </div>
+  </div>
+
+</app-card>

@@ -1,0 +1,100 @@
+
+<!-- Modal HTML -->
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Recherche de produits</h4>
+                  <!--<button type="button" class="btn btn-default pull-right" data-dismiss="modal">Fermer</button>-->
+            </div>
+            <div class="modal-body">
+
+<!-- zone de liste -->
+<section class="content" *ngIf="isListVisible">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+            
+                        <!-- Zone de recherche de produit -->
+                        <div class="row">
+                          <div class="col-md-10">
+                          <label for="qty">Recherche Produit</label>
+                          <input type="text"  class="form-control"  [(ngModel)]="productSearchName" name="productSearchName"
+                                 (keydown.enter)="mt_recu.focus();"      placeholder="Produit"  #productName>
+                        </div>
+                          <div class="col-md-2">
+                            <label for="qty">Rech.&nbsp;</label><br>
+                            <a  title="Rafraichir le stock" class="item-click btn btn-default" (click)="getStockView()"> <i class="fa fa-refresh"></i> </a>
+                          </div>
+                        </div>
+                        <!-- fin zone de texte de recherche-->
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+           <div class="prod_list">
+
+                          <table class="table table-striped">
+                          <thead>
+                          <tr>
+                            <th>Produit / Type mesure </th>
+                            <th>Rayon </th>
+                            <th class="text-center">Stock</th>
+                            <th class="text-right">Quantité</th>
+                            <th class="text-right">Prix vente</th>
+                            <th style="width: 40px"></th>
+                          </tr>
+                          </thead>
+                            <tr class="" *ngIf="isLoadingStock">
+                              <td colspan="7"> <div class="text-center alert-info"><strong> Chargement des produits en cours... </strong> </div> </td>
+                            </tr>
+
+                          <tbody >
+                          <tr  *ngFor="let p of stock_view | prodSaleAdd: productSearchName , let i = index">
+                            <td>
+                              {{p.product.product.name}} / {{p.product.measure_type.name}}
+                            </td>
+                            <td >
+                              {{p.compartment.name}}
+                            </td>
+                            <td class="text-center">
+                              {{p.quantity}}
+                            </td>
+                            <td class="text-right">
+                              <input type="number" class="form-control limited_number_2 text-right" (keydown.enter)="productName.focus();addProductLine(p)"  [(ngModel)]="p.quantity_sell" name="sell"  placeholder=""  #quantity_sell>
+                            </td>
+                            <td class="text-right">
+                              <input type="number" class="form-control limited_number_2 text-right" (keydown.enter)="productName.focus();addProductLine(p)"  [(ngModel)]="p.selling_price" [(name)]="p.id"  placeholder=""  >
+
+                            </td>
+
+                            <td>
+                              <a  title="Ajouter" #add_prod class="item-click btn btn-info" (click)="productName.focus();addProductLine(p)"> <i class="fa fa-plus"></i> </a>
+                            </td>
+                          </tr>
+
+                          </tbody>
+
+                        </table>
+                        </div>
+
+                      </div>
+        
+        </div>
+        <!-- /.box -->
+    </div>
+    <!-- /.row -->
+  </div>
+</section>
+<!-- /.content -->
+            </div>
+            <!--<div class="modal-footer">           </div>-->
+        </div>
+    </div>
+
+
+
+
+
+

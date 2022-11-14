@@ -1,0 +1,8 @@
+.growlPlace{margin-top: 100px;}
+>>> .ui-growl {
+  position: fixed;
+  top: 100px!important;
+  right: 20px;
+  width: 20em;
+}
+    .myLogo{margin: 0 auto;}

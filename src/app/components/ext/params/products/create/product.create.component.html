@@ -1,0 +1,143 @@
+
+
+<!-- bouton de creation -->
+<section class="content-header"  >
+  <!-- ligne du bouton de creation-->
+  <div class="row">
+    <div class="col-lg-12">
+      <section class="panel">
+        <div class="panel-body">
+          <form class="form-horizontal" role="form" name="t">
+            <!-- 3e ligne -->
+            <div class="form-group">
+
+              <div class="col-lg-3 pull-right">
+                                <span class="input-group-btn">
+                                    <button type='submit' (click)="showCreationForm()" name='search' id='search-btn' class="btn btn-primary pull-right"><i class="fa fa-save">&nbsp;</i>Créer</button>
+                                </span>
+              </div>
+
+            </div>
+          </form>
+
+
+          <!--zone de creation -->
+          <div class="row" *ngIf="visible">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="box box-primary">
+                <div class="box-header">
+                  <h3 class="box-title">Création {{subject}}</h3>
+
+                </div>
+
+                <!-- display message area -->
+                <message-area [acting]="isSaving" [completed]="isCompleted" [success]="isSuccess" [title]="'Création ' + subject" [message]="statusMessage"></message-area>
+
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" (ngSubmit)="save(userForm.value)" #userForm="ngForm">
+                  <!-- action zone-->
+                  <div class="box-footer text-right">
+                    <button type="button" (click)="hideForm()" class="btn btn-default">Annuler</button>
+                    <button type="submit" [disabled]="!canSaveProd()"  class="btn btn-success">Enregistrer</button>
+                  </div>
+
+                  <div class="box-body">
+
+                    <!-- donnees de base produit-->
+                    <div class="row">
+
+                      <div class="col-md-4">
+                        <!-- description-->
+                        <div class="form-group">
+                          <label for="df">Nom</label>
+                          <input type="text" maxlength="100" class="form-control" [(ngModel)]="item.name" name="name"
+                                  placeholder="Nom"  required #name="ngModel">
+                          <div  class="error_msg text-danger font-italic" *ngIf="name.dirty && name.hasError('required')">Nom du produit manquant</div>
+                        </div>
+                      </div>
+
+
+                      <div class="col-md-4">
+                        <!-- zone de texte-->
+                        <div class="form-group">
+                          <label for="vdfd">Catégorie</label>
+
+                          <!--<ng-select [allowClear]="true"-->
+                                     <!--[items]="categories"-->
+                                     <!--[disabled]="disabled"-->
+                                     <!--(data)="refreshValue($event)"-->
+                                     <!--(selected)="selected($event)"-->
+                                     <!--(removed)="removed($event)"-->
+                                     <!--(typed)="typed($event)"-->
+                                     <!--placeholder="Aucune catégorie sélectionnée" name="category">-->
+                          <!--</ng-select>-->
+
+                          <select class="form-control" name="category" [(ngModel)]="item.category"  required #category="ngModel">
+                            <option *ngFor="let item of categories" [ngValue]="item">{{item.name}}</option>
+                          </select>
+                          <div  class="error_msg text-danger font-italic" *ngIf="category.dirty && category.hasError('required')">Catégorie du produit manquante</div>
+
+                        </div>
+                      </div>
+
+                     <div class="col-md-4">
+                        <!-- description-->
+                        <div class="form-group">
+                          <label for="df">Référence</label>
+                          <input type="number" maxlength="13" class="form-control" [(ngModel)]="item.reference" name="reference"
+                                  placeholder="Référence"  required #reference="ngModel">
+                          <div  class="error_msg text-danger font-italic" *ngIf="reference.dirty && reference.hasError('required')">Référence du produit manquant</div>
+                        </div>
+                      </div>
+                      
+
+                    </div>
+                    <!-- fin donnees de base -->
+                    <br>
+
+                    <!-- type mesure et associations-->
+                    <div class="row">
+
+                      <!-- /.col -->
+                      <div class="col-md-4">
+                            <!-- types de mesure-->
+                        <it-product-measuretype  [measureTypes]="measureTypes" [addedMeasureTypes]="item.measure_types"
+                                                     (list_changed)="onMeasureTypeListChanged($event)" ></it-product-measuretype>
+
+                      </div>
+                        <!-- /.box -->
+
+                      <div class="col-md-8">
+
+                        <!-- association des types de mesure-->
+                        <it-product-contenance-list  [measure_types]="item.measure_types" [associations]="item.measure_associations"
+                                                     (list_changed)="onListChanged($event)" (list_checked)="onListChecked($event)"></it-product-contenance-list>
+
+                        <!-- /.box -->
+                      </div>
+                      <!-- /.col -->
+
+                    </div>
+                    <!-- fin type mesure et assoc. -->
+
+                  </div>
+                  <!-- /.box-body -->
+
+                </form>
+              </div>
+              <!-- /.box -->
+            </div>
+          </div>
+          <!-- fin zone de creation -->
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+
+
+

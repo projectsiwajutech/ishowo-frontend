@@ -1,0 +1,21 @@
+<div #createModal></div>
+<div class="modal-header">
+    <h5 class="modal-title">Suppresion de Banque</h5>
+    <button type="button" class="close basic-close" data-dismiss="modal" aria-lab0el="Close" (click)="close()"><span
+            aria-hidden="true">&times;</span></button>
+</div>
+<div class="modal-body">
+        <div class="text-center">
+            <img class="rounded mb-3" src="assets/images/params/delete.png" width="20%" alt="">
+        </div>
+            <h5 class="text-center m-4"> Confirmez-vous la suppression de cette Banque ?</h5>
+        <div class="app-modal-footer row">
+            <button type="button" class="btn btn-light col-sm-6" data-dismiss="modal" (click)="close()"><i class="fa fa-times me-2 ms-n21"></i>&nbsp; Non</button>
+            <button type="submit" class="btn btn-danger col-sm-6" (click)="delete()" [disabled]="show">
+                 <span *ngIf="!show"><i class="fa fa-trash me-2 ms-n21"></i> Oui, je supprime</span><span *ngIf="show">
+                    Patientez... &nbsp;</span>
+                <span *ngIf="show" class="spinner-border" role="status" style="width: 1.3rem; height: 1.3rem;"></span>
+            </button>
+        </div>
+
+</div>

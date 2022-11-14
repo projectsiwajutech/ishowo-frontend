@@ -1,0 +1,88 @@
+
+<section class="content-header" *ngIf="item">
+
+  <!--zone de modif -->
+  <div class="row" >
+    <!-- left column -->
+    <div class="col-md-12">
+      <!-- general form elements -->
+      <div class="box box-primary">
+        <div class="box-header">
+          <h3 class="box-title">Modification {{subject}}</h3>
+
+        </div>
+
+        <!-- display message area -->
+        <message-area [acting]="isSaving" [completed]="isCompleted" [success]="isSuccess" [title]="'Modification ' + subject" [message]="statusMessage"></message-area>
+
+
+
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form role="form" (ngSubmit)="save(userForm.value)" #userForm="ngForm">
+          <!-- action zone-->
+          <div class="box-footer text-right">
+            <button type="button" (click)="hideForm()" class="btn btn-default">Annuler</button>
+            <button type="submit" [disabled]="!userForm.valid"  class="btn btn-success">Enregistrer</button>
+          </div>
+
+          <div class="box-body">
+
+            <div class="row">
+              <div class="col-md-6">
+                <!-- debut-->
+                <div class="form-group">
+                  <label for="df">De</label>
+                  <it-datepicker [dt]="item.start_date" (selected)="getSelectedDateStart($event)"></it-datepicker>
+                  <div  class="error_msg text-danger font-italic" *ngIf="item.start_date === undefined || item.start_date === null">Date de début manquante</div>
+                </div>
+
+                <!-- fin-->
+                <div class="form-group">
+                  <label for="df">A</label>
+                  <it-datepicker [dt]="item.end_date" (selected)="getSelectedDateEnd($event)"></it-datepicker>
+                  <div  class="error_msg text-danger font-italic" *ngIf="item.end_date === undefined || item.end_date === null">Date de fin manquante</div>
+                </div>
+
+              </div>
+
+                <!-- zone de texte-->
+              <div class="col-md-6">
+                <!-- zone de texte-->
+                <div class="form-group">
+                  <label for="vdfd">Profil</label>
+                  <select class="form-control" name="profil" [(ngModel)]="item.agent"  required #profil="ngModel">
+                    <option *ngFor="let item of profiles" [ngValue]="item">{{item.login}}</option>
+                  </select>
+                  <div  class="error_msg text-danger font-italic" *ngIf="profil.dirty && profil.hasError('required')">Profil manquant</div>
+                </div>
+
+                <!-- debut-->
+                <div class="form-group">
+                  <label for="df">Montant Objectif</label>
+                  <input type="number" maxlength="10" class="form-control" [(ngModel)]="item.amount_target" name="a_target"
+                         placeholder="Objectif"  required #a_target="ngModel">
+                  <div  class="error_msg text-danger font-italic" *ngIf="a_target.dirty && a_target.hasError('required')">Montant objectif manquant</div>
+                </div>
+              </div>
+
+            </div>
+
+
+          </div>
+          <!-- /.box-body -->
+
+        </form>
+      </div>
+      <!-- /.box -->
+    </div>
+  </div>
+  <!-- fin zone de modif -->
+
+</section>
+
+
+
+
+
+

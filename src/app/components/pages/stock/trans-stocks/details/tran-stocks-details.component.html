@@ -1,0 +1,71 @@
+<app-card [options]="false" [customHeader]="true">
+  <div class="app-card-header">
+    <div class="font-weight-bold mb-3">DETAILS TRANSFERT DU
+      <span class="text-danger font-weight-bold">{{item.date | date:'dd/MM/yyyy'}}</span>
+    </div>
+    <form role="form" #userForm="ngForm">
+      <div class="row">
+        <div class="form-group input-group col-md-3">
+          <div class="input-group-append">
+            <button class="btn btn-info font-weight-bold btn-sm">R.SOURCE</button>
+          </div>
+          <input type="text" name="supplier" [(ngModel)]="item.source.name" disabled #supplier="ngModel" id="supplier"
+            class="form-control pl-1">
+        </div>
+        <div class="form-group input-group col-md-3">
+          <div class="input-group-append">
+            <button class="btn btn-info font-weight-bold btn-sm">R.DESTINATION</button>
+          </div>
+          <input type="text" name="destination" [(ngModel)]="item.destination.name" disabled #destination="ngModel"
+            id="destination" class="form-control pl-1">
+        </div>
+
+        <div class="form-group input-group col-md-4 d-flex justify-content-end">
+          <button class="btn btn-primary font-weight-bold" (click)="printData()">
+            <span class="fa fa-print"></span> Imprimer</button>
+        </div>
+        <div class="col-md-2">
+          <button (click)="close()" class="btn btn-light float-right">
+            Fermer </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="table-responsive table-bordered">
+    <table id="report-table" class="table mb-0">
+      <thead class="thead-light">
+        <tr class="text-center">
+          <th>#</th>
+          <th>Produit</th>
+          <th>Prix achat</th>
+          <th>Prix vente</th>
+          <th>Prix total</th>
+          <th>QTE Transféré</th>
+          <th>Stock Actuel</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of item.product_lines; let i=index" class="text-center">
+          <td class="align-middle p-0">
+            {{i+1}}
+          </td>
+          <td>
+            {{p.product.product.name}} ({{p.product.measure_type.name}})
+          </td>
+          <td class="align-middle p-0">
+            {{p.purchase_price | formatMoney}}
+          </td>
+          <td class="align-middle p-0">
+            {{p.selling_price | formatMoney}}
+          </td>
+          <td class="align-middle p-0">
+            {{p.quantity_transfer | formatMoney}}
+          </td>
+          <td class="align-middle p-0">
+            {{p.quantity | formatMoney}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</app-card>

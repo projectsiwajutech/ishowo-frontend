@@ -1,0 +1,63 @@
+
+
+<div *ngIf="isRemoving" class="row bg-info text-center"> Suppression d'une association en cours...</div>
+
+<div class="box">
+  <div class="box-header">
+    <h3 class="box-title">Associations Gros - détail</h3>
+
+    <div class="box-tools">
+      <div class="row">
+        <div class="col-lg-12">
+          <form class="form-inline">
+            <button type='submit' (click)="addLine()" name='add_assoc' id='search-btn' class=" btn btn-info"><i class="fa fa-plus"></i>Ajouter</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body padding">
+    <section>
+  <div class="row">
+    <div class="col-lg-12">
+    <div class="row bg_orange">
+      <div class="col-md-1">
+        #
+      </div>
+
+      <div class="col-md-3 text-center">
+        Gros
+      </div>
+
+      <div class="col-md-1">
+
+      </div>
+
+      <div class="col-md-3 text-center">
+        Quantité
+      </div>
+
+      <div class="col-md-3 text-center">
+        Détail
+      </div>
+      <div class="1">
+      </div>
+
+    </div>
+
+
+      <it-product-contenance *ngFor="let item of associations; let i = index; trackBy: trackByFn;" [measure_types]="measure_types"
+        [item]="item"  [index]="i" (item_changed)="getItem($event, i)" (item_removed) = "onItemRemove($event, i)"></it-product-contenance>
+    </div>
+  </div>
+    </section>
+
+
+  </div>
+  <!-- /.box-body -->
+</div>
+
+
+

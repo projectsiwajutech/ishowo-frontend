@@ -1,0 +1,39 @@
+
+
+.top_contact { display: block; color: white; margin: 0px auto; margin-top: 5px;}
+.bottom_contact { margin: 0px auto; text-align: center;}
+
+.growlPlace{margin-top: 100px;}
+>>> .ui-growl {
+  position: fixed;
+  top: 100px!important;
+  right: 20px;
+  width: 20em;
+}
+
+
+/*chat area*/
+#itchat_tab{
+    position: fixed;
+    right: 0;
+    bottom:30%;
+    z-index:5000;
+  }
+#itchat_tab a {
+    display:block;
+    border: 3px solid transparent;
+    border-left-style: none;
+    border-bottom-style: none;
+    margin-top:0px;
+  }
+#itchat_tab a:hover {
+    border-color: transparent;
+}
+.itchat_box{
+    position: fixed;
+    right: 0;
+    bottom:30%;
+    z-index:10000;
+    /*width: 300px; height: 400px;*/
+    background-color: transparent;
+}

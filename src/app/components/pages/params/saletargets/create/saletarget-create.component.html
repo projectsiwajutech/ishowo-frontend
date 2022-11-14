@@ -1,0 +1,65 @@
+<div #createModal></div>
+<div class="modal-header">
+  <h5 class="modal-title">Création d'Objectif de Vente</h5>
+  <button type="button" class="close basic-close" data-dismiss="modal" aria-lab0el="Close" (click)="close()"><span
+      aria-hidden="true">&times;</span></button>
+</div>
+<div class="modal-body">
+  <form role="form" (ngSubmit)="save(userForm.value)" #userForm="ngForm">
+    <div class="text-center">
+      <img class="rounded mb-3" src="assets/images/params/saletarget.jpg" width="40%" alt="">
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="df">Début</label>
+          <input type="date" id="date_debut" (change)="getSelectedDateStart(userForm.value.start_date)"
+            class="form-control" [(ngModel)]="item.start_date" required #start_date="ngModel" name="start_date">
+          <small class="error_msg text-danger font-italic"
+            *ngIf="item.start_date === undefined || item.start_date === null">Date de début invalide</small>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="df">Fin</label>
+          <input type="date" (change)="getSelectedDateEnd(userForm.value.end_date)" class="form-control"
+            [(ngModel)]="item.end_date" required #end_date="ngModel" name="end_date">
+          <small class="error_msg text-danger font-italic" *ngIf="item.end_date === undefined || error_date == true">
+            Date de fin invalide</small>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="vdfd">Profil</label>
+          <select class="form-control" name="profil" [(ngModel)]="item.agent" required #profil="ngModel">
+            <option *ngFor="let item of profiles" [ngValue]="item">{{item.login}} ({{item.user.firstname + " " +
+              item.user.lastname}})</option>
+          </select>
+          <small class="error_msg text-danger font-italic" *ngIf="profil.dirty && profil.hasError('required')">Profil
+            manquant</small>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="df">Montant Objectif</label>
+          <input type="number" maxlength="10" class="form-control" [(ngModel)]="item.amount_target" name="a_target"
+            placeholder="Objectif" required #a_target="ngModel">
+          <small class="error_msg text-danger font-italic" *ngIf="a_target.dirty && a_target.hasError('required')">Montant
+            objectif manquant</small>
+        </div>
+      </div>
+    </div>
+    <div class="app-modal-footer row">
+      <button type="button" class="btn btn-light col-sm-6" data-dismiss="modal" (click)="close()"><i
+          class="fa fa-times me-2 ms-n21"></i>&nbsp; Annuler</button>
+      <button type="submit" class="btn btn-primary col-sm-6" [disabled]="!userForm.valid || show">
+        <span *ngIf="!show"><i class="fa fa-save me-2 ms-n21"></i> Enregistrer</span><span *ngIf="show">Veuillez
+          Patientez... &nbsp;</span>
+        <span *ngIf="show" class="spinner-border" role="status" style="width: 1.3rem; height: 1.3rem;"></span>
+      </button>
+    </div>
+
+  </form>
+</div>

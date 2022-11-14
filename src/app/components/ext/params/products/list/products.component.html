@@ -1,0 +1,116 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>Produits
+    <small></small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Accueil</a></li>
+    <li><a href="#">Produits</a></li>
+    <li class="active"></li>
+  </ol>
+</section>
+
+<!-- component for creation -->
+<it-product-create (created)="updateOnCreate($event)" [subject]="'Produit'" ></it-product-create>
+
+<!-- component for update -->
+<it-product-update *ngIf="selectedUpObject" [item]="selectedUpObject" (updated)="updateOnUpdate($event)" [subject]="'Produit'" ></it-product-update>
+
+<!-- component for delete -->
+<it-product-delete *ngIf="selectedDelObject" [item]="selectedDelObject" (deleted)="updateOnDelete($event)" [subject]="'Produit'" ></it-product-delete>
+
+
+
+
+<!-- zone de liste -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">Liste des produits <strong>({{(products | product: param.product: param.category.id).length}})</strong></h3> <hr>
+         
+          <div class="row" >
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="cat_prod">Catégorie prod</label>
+                <select class="form-control"  name="cat_prod"  [(ngModel)]="param.category" >
+                  <option *ngFor="let item of categories" [ngValue]="item">{{item.name}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="qty">Produit</label>
+                <input type="text" maxlength="30" class="form-control" [(ngModel)]="param.product" name="product"
+                (keydown.enter)="searchProducts()"      placeholder="Nom du produit"  >
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="qty">Code barre</label>
+                <input type="text" maxlength="30" class="form-control" [(ngModel)]="param.codebarre" name="codebarre"
+                (keydown.enter)="searchProducts()"     placeholder="Code barre"  >
+              </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                  </div> 
+                   <button type="button" (click)="searchProducts()" class="btn btn-primary"><i class="fa fa-search"></i> Rechercher</button>
+             </div>
+
+          </div>
+
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <table id="example2" class="table table-striped table-hover">
+            <thead>
+            <tr class="info">
+              <th>#</th>
+              <th>Nom</th>
+              <th>Catégorie</th>
+              <th>Référence</th>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr class="" *ngIf="isLoading">
+              <td colspan="5"> <div class="text-center alert-info"><strong> Affichage de la liste des produits en cours </strong> </div> </td>
+            </tr>
+
+
+            <tr *ngFor="let item of products | product: param.product: param.category.id | itPaginator:pageStartIndex:pageLimit; trackBy: trackByFn; let i=index;" >
+              <td>{{i + 1}}</td>
+              <td>{{item.name}}</td>
+              <td>{{item.category.name}}</td>
+              <td>{{item.reference}}</td>
+              <td>
+                <a  title="Modifier" class="item-click" (click)="selectForUpdate(item)"> <i class="glyphicon glyphicon-pencil"></i> </a>
+
+              </td>
+              <td>
+                <a title="Supprimer" class="item-click" (click)="selectForDelete(item)"> <i class="glyphicon glyphicon-remove error_msg2"></i> </a>
+              </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            </tfoot>
+          </table>
+          <p-paginator [rows]="pageLimit" [totalRecords]="(products | product: param.product: param.category.id).length" (onPageChange)="paginate($event)" [rowsPerPageOptions]="limitTable"></p-paginator>
+
+        </div>
+        <!-- /.box -->
+
+      </div>
+      <!-- /.col -->
+    </div> 
+  </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->

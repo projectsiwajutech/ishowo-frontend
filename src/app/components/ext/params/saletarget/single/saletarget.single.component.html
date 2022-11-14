@@ -1,0 +1,58 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>{{title}}
+    <small></small>
+  </h1>
+
+</section>
+
+
+<!-- zone de liste -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <table id="example2" class="table table-striped table-hover">
+            <thead>
+            <tr class="info">
+              <th>#</th>
+              <th>De</th>
+              <th>A</th>
+              <th class="text-right">Montant objectif</th>
+              <th class="text-right">Montant atteint</th>
+              <th class="text-center">Objectif atteint</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr class="" *ngIf="isLoading">
+              <td colspan="9"> <div class="text-center alert-info"><strong> Chargement des données en cours... </strong> </div> </td>
+            </tr>
+
+            <tr *ngFor="let item of saleTargetList ; trackBy: trackByFn; let i = index" >
+              <td>{{i+1}}</td>
+              <td>{{item.start_date | date:'dd/MM/yyyy'}}</td>
+              <td>{{item.end_date | date:'dd/MM/yyyy'}}</td>
+              <td class="text-right">{{item.amount_target | formatMoney}}</td>
+              <td class="text-right">{{item.amount_obtained | formatMoney}}</td>
+              <td class="text-center">{{item.is_reached | itBoolean}}</td>              
+            </tr>
+            </tbody>
+            <tfoot>
+            </tfoot>
+          </table>
+
+        </div>
+        <!-- /.box -->
+
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+</section>
+<!-- /.content -->

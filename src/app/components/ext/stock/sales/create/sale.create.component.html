@@ -1,0 +1,282 @@
+
+
+<!-- bouton de creation -->
+<section class="content-header" >
+
+
+  <!--zone de creation -->
+  <div class="row" >
+    <!-- left column -->
+    <div class="col-md-12">
+      <!-- general form elements -->
+      <div class="box box-primary">
+        <div class="box-header">
+          <h3 class="box-title">Nouvelle {{subject}}</h3>
+    <div class="pull-right">
+            <button type="button" (click)="hideForm()" class="btn btn-default"><i class="fa fa-arrow-left"></i> Fermer</button>
+             <button type="button" (click)="listSale()" class="btn btn-default"><i class="fa fa-document"></i> Rechercher</button>
+          </div>
+        </div>
+
+        <!-- pdf file printed -->
+        <it-pdfviewer [visible]="isInvoiceVisible" [title]="pdfTitle" [file]="generatedInvoice" (closed)="updateOnClose($event)" ></it-pdfviewer>
+
+
+        <!-- display message area -->
+        <message-area [acting]="isSaving" [completed]="isCompleted" [success]="isSuccess" [title]="'Création ' + subject" [message]="statusMessage"></message-area>
+
+
+
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form role="form"  #userForm="ngForm">
+          <!-- action zone-->
+          <div class="box-footer text-right">
+           <button type="button" [disabled]="!canSaveDevis()" #savedevis (click)="saveDevis()" class="btn btn-primary"><i class="fa fa-print"></i> Devis</button>
+            <button type="button" [disabled]="!canSaveSale()" #saveprod (click)="saveSale()" class="btn btn-success"><i class="fa fa-save"></i> Enregistrer</button>
+          </div>
+
+          <div class="box-body">
+
+            <!-- donnees -->
+            <div class="row">
+              <div class="col-md-4">
+
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="ho">Client</label>
+                          <input type="text" class="form-control" (keydown.enter)="firstname.focus();" [(ngModel)]="item.customer.lastname" name="lastname"
+                                 placeholder="Nom"  #lastname>
+                      </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="ho">&nbsp;</label>
+                         <input type="text" class="form-control" (keydown.enter)="phone.focus();" [(ngModel)]="item.customer.firstname" name="firstname"
+                                 placeholder="Prénoms"  #firstname>
+                       </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="ho">&nbsp;</label>
+                         <input type="text" class="form-control" (keydown.enter)="productName.focus();" [(ngModel)]="item.customer.phone" name="phone"
+                                 placeholder="Téléphone"  #phone>
+                        </div>
+                      </div>
+                    </div>
+                <!-- -->
+
+
+
+              </div>
+
+              <div class="col-md-4"></div>
+
+              <div class="col-md-4">
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="ho">Montant reçu</label>
+                      <input type="number" class="form-control" (keyup)="onAmountReceivedChange()" (keydown.enter)="saveSale()"  [(ngModel)]="item.amount_received" name="mt_recu"
+                             placeholder="Montant Reçu"  #mt_recu>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="ho">Reliquat</label>
+
+                      <input type="number" disabled class="form-control"  [(ngModel)]="reliquat" name="relq"
+                             placeholder=""  #relq="ngModel">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- -->
+
+              </div>
+
+            </div>
+            <!-- fin donnees -->
+            <br>
+
+
+            <div class="row">
+
+              <!-- zone dajout des produits -->
+              <div class="col-md-7">
+
+                <!-- zone ajout-->
+                <div class="row">
+                  <!-- /.col -->
+                  <div class="col-md-12">
+                    <div class="box">
+                      <div class="box-header">
+
+
+                        <!-- Zone de recherche de produit -->
+                        <div class="row">
+                         <div class="col-md-6">
+                              <label for="qty">Nom Produit ({{(stock_view | prodSaleAdd: productSearchName: productSearchBarCode).length}})</label>
+                               <!--<label for="qty">Nom Produit </label>-->
+                              <input type="text"  class="form-control"  [(ngModel)]="productSearchName" name="productSearchName"
+                                    (keydown.enter)="onProductSearched(productSearchName, 0);" (ngModelChange)="onProductSelected($event)"   placeholder="Nom du Produit"  #productName>
+                        </div>
+                        <div class="col-md-6">
+                              <label for="qty">Code barre</label>
+                              <input type="text"  class="form-control"   [(ngModel)]="productSearchBarCode" name="productSearchBarCode" 
+                              (keydown.enter)="onProductSearched(productSearchBarCode, 1);"        placeholder="Code barre"  #productBarCode>
+                              <!-- (ngModelChange)="onProductSelected($event)" -->
+                        </div>
+                          <!-- <div class="col-md-2">
+                            <label for="qty">Rech.&nbsp;</label><br>
+                            <!-- <a  title="Rafraichir le stock" class="item-click btn btn-default" (click)="getStockView()"> <i class="fa fa-refresh"></i> </a> 
+                            </div>-->
+                       
+                        </div>
+                        <!-- fin zone de texte de recherche-->
+
+                        <div class="prod_list">
+                          <table class="table table-striped">
+                          <thead>
+                          <tr>
+                            <th>Référence </th>
+                            <th>Produit / Type mesure </th>
+                            <th>Rayon </th>
+                            <th class="text-center">Stock</th>
+                            <th class="text-right">Quantité</th>
+                            <th class="text-right">Prix vente</th>
+                            <th style="width: 40px"></th>
+                          </tr>
+                          </thead>
+                            <tr class="" *ngIf="isLoadingStock">
+                              <td colspan="7"> <div class="text-center alert-info"><strong> Chargement des produits en cours... </strong> </div> </td>
+                            </tr>
+
+                          <tbody >
+                          <tr  *ngFor="let p of stock_view | prodSaleAdd: productSearchName: productSearchBarCode , let i = index">
+                           <td >
+                              {{p.barcode}}
+                            </td>
+                            <td>
+                              {{p.product.product.name}} / {{p.product.measure_type.name}}
+                            </td>
+                            <td >
+                              {{p.compartment.name}}
+                            </td>
+                            <td class="text-center">
+                              {{p.quantity}}
+                            </td>
+                            <td class="text-right">
+                              <input type="number" class="form-control limited_number_2 text-right" (keydown.enter)="productName.focus();addProductLine(p)"  [(ngModel)]="p.quantity_sell" name="sell"  placeholder=""  #quantity_sell>
+                            </td>
+                            <td class="text-right">
+                              <input type="number" class="form-control limited_number_2 text-right" (keydown.enter)="productName.focus();addProductLine(p)"  [(ngModel)]="p.selling_price" [(name)]="p.id"  placeholder=""  >
+                    </td>
+
+                            <td>
+                              <a  title="Ajouter" #add_prod class="item-click btn btn-info" (click)="productName.focus();addProductLine(p)"> <i class="fa fa-plus"></i> </a>
+                            </td>
+                          </tr>
+
+                          </tbody>
+
+                        </table>
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+
+                <!-- fin zone ajout -->
+              </div>
+              <!-- fin zone dajout des produits -->
+
+              <!-- Liste des produits -->
+              <div class="col-md-5">
+                <div class="box">
+                  <div class="box-header">
+                    <h3 class="box-title">Liste des produits (<strong>{{(item.lines!==undefined)? item.lines.length : 0}}</strong>)</h3>
+
+                    <div class="box-tools bg-yellow">
+                      <div class="info-box-content">
+                        <span class="info-box-number">{{getTotal() | formatMoney}}</span>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <!-- lines -->
+                  <!-- /.box-header -->
+                  <div class="box-body no-padding" div_summary>
+                    <table class="table table-striped sale_summary">
+                      <tr>
+                        <th style="width: 10px">#</th>
+                        <th>Produit </th>
+                        <!--<th>Type mesure </th>-->
+                        <th class="text-center">Qte</th>
+                        <th class="text-right">P.Vente</th>
+                        <th class="text-right">P.Total</th>
+                        <th style="width: 40px"></th>
+                      </tr>
+                      <tr  *ngFor="let p of item.lines, let i = index">
+                        <td>{{i+1}}</td>
+                        <td>
+                          {{p.product.product.name}} ({{p.product.product.category.name}})
+                        </td>
+                        <!--<td >
+                          {{p.product.measure_type.name}}
+                        </td>-->
+                        <td class="text-center">
+                          {{p.quantity_sell}}     
+                          <!--<input type="number" class="form-control limited_number_2 text-right"  [(ngModel)]="p.quantity_sell" name="{{p.id}}"  placeholder=""  >-->
+                           
+                        </td>
+                        <td class="text-right">
+                          {{p.selling_price | formatMoney}}
+                        </td>
+                        <td class="text-right">
+                          {{ (p.selling_price * p.quantity_sell) | formatMoney}}
+                        </td>
+
+                        <td>
+                          <a  title="Modifier" class="item-click" (click)="removeProductLine(i)"> <i class="glyphicon glyphicon-remove error_msg2 bg-red"></i> </a>
+                        </td>
+                      </tr>
+
+                    </table>
+                  </div>
+                  <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+              </div>
+              <!-- fin liste des produits -->
+
+
+
+            </div>
+            <!-- fin type mesure et assoc. -->
+
+          </div>
+          <!-- /.box-body -->
+
+        </form>
+      </div>
+      <!-- /.box -->
+    </div>
+  </div>
+  <!-- fin zone de creation -->
+
+
+</section>
+
+
+
+
+
+
+

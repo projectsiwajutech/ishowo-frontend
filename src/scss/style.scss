@@ -1,0 +1,243 @@
+/**======================================================================
+=========================================================================
+Template Name: Able Pro Admin Template
+Author: Codedthemes
+File: style.css
+=========================================================================
+=========================================================================
+  == Table of Contents==
+	- Generic classes
+		-	Margin, Padding, Font class, text align, position, floating, overflow, background class, text color, display class, boarder class
+	- Theme Elements
+		-	Accordion, Button, tabs, typography, buttons, box shadow, Lable & Badges, Alert, Pagination, Breadcumb, Cards, Collapse,
+        -   Carousel, Grid, Progress, Model, tooltip, popover, Datepicker, Gridstack, lightbox, notification, Nestable, pnotify, rating,
+        -   Rangeslider, Slider, Syntax Highlighter, Tour, Treeview, Toolbar, Session Timeout, Session idle Timeout, offline, Animation
+    - Forms
+        -   Forms Elements, Advance Form Control, Validation, Masking, Wizard, Picker, Select
+	- Pages
+		-   authentication, Maintenance, Maps, Landing page messages, task, Todo, Notes, Charts, Icons, Gallery, Editors,
+        -   Invoice, Full Calender, File Upload,
+=================================================================================
+=================================================================================== */
+
+
+// Theme Font
+@import "themes/font/theme-font";
+
+// theme scrollbar
+@import "themes/plugin/perfect-scrollbar";
+
+// main framework
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "settings/custom-variables";
+@import "settings/theme-variables";
+
+// ng module
+@import "ng-module/ng-module";
+
+// bootstrap
+@import "~bootstrap/scss/bootstrap";
+
+
+// icon
+@import "themes/font/datta-icon";
+@import "themes/font/feather";
+@import "themes/font/fontawesome";
+@import "themes/font/cryptofont";
+
+// bootstrap css
+@import "themes/bootstrap-overlay/card";
+@import "themes/bootstrap-overlay/button";
+@import "themes/bootstrap-overlay/radiobox-checkbox";
+@import "themes/bootstrap-overlay/switches";
+@import "themes/bootstrap-overlay/badge";
+
+@import "themes/general";
+@import "themes/generic";
+@import "themes/plugin/animate";
+
+
+// theme layouts
+@import "themes/layouts/menu-lite";
+@import "themes/layouts/menu-ng";
+@import "layout-dark";
+@import "layout-rtl";
+
+// Dashboard Widgets
+@import "themes/dashboard/widget";
+
+// custom plugin
+@import "themes/plugin/sweatalert";
+@import "themes/plugin/lightbox";
+@import "themes/plugin/notification";
+@import "themes/plugin/pnotify";
+@import "themes/plugin/bar-rating";
+@import "themes/plugin/rangeslider";
+@import "themes/plugin/daterange";
+@import "themes/plugin/tags-input";
+@import "themes/plugin/maxlength";
+@import "themes/plugin/wizard";
+@import "themes/plugin/select2";
+@import "themes/plugin/data-tables";
+
+// Charts
+@import "themes/plugin/highcharts";
+@import "themes/plugin/peitychart";
+
+// pages
+@import "themes/pages/authentication";
+@import "themes/pages/maintaince";
+@import "themes/pages/pages";
+@import "themes/pages/help-desk";
+@import "themes/pages/fullcalender";
+@import "themes/pages/icon-lauouts";
+@import "themes/pages/user";
+@import "themes/pages/task-board";
+
+// custom
+@import "themes/custom";
+
+
+.float {
+  width: 50px;
+  height: 50px;
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  color: #FFF;
+  text-align: center;
+  font-size: 20px;
+  border-radius: 50px;
+  box-shadow: 2px 2px 3px #999;
+  z-index: 100;
+}
+
+tr.mycursor {
+  cursor: url("../assets/images/params/finger.png"), default;
+}
+
+.mycursor:hover {
+  background-color: rgba(66, 240, 138, 0.178);
+}
+
+.myCustomSwal {
+  z-index: 99999;
+  background: #000000b8
+}
+
+.centerinput {
+  text-align: center;
+}
+
+.rightnput {
+  text-align: right;
+  font-weight: bold;
+  color: rgb(16, 20, 201);
+}
+
+.rightnput2 {
+  text-align: right;
+  font-weight: bold;
+  color: rgb(37, 3, 8);
+}
+
+.number_pad {
+  font-size: 1.66em;
+  font-weight: bold;
+  color: white;
+  height: 45px;
+  width: 45px;
+  cursor: pointer;
+}
+
+.touch_pad {
+  font-size: 1.66em;
+  font-weight: bold;
+  color: white;
+  height: 45px;
+  background-color:#38485f;
+  width: 45px;
+  cursor: pointer;
+}
+
+.number_pad:hover {
+  background-color: #225222;
+}
+
+.touch_pad:hover {
+  color: black;
+  background-color: #ffffff;
+}
+
+.setCss{
+  z-index: 8000;
+  background: #000000b8
+}
+
+.btn-pad {
+  background-color:#38485f;
+}
+.btn-pad:hover {
+  background-color:seagreen;
+}
+
+.padAmount {
+  font-size: 1.7em;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  border: none;
+  border-bottom: 2px solid rgb(16, 138, 36);
+  letter-spacing: 3px;
+  text-shadow: 6px #ff0000;
+  color: #0f2e03d3;
+}
+
+
+.saleAmount {
+  font-size: 1.4em;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.customInput {
+  border: none;
+  border-bottom: 2px solid rgba(128, 128, 128, 0.534);
+  border-right: 2px solid rgba(128, 128, 128, 0.534);
+}
+
+.notSelected {
+  -moz-user-select: none;
+  /* Firefox */
+  -webkit-user-select: none;
+  /* Chrome, Safari, Opéra depuis la version 15 */
+  -ms-user-select: none;
+  /* Internet explorer depuis la version 10 et Edge */
+  user-select: none;
+  /* Propriété standard */
+}
+
+.bg-gold{
+  background: #e6c619;
+}
+
+.minText{
+  font-size: 0.8em;
+  font-weight: bold;
+}
+.showPointer {
+  cursor: pointer;
+}
+
+.col-product {
+  max-width: 14.2%;
+}
+
+.card-head {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.DetailTitle {
+  font-size: 1.12em;
+  font-weight: bold;
+  color: rgb(16, 21, 95);
+}

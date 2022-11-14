@@ -1,0 +1,41 @@
+
+<!-- zone de action en cours -->
+<div  *ngIf="acting">
+
+  <!--message action en cours -->
+  <div class="row" >
+    <div class="col-lg-6">
+      <div class="alert alert-info alert-dismissable">
+        {{actingMessage || "Veuillez patientez pendant l'opération"}}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- zone de statut -->
+<div  *ngIf="completed">
+  <!--message de succes -->
+  <div class="row" *ngIf="success">
+    <div class="col-lg-6">
+      <div class="alert alert-success alert-dismissable">
+        <h4><i class="icon fa fa-check"></i>{{title}}</h4>
+        {{message}}
+      </div>
+    </div>
+  </div>
+
+  <!--message d erreur -->
+  <div class="row" *ngIf="!success">
+    <div class="col-lg-6">
+      <div class="alert alert-danger alert-dismissable">
+        <!-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>-->
+        <h4><i class="icon fa fa-ban"></i>{{title}}</h4>
+        {{message}}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+

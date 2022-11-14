@@ -1,0 +1,79 @@
+<div #createModal></div>
+<div class="modal-header">
+    <h5 class="modal-title">Nouveau Utilisateur</h5>
+    <button type="button" class="close basic-close" data-dismiss="modal" aria-lab0el="Close" (click)="close()"><span
+            aria-hidden="true">&times;</span></button>
+</div>
+<div class="modal-body">
+    <form role="form" (ngSubmit)="save(userForm.value)" #userForm="ngForm">
+        <div class="text-center">
+            <img class="rounded mb-3" src="assets/images/params/users.jpg" width="60%" alt="">
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="b">Nom</label>
+                    <input type="text" id="user_name" maxlength="25" class="form-control" [(ngModel)]="item.lastname" name="lastname"
+                        placeholder="Nom" required #lastname="ngModel">
+                    <small class="error_msg text-danger font-italic"
+                        *ngIf="lastname.dirty && lastname.hasError('required')">Nom manquant</small>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="b">Prénoms</label>
+                    <input type="text" maxlength="25" class="form-control" [(ngModel)]="item.firstname" name="firstname"
+                        placeholder="Prénoms" required #firstname="ngModel">
+                    <small class="error_msg text-danger font-italic"
+                        *ngIf="firstname.dirty && firstname.hasError('required')">Prénom manquant</small>
+                </div>
+            </div>
+            <div class="col-sm-6">
+              <label for="s">Téléphone</label>
+              <div class="form-group input-group mb-0 pb-0">
+                <div class="input-group-append">
+                  <select name="indicatif" id="indicatif" class="form-control" [(ngModel)]="Indicatif" required
+                    #indicatif="ngModel">
+                    <option selected [ngValue]="Indicatif1">229</option>
+                    <option [ngValue]="Indicatif2">228</option>
+                  </select>
+                </div>
+                <input type="text" maxlength="15" (keyup)="checkPhoneNumber(userForm.value.phone)"
+                  [textMask]="{mask: maskMobileNo}" class="form-control" [(ngModel)]="item.phone"
+                  name="phone" placeholder="Téléphone" required #phone="ngModel"> <br>
+              </div>
+              <small class="mb-1 error_msg text-danger font-italic" *ngIf="(!phoneValid)">Numéro
+                Invalide!</small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="ss">Adresse Email</label>
+                    <input type="text" maxlength="25" class="form-control" name="email" placeholder="Email"
+                        [(ngModel)]="item.email" #email="ngModel">
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="dd">Adresse</label>
+                    <input type="text" maxlength="25" class="form-control" [(ngModel)]="item.address" name="address"
+                        placeholder="Adresse" required #address="ngModel">
+                    <small class="error_msg text-danger font-italic"
+                        *ngIf="address.dirty && address.hasError('required')">Adresse manquante</small>
+                </div>
+            </div>
+        </div>
+        <div class="app-modal-footer row">
+            <button type="button" class="btn btn-light col-sm-6" data-dismiss="modal" (click)="close()"><i class="fa fa-times me-2 ms-n21"></i>&nbsp; Annuler</button>
+            <button type="submit" class="btn btn-primary col-sm-6" [disabled]="!userForm.valid || show || !phoneValid">
+                <span *ngIf="!show"><i class="fa fa-save me-2 ms-n21"></i> Enregistrer</span><span *ngIf="show">Veuillez
+                    Patientez... &nbsp;</span>
+                <span *ngIf="show" class="spinner-border" role="status" style="width: 1.3rem; height: 1.3rem;"></span>
+            </button>
+        </div>
+
+    </form>
+</div>

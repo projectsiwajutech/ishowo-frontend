@@ -1,0 +1,105 @@
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          Ma licence
+        </h1>
+        <ol class="breadcrumb" *ngIf="visible">
+          <li><a href="#"><i class="fa fa-dashboard"></i> Accueil</a></li>
+          <li class="active">Ma licence</li>
+        </ol>
+      </section>
+
+      <!-- bouton de creation -->
+      <section class="content-header"  >
+        <!-- -->
+        <div class="row">
+          <div class="col-lg-12">
+            <section class="panel">
+              <div class="panel-body">
+
+                <!--zone de creation -->
+                <div class="row">
+                  <!-- left column -->
+                  <div class="col-md-12">
+         
+
+                      <!-- /.box-header -->
+                      <!-- form start -->
+                      <form role="form"  #userForm="ngForm">
+                      
+                        <div class="box-body">
+
+                          <div class="row">
+                    
+                            <!--right area-->
+                            <div class="col-md-8">
+                              <div class="form-group">
+                                <div *ngIf="isLoading" class="text-center text-green">Veuillez patientez pendant l'affichage des données de votre licence...</div>
+
+                                                         
+                                <div class="info-box bg-green" *ngIf="isLoading===false">
+
+                                    <div class="row" >
+                                 <!--start first column-->
+                                    <div class="col-md-6">
+
+                                  <div class="info-box-content">
+                                    <span class="info-box-text">Code client</span>
+                                    <span class="info-box-number">{{iLicence.code}}</span>
+                                  </div>
+                                        <div class="info-box-content">
+                                    <span class="info-box-text">Module</span>
+                                    <span class="info-box-number">{{iLicence.module}}</span>
+                                  </div>
+                                  <div class="info-box-content">
+                                    <span class="info-box-text">Votre licence est</span>
+                                    <span class="info-box-number">{{getLicenceStatus(iLicence.isActive)}}</span>
+                                  </div>
+                                  
+                                </div>
+                                <!--end first column-->
+
+                                      <!--start second column-->
+                                    <div class="col-md-6">
+                                  <div class="info-box-content">
+                                    <span class="info-box-text">Commence le</span>
+                                    <span class="info-box-number">{{iLicence.activationDate | date:'dd/MM/yyyy' }}</span>
+                                  </div>
+                                  <div class="info-box-content">
+                                    <span class="info-box-text">Expire le</span>
+                                    <span class="info-box-number">{{iLicence.expiryDate | date:'dd/MM/yyyy' }}</span>
+                                  </div>
+                                  <div class="info-box-content">
+                                    <span class="info-box-text">Nombre de jours restants</span>
+                                    <span class="info-box-number">{{getRemainingDays() }} jours</span>
+                                  </div>
+                                  </div> 
+                                  <!--end col-->
+                                 
+                                  </div>
+                                  <!--end row-->
+
+                                </div>
+
+                              </div>
+                              </div>
+
+                          
+                          </div>
+
+
+                        </div>
+                        <!-- /.box-body -->
+
+                      </form>
+                    <!-- /.box -->
+                  </div>
+                </div>
+                <!-- fin zone de creation -->
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+

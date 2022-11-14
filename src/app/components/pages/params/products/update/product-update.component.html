@@ -1,0 +1,50 @@
+<div #createModal></div>
+<div class="modal-header">
+  <h5 class="modal-title">Mis à jour de Produit</h5>
+  <button type="button" class="close basic-close" data-dismiss="modal" aria-lab0el="Close" (click)="close()"><span
+      aria-hidden="true">&times;</span></button>
+</div>
+<div class="modal-body">
+  <form role="form" (ngSubmit)="save(userForm.value)" #userForm="ngForm">
+
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="fdf">Nom</label>
+          <input type="text" maxlength="100" id="product_name" class="form-control" [(ngModel)]="item.name" name="name"
+                 placeholder="Nom"  required #name="ngModel">
+          <small class="error_msg text-danger font-italic" *ngIf="name.dirty && name.hasError('required')">Nom du produit manquant</small>
+       </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="vdfd">Catégorie</label>
+          <select class="form-control" name="category" [(ngModel)]="item.category" #category="ngModel" required>
+            <option *ngFor="let item of categories" [ngValue]="item">{{item.name}}</option>
+          </select>
+          <small class="error_msg text-danger font-italic" *ngIf="category.dirty && category.hasError('required')">Catégorie du produit manquante</small>
+          </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4">
+        <app-measure-type [measureTypes]="measureTypes" [addedMeasureTypes]="item.measure_types"
+          (list_changed)="onMeasureTypeListChanged($event)"></app-measure-type>
+      </div>
+      <div class="col-sm-8">
+        <app-contenance-list [measure_types]="item.measure_types" [associations]="item.measure_associations"
+          (list_changed)="onListChanged($event)" (list_checked)="onListChecked($event)"></app-contenance-list>
+      </div>
+    </div>
+
+    <div class="app-modal-footer row">
+      <button type="button" class="btn btn-light col-sm-6" data-dismiss="modal" (click)="close()"><i class="fa fa-times me-2 ms-n21"></i>&nbsp; Annuler</button>
+      <button type="submit" class="btn btn-primary col-sm-6" [disabled]="!userForm.valid || show || !canSaveProd()">
+        <span *ngIf="!show"><i class="fa fa-save me-2 ms-n21"></i> Enregistrer</span><span *ngIf="show">Veuillez
+          Patientez... &nbsp;</span>
+        <span *ngIf="show" class="spinner-border" role="status" style="width: 1.3rem; height: 1.3rem;"></span>
+      </button>
+    </div>
+
+  </form>
+</div>

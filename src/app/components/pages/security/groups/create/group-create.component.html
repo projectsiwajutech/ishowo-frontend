@@ -1,0 +1,43 @@
+<app-card [options]="false" [customHeader]="true">
+  <div class="app-card-header">
+    <div class="row mb-3">
+      <div class="col-sm-6"><span class="lead">Nouveau Groupe </span></div>
+      <div class="col-sm-6 d-flex justify-content-end">
+        <button class="btn btn-sm btn-light" (click)="close()">
+          <span class="fa fa-chevron-circle-left"></span> Retour</button>
+      </div>
+    </div>
+  </div>
+
+  <form role="form" (ngSubmit)="saveGroup(groupForm.value)" #groupForm="ngForm">
+    <div class="input-group mb-3">
+      <input type="text" [(ngModel)]="item.name" autocomplete="off" name="name_groupe" class="form-control"
+        placeholder="Nom du groupe" required #name_groupe="ngModel">
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="submit" id="create-task" [disabled]="!groupForm.valid">
+          <span *ngIf="!show"><i class="fa fa-save me-2 ms-n21"></i> Enregistrer</span><span *ngIf="show">Veuillez
+            Patientez... &nbsp;</span>
+        </button>
+      </div>
+      <small style="position: absolute;" class="error_msg text-danger font-italic"
+        *ngIf="name_groupe.dirty && name_groupe.hasError('required')">Veuillez renseignez le nom du groupe!</small>
+    </div>
+  </form>
+  <div class="row d-flex justify-content-center mb-5" style="margin-bottom: 10em;" *ngIf="isLoading">
+    <div class="col-md-12 text-center p-0">
+      <div class="p-20 pb-3">
+        <div class="risk-rate">
+          <img src="assets/images/params/spinner.gif" alt="" width="15%">
+        </div>
+      </div>
+      <p class="text-muted h3 mb-5">Veuillez Patientez...</p>
+    </div>
+  </div>
+  <section id="task-container" *ngIf="!noData">
+    <ul id="task-list">
+      <li *ngFor="let item of roles" appTodoCardComplete class="col-sm-2" (click)="OnchangeStatut(item)">
+        <p>{{item.description}}</p>
+      </li>
+    </ul>
+  </section>
+</app-card>

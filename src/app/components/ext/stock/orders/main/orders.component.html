@@ -1,0 +1,76 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>Stock
+    <small></small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Accueil</a></li>
+    <li><a href="#">Stock</a></li>
+    <li class="active"></li>
+  </ol>
+</section>
+
+
+<section class="content-header">
+  <!-- -->
+  <div class="row">
+    <div class="col-lg-12">
+<section class="panel">
+      <div class="panel-body">
+
+        <div class="box">
+
+          <div class="box-body">
+            <a class="btn btn-app bg-orange" (click)="createCommand()">
+              <i class="fa fa-plus"></i> Nouvelle commande
+            </a>
+            <a class="btn btn-app bg-orange" (click)="listCommand()">
+              <span class="badge bg-teal"></span>
+              <i class="fa fa-inbox"></i> Recherche commandes
+            </a>
+            <a class="btn btn-app bg-orange" (click)="prodStock()">
+              <span class="badge bg-green"></span>
+              <i class="fa fa-list-alt"></i> Stock Produits
+            </a>
+              <a class="btn btn-app bg-orange" (click)="prodBarCode()">
+              <span class="badge bg-green"></span>
+              <i class="fa fa-barcode"></i> Génération Code barres
+            </a>
+            <a class="btn btn-app bg-orange" (click)="seuilStock()">
+              <span class="badge bg-green"></span>
+              <i class="fa fa-bar-chart"></i> Seuil de Stock
+            </a>
+            <a class="btn btn-app bg-orange" (click)="prodSousSeuil()">
+              <span class="badge bg-green"></span>
+              <i class="fa fa-chain"></i> Produits hors Seuil
+            </a>
+            <a class="btn btn-app bg-orange" (click)="transfertStock()">
+              <span class="badge bg-green"></span>
+              <i class="fa fa-arrow-right"></i> Transferts
+            </a>
+
+            
+            <a class="btn btn-app bg-orange" (click)="prodExpires()">
+              <span class="badge bg-green"></span>
+              <i class="fa fa-arrow-right"></i> Produits expirés
+            </a>
+
+            <a class="btn btn-app bg-orange" (click)="historiqueUpdateStock()" *ngIf="false">
+              <span class="badge bg-green"></span>
+              <i class="fa fa-archive"></i> Historique Stock
+            </a>
+          </div>
+          <!-- /.box-body -->
+        </div>
+
+
+      </div>
+  </section>
+      </div>
+    </div>
+  </section>
+
+
+<router-outlet></router-outlet>
+
+

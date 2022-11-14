@@ -1,0 +1,40 @@
+
+<div *ngIf="isRemoving" class="row bg-info text-center"> Suppression d'un type de mesure en cours...</div>
+
+<div class="box">
+  <div class="box-header">
+    <h3 class="box-title">Types de mesure</h3>
+
+    <div class="box-tools">
+      <div class="row">
+        <div class="col-lg-12">
+          <form class="form-inline">
+            <select class="form-control" name="measureTypeEl" [(ngModel)]="selectedMeasureType" #measureTypeEl="ngModel">
+              <option *ngFor="let el of measureTypes" [ngValue]="el">{{el.name}}</option>
+            </select>
+            <button type='submit' (click)="addMesureType()" name='seach' id='search-btn' class=" btn btn-info"><i class="fa fa-plus"></i>Ajouter</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body no-padding">
+    <table class="table table-bordered table-stripped ">
+      <tr class="bg-yellow">
+        <th style="width: 10px">#</th>
+        <th class="text-center">Libellé</th>
+        <th style="width: 40px"></th>
+      </tr>
+      <tr *ngFor="let mt of addedMeasureTypes, let i = index" class="bg-gray-light">
+        <td>{{i+1}}</td>
+        <td class="text-center">{{mt.measure_type.name}}</td>
+        <td>
+          <a  title="Retirer" class="item-click" (click)="removeMeasureType(i, mt)"> <i class="glyphicon glyphicon-remove error_msg2 bg-red"></i> </a>
+        </td>
+      </tr>
+
+    </table>
+  </div>
+  <!-- /.box-body -->
+</div>

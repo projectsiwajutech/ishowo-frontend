@@ -1,0 +1,139 @@
+
+
+
+
+<!-- bouton de creation -->
+<section class="content-header"  >
+  <!-- ligne du bouton de creation-->
+  <div class="row">
+    <div class="col-lg-12">
+      <section class="panel">
+        <div class="panel-body">
+
+
+          <!--zone de creation -->
+          <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="box box-primary">
+                <div class="box-header">
+                  <h3 class="box-title">Modification {{subject}}</h3>
+                </div>
+
+                <!-- display message area -->
+                <message-area [acting]="isSaving" [completed]="isCompleted" [success]="isSuccess" [title]="'Création ' + subject" [message]="statusMessage"></message-area>
+
+
+
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" #userForm="ngForm">
+                  <!-- action zone-->
+                  <div class="box-footer text-right">
+                    <button type="button" (click)="hideDetailForm()" class="btn btn-default">Annuler</button>
+                    <button type="button" (click)="save()" [disabled]="!userForm.valid"  class="btn btn-success">Enregistrer</button>
+                  </div>
+
+                  <div class="box-body">
+
+                    <div class="row">
+
+                      <div class="col-md-3">
+                        <!-- zone de texte-->
+                        <div class="form-group">
+                          <label >Produit</label>
+                          <input type="text" disabled class="form-control" [(ngModel)]="item.product.product.name" name="product"
+                                 placeholder=""  >
+                        </div>
+                      </div>
+
+                      <div class="col-md-3">
+                        <!-- zone de texte-->
+                        <div class="form-group">
+                          <label >Catégorie</label>
+                          <input type="text" disabled class="form-control" [(ngModel)]="item.product.product.category.name" name="category"
+                                 placeholder=""  >
+                        </div>
+
+                      </div>
+
+                      <div class="col-md-3">
+                        <!-- zone de texte-->
+                        <div class="form-group">
+                          <label for="vdfd">Type Mesure</label>
+                          <input type="text" disabled class="form-control" [(ngModel)]="item.product.measure_type.name" name="measure_type"
+                                 placeholder=""  >
+                        </div>
+                      </div>
+
+                      <div class="col-md-3 ">
+                        <!-- zone de texte-->
+                        <div class="form-group">
+                          <label for="vdfd">Rayon</label>
+                          <input type="text" disabled class="form-control" [(ngModel)]="item.compartment.name" name="compartment"
+                                 placeholder=""  >
+                        </div>
+                      </div>
+                      </div>
+
+                    <div class="row">
+
+                      <div class="col-md-3">
+                        <!-- description-->
+                        <div class="form-group">
+                          <label >Code barre</label>
+                          <input type="number"  class="form-control" [(ngModel)]="item.barcode" name="barcode"
+                            placeholder="Code barre"  required #barcode>
+                        </div>
+                      </div>
+
+                      <div class="col-md-3">
+                        <!-- description-->
+                        <div class="form-group">
+                          <label >Prix d'achat</label>
+                          <input type="number"  class="form-control" [(ngModel)]="item.purchase_price" name="apurchase_p"
+                                 placeholder="Prix d'achat"  required #purchase_p>
+                        </div>
+                      </div>
+
+                      <div class="col-md-3">
+                        <!-- description-->
+                        <div class="form-group">
+                          <label >Prix de vente</label>
+                          <input type="number" class="form-control" [(ngModel)]="item.selling_price" name="aselling_p"
+                                 placeholder="Prix de vente"  required #selling_p>
+                        </div>
+                      </div>
+
+                      <div class="col-md-3">
+                        <!-- description-->
+                        <div class="form-group">
+                          <label >Quantité</label>
+                          <input type="number" maxlength="5" class="form-control" [(ngModel)]="item.quantity" name="aquant"
+                                 placeholder="Quantité"  required #quant >
+                        </div>
+
+                      </div>
+
+                    </div>
+
+
+                    </div>
+                  <!-- /.box-body -->
+
+                </form>
+              </div>
+              <!-- /.box -->
+            </div>
+          </div>
+          <!-- fin zone de creation -->
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+
+
+

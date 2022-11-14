@@ -1,0 +1,253 @@
+<!-- bouton de creation -->
+<section class="content-header">
+
+
+    <!--zone de creation -->
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Création {{subject}}</h3>
+
+                    <div class="pull-right">
+                        <button type="button" (click)="hideForm()" class="btn btn-default"><i class="fa fa-arrow-left"></i> Fermer</button>
+                        <button type="button" (click)="listCommand()" class="btn btn-default"><i class="fa fa-document"></i> Rechercher</button>
+                    </div>
+
+                </div>
+
+                <!-- display message area -->
+                <message-area [acting]="isSaving" [completed]="isCompleted" [success]="isSuccess" [title]="'Création ' + subject" [message]="statusMessage"></message-area>
+
+
+
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" #userForm="ngForm">
+                    <!-- action zone-->
+                    <div class="box-footer text-right">
+                        <button type="button" [disabled]="!canSaveCommand()" (click)="save(userForm.value)" class="btn btn-success"><i class="fa fa-save"></i> Enregistrer</button>
+                    </div>
+
+                    <div class="box-body">
+
+                        <!-- donnees -->
+                        <div class="row">
+                            <!--Fournisseur-->
+                            <div class="col-md-4">
+                                <!-- -->
+                                <div class="form-group">
+                                    <label for="hu">Fournisseur</label>
+                                    <select class="form-control" name="supplier" [(ngModel)]="item.supplier" required #supplier="ngModel">
+                    <option *ngFor="let item of suppliers" [ngValue]="item">{{item.name}}</option>
+                  </select>
+                                </div>
+                            </div>
+                            <!--fin fournisseur-->
+
+                            <!--Rayon destination-->
+                            <div class="col-md-4">
+                                <!-- -->
+                                <div class="form-group">
+                                    <label for="ho">Rayon destination</label>
+                                    <select class="form-control" name="destination" [(ngModel)]="item.destination" required #destination="ngModel">
+                    <option *ngFor="let item of compartments" [ngValue]="item">{{item.name}} ({{item.agency.name}})</option>
+                  </select>
+                                </div>
+                            </div>
+                            <!--fin rayon-->
+
+                            <!--montant paye-->
+                            <div class="col-md-4">
+                                <!-- -->
+                                <div class="form-group">
+                                    <label for="ho">Montant payé</label>
+                                    <input type="number" maxlength="10" name="amount_paid" class="form-control" required [(ngModel)]="item.amount_paid" name="amount_paid" placeholder="Montant payé" #amount_paid="ngModel">
+                                </div>
+                            </div>
+                            <!--fin montant paye-->
+
+                        </div>
+                        <!-- fin donnees -->
+                        <br>
+
+                        <!--notif chargements des produits-->
+                        <div class="row" *ngIf="(isProdTypesListLoaded===false)">
+                            <div class="col-md-12">
+                                <div class="text-center alert-info"><strong> Chargement des produits en cours. Merci de patienter... </strong> </div>
+                            </div>
+                        </div>
+
+                        <!-- zone ajout-->
+                        <div class="row" *ngIf="(isProdTypesListLoaded===true)">
+
+                            <!-- /.col -->
+                            <div class="col-md-12">
+                                <div class="box">
+                                    <div class="box-header">
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <div class="row">
+                                                    <!--<div class="form-group col-md-4">
+                            <label for="cat_prod">Catégorie prod</label>
+                            <select class="form-control" (change)="product.focus();onCategoryChange($event);" name="cat_prod" [(ngModel)]="selectedCategory"
+                              #cat_prod>
+                                  <option *ngFor="let item of categories" [ngValue]="item">{{item.name}}</option>
+                                </select>
+                          </div>-->
+                                                    <div class="form-group col-md-4">
+                                                        <label for="prod">Produit</label> <br>
+
+                                                        <p-autoComplete name="productname" #productname [(ngModel)]="selectedMeasureType" (onSelect)="onProductChange();" [suggestions]="filteredProducts" (completeMethod)="filterProducts($event)" [size]="30" [minLength]="1" placeholder="Saisir le nom du produit"
+                                                            [dropdown]="false" field="product.name">
+                                                            <ng-template let-item pTemplate="item.product.name">
+                                                                <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+                                                                    <!--<img src="assets/showcase/images/demo/car/{{item.image}}.png" style="width:32px;display:inline-block;margin:5px 0 2px 5px"/>-->
+                                                                    <div style="font-size:18px;float:right;margin:10px 10px 0 0">{{item.product.name}} / {{item.measure_type.name}}</div>
+                                                                </div>
+                                                            </ng-template>
+                                                        </p-autoComplete>
+                                                        <!--<select class="form-control" name="product" (change)="measure_type.focus();onProductChange($event);" [(ngModel)]="selectedProduct"
+                              #product>
+                                  <option *ngFor="let item of productsBycat" [ngValue]="item">{{item.name}}</option>
+                                </select>-->
+                                                    </div>
+                                                    <!--<div class="form-group col-md-4">
+                            <label for="type_mesure">Type mesure</label>
+                            <select class="form-control" name="measure_type" (change)="qty.select();" [(ngModel)]="selectedMeasureType" #measure_type>
+                                  <option *ngFor="let item of measureTypes" [ngValue]="item">{{item.measure_type.name}}</option>
+                                </select>
+                          </div>-->
+                                                    <!--</div>-->
+
+                                                    <!--<div class="col-md-5">-->
+                                                    <!--<div class="row">-->
+                                                    <div class="form-group col-md-2">
+                                                        <label for="qty">Quantité</label>
+                                                        <input maxlength="6" type="number" class="form-control" (keydown.enter)="purch_price.select();" [(ngModel)]="quantity" name="quantity" placeholder="Quantité" #qty>
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="prix_achat">Prix achat</label>
+                                                        <input type="number" maxlength="6" class="form-control" (keydown.enter)="sell_price.select();" [(ngModel)]="purchase_price" name="purchase_price" placeholder="Prix achat" #purch_price>
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="prix_vente">Prix vente</label>
+                                                        <input type="number" maxlength="6" class="form-control" (keydown.enter)="barcode.focus();" [(ngModel)]="selling_price" name="selling_price" placeholder="Prix vente" #sell_price>
+                                                    </div>
+
+                                                    <div class="form-group col-md-2">
+                                                        <label for="reference">Code barre</label>
+                                                        <input type="text" maxlength="15" class="form-control" (keydown.enter)="expdate.focus();" [(ngModel)]="code_barre" name="code_barre" placeholder="Code barre" #barcode>
+                                                    </div>
+
+                                                    <div class="form-group col-md-3">
+                                                        <label for="reference">Péremption</label>
+                                                        <input type="date" maxlength="15" class="form-control" (keydown.enter)="add_prod.focus();" [(ngModel)]="exp_date" name="exp_date" placeholder="Péremption" #expdate>
+                                                    </div>
+                                                </div>
+
+                                                <!--</div>-->
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <br>
+                                                    <button type='button' [disabled]="!canAddProd()" #add_prod (click)="addProductLine();" name='add_product' id='search-btn' class=" btn btn-info"><i class="fa fa-plus"></i> Ajouter</button>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- fin zone ajout -->
+
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="box">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Liste des produits (<strong>{{(item.lines!==undefined)? item.lines.length : 0}}</strong>)</h3>
+
+                                        <div class="box-tools bg-yellow">
+                                            <div class="info-box-content">
+                                                <span class="info-box-number">{{getTotal() | formatMoney}}</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- lines -->
+                                    <!-- /.box-header -->
+                                    <div class="box-body no-padding">
+                                        <table class="table table-striped">
+                                            <tr>
+                                                <th style="width: 10px">#</th>
+                                                <th>Produit</th>
+                                                <th class="text-center">Quantité</th>
+                                                <th class="text-right">Prix achat</th>
+                                                <th class="text-right">Prix vente</th>
+                                                <th class="text-right">Prix total</th>
+                                                <th class="text-center">Code barre</th>
+                                                <th class="text-center">Date Expiration</th>
+                                                <th style="width: 40px"></th>
+                                            </tr>
+                                            <tr *ngFor="let p of item.lines, let i = index">
+                                                <td>{{i+1}}</td>
+                                                <td>
+                                                    <span *ngIf="p.product.product!==undefined">{{p.product.product.name}}</span> <span *ngIf="p.product.measure_type!==undefined">({{p.product.measure_type.name}})</span>
+                                                </td>
+                                                <td class="text-center">
+                                                    {{p.quantity | formatMoney}}
+                                                </td>
+                                                <td class="text-right">
+                                                    {{p.purchase_price | formatMoney}}
+                                                </td>
+                                                <td class="text-right">
+                                                    {{p.selling_price | formatMoney}}
+                                                </td>
+                                                <td class="text-right">
+                                                    {{ (p.purchase_price * p.quantity) | formatMoney}}
+                                                </td>
+
+                                                <td class="text-center">
+                                                    {{p.barcode}}
+                                                </td>
+                                                <td class="text-center">
+                                                    {{p.expiration_date | date:'dd/MM/yyyy'}}
+                                                </td>
+
+                                                <td>
+                                                    <a title="Modifier" class="item-click" (click)="removeProductLine(i)"> <i class="glyphicon glyphicon-remove error_msg2 bg-red"></i> </a>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
+                                <!-- /.box -->
+                            </div>
+                            <!-- /.col -->
+
+                        </div>
+                        <!-- fin type mesure et assoc. -->
+
+                    </div>
+                    <!-- /.box-body -->
+
+                </form>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+    <!-- fin zone de creation -->
+
+
+</section>

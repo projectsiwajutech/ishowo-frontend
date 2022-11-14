@@ -1,0 +1,91 @@
+<div class="auth-wrapper auth-bg">
+        <div class="col-md-9">
+          <app-card cardTitle="Nouvelle Licence">
+            <div class="float-right">
+              <button type="button" uiSref="work" class="btn btn-primary btn-raised m-2" (click)="loginNow()"> Connexion <span style="margin-left:10px;"><i class="feather icon-chevron-right"></i></span></button> 
+              <button type="button" uiSref="work" class="btn btn-light btn-raised" (click)="refresh()"> Actualiser <span style="margin-left:10px;"><i class="feather icon-chevron-right"></i></span></button> 
+            </div>
+            <form class="editForm separation" novalidate role="form" (ngSubmit)="askForLicence()" #userForm="ngForm">
+             <div class="row">
+              <div class="col-md-6">
+                <div class="alert alert-primary" role="alert">
+                  <h5 class="alert-heading text-center mb-0"> INFORMATIONS ENTREPRISE</h5>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="alert alert-primary" role="alert">
+                  <h5 class="alert-heading text-center mb-0">INFORMATIONS ADMINISTRATEUR</h5>
+                </div>
+              </div>
+             </div>
+              <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-control-label" for="email">Nom de l'entreprise</label>
+                      <input class="form-control" type="text" maxlength="100" [(ngModel)]="request.nom_company" name="nom_company"
+                      placeholder="Nom de l'entreprise"  required #nom_company="ngModel">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">Nom de l'administrateur</label>
+                      <input type="text" maxlength="100" class="form-control" [(ngModel)]="request.nom_admin" name="nom_admin"
+                      placeholder="Nom de l'administrateur"  required #nom_admin="ngModel">
+                    </div>
+                  </div>
+                 
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">Adresse de l'entreprise</label>
+                      <input type="text" maxlength="100" class="form-control" [(ngModel)]="request.adresse_company" name="adresse_company"
+                      placeholder="Adresse de l'entreprise"  required #adresse_company="ngModel">
+                    </div>
+                  </div>
+                 
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">Prénoms de l'administrateur</label>
+                      <input type="text" maxlength="100" class="form-control" [(ngModel)]="request.prenom_admin" name="prenom_admin"
+                      placeholder="Prénoms de l'administrateur"  required #prenom_admin="ngModel">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">Téléphone de l'entreprise</label>
+                      <input  type="text" maxlength="100" class="form-control" [(ngModel)]="request.telephone_company" name="telephone_company"
+                      placeholder="Téléphone de l'entreprise"  required #telephone_company="ngModel">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">Téléphone de l'administrateur</label>
+                      <input type="text" maxlength="100" class="form-control" [(ngModel)]="request.telephone_admin" name="telephone_admin"
+                      placeholder="Téléphone de l'administrateur"  required #telephone_admin="ngModel">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">Secteur d'activité</label>
+                      <input type="text" maxlength="100" class="form-control" [(ngModel)]="request.secteur" name="secteur"
+                      placeholder="Secteur d'activité"  required #secteur="ngModel">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">Module Choisi</label>
+                      <select class="form-control" name="user" [(ngModel)]="request.module"  required #module="ngModel">
+                        <option *ngFor="let item of modulesList" [ngValue]="item">{{item.nom }} / {{item.montant }} FCFA / {{item.duree }} jours</option>
+                      </select>
+                      <div  class="text-center text-green module_desc" >{{getDescription()}}</div>
+                    </div>
+                  </div>
+                 
+                </div>
+                <div class="form-group text-center">
+                  <button type="submit" [disabled]="!canUserAskLicence() || isLoading" uiSref="work" class="btn btn-success" > Enregistrer <span style="margin-left:10px;"><i class="feather icon-chevron-right"></i></span></button>
+                </div>
+            </form>
+          </app-card>
+        </div>
+      </div>
+      <button class="btn btn-lg btn-outline-primary invisible" (click)="showmodal()">Launch demo modal</button>

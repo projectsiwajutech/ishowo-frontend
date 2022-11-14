@@ -1,0 +1,95 @@
+<app-card [options]="false" [customHeader]="true">
+  <div class="app-card-header">
+    <form role="form" #userForm="ngForm">
+      <div class="row">
+        <div class="form-group mb-0 input-group col-sm-3">
+          <div class="input-group-append">
+            <button class="btn btn-primary font-weight-bold btn-sm">DE</button>
+          </div>
+          <input type="date" name="dateStart" [(ngModel)]="DefaultDateOne" #dateStart="ngModel" id="dateStart"
+            class="pl-2 form-control">
+        </div>
+        <div class="form-group mb-0 input-group col-sm-3">
+          <div class="input-group-append">
+            <button class="btn btn-primary font-weight-bold btn-sm">À</button>
+          </div>
+          <input type="date" name="dateEnd" [(ngModel)]="DefaultDateTwo" #dateEnd="ngModel" id="dateEnd"
+            class="pl-2 form-control">
+        </div>
+        <div type="submit" class="col-sm-2">
+          <button class="btn btn-success float-right" (click)="searchData(userForm.value)">
+            <span class="fa fa-search"></span> Rechercher</button>
+        </div>
+        <div class="form-group mb-0 input-group col-sm-4 d-flex justify-content-end">
+          <div class="input-group-append">
+            <button class="btn btn-primary" (click)="printData()">
+              <span class="fa fa-print"></span> Imprimer</button>
+          </div>
+          <button class="btn btn-light" [routerLink]="['/stocks/main']">
+            <span class="fas fa-chevron-circle-left"></span> Retour</button>
+        </div>
+
+      </div>
+
+    </form>
+  </div>
+  <div class="row d-flex justify-content-center mb-5" style="margin-bottom: 10em;" *ngIf="isLoading">
+    <div class="col-md-12 text-center p-0">
+      <div class="p-20 pb-3">
+        <div class="risk-rate">
+          <img src="assets/images/params/spinner.gif" alt="" width="15%">
+        </div>
+      </div>
+      <p class="text-muted h3 mb-5">Veuillez Patientez...</p>
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center mb-5" style="margin-bottom: 10em;" *ngIf="noData && !isLoading">
+    <div class="col-md-12 text-center p-0">
+      <div class="p-20 pb-3">
+        <div class="risk-rate">
+          <img src="assets/images/params/liste_vide.png" alt="" width="15%">
+        </div>
+      </div>
+      <p class="text-muted h3 mb-5">Aucun résultat trouvé !</p>
+    </div>
+  </div>
+  <div class="table-responsive table-bordered table-hover" *ngIf="!isLoading && !noData">
+    <table id="report-table" class="table mb-0">
+      <thead class="thead-light">
+        <tr class="text-center">
+          <th>#</th>
+          <th class="text-left">Date</th>
+          <th>Rayon Source</th>
+          <th>Rayon Destination</th>
+          <th class="text-center">Auteur</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- | stockLimit: param.product: param.measure_type.id -->
+        <tr
+          *ngFor="let item of stockTransfers | stockTransfer: filterParam.source.id: filterParam.destination.id  | slice: (page-1) * pageSize : page * pageSize; let i = index;"
+          class="text-center">
+          <td class="align-middle p-0">
+            {{i+1}}
+          </td>
+          <td>{{item.date | date:'dd/MM/yyyy HH:mm'}}</td>
+          <td>{{item.source.name}}</td>
+          <td>{{item.destination.name}}</td>
+          <td>{{getAuthor(item.agent)}}</td>
+          <td class="align-middle p-0 pt-1 pb-1">
+            <a class="btn btn-icon btn-outline-info mr-2" [placement]="'top'" ngbTooltip="Détails"
+                  (click)="viewDetails(item)"><i class="fa  fa-folder-open"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ngb-pagination class="float-right mt-2" [collectionSize]="stockTransfers.length" [(page)]="page" [pageSize]="pageSize"
+      [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true">
+    </ngb-pagination>
+  </div>
+</app-card>
+
+<button class="btn btn-primary text-center btn-sm btn-round has-ripple float" (click)="createModal()">
+  <i class="feather icon-plus my-float text-center pb-3"></i></button>

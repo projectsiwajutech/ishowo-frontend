@@ -1,0 +1,19 @@
+<app-card [options]="false" [customHeader]="true">
+  <div class="app-card-header">
+    <div class="row mb-3">
+      <div class="col-sm-6"><span class="lead">Détails du Groupe : </span><span
+          class="lead text-success font-weight-bold">{{handler.group.name}}</span></div>
+      <div class="col-sm-6 d-flex  justify-content-end">
+        <button class="btn btn-sm btn-light" (click)="close()">
+          <span class="fa fa-chevron-circle-left"></span> Retour</button>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div *ngFor="let item of handler.laws" class="col-sm-4" appTodoCard >
+      <p><span class="h3 feather icon-user-check text-success" *ngIf="item.ischecked"></span>
+        <span class="h3 feather icon-user-x text-danger" *ngIf="!item.ischecked"></span>
+         {{item.description}}</p>
+    </div>
+  </div>
+</app-card>

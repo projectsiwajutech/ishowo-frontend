@@ -1,0 +1,32 @@
+<div class="row btn-page">
+    <div class="col-sm-12">
+      <app-card cardTitle="Ma Licence" [options]="false">
+        <div class="row">
+          <div class="col-md-2 col-xs-6 border-right">
+            <h5>CODE CLIENT</h5>
+            <h4 class="text-info">{{iLicence.code}}</h4>
+          </div>
+           <div class="col-md-2  col-xs-6 border-right">
+            <h5>MODULE</h5>
+            <h4 class="text-info">{{iLicence.module}}</h4>
+          </div>
+          <div class="col-md-2 col-xs-6 border-right">
+            <h5>DEBUT</h5>
+            <h4 class="text-info">{{iLicence.activationDate | date:'dd/MM/yyyy' }}</h4>
+          </div>
+          <div class="col-md-2 col-xs-6 border-right">
+            <h5>FIN</h5>
+            <h4 class="text-info">{{iLicence.expiryDate | date:'dd/MM/yyyy' }}</h4>
+          </div>
+          <div class="col-md-2 col-xs-6 border-right">
+            <h5>JOURS RESTANTS</h5>
+            <h4 class="text-info">{{getRemainingDays() }} jours</h4>
+          </div>
+          <div class="col-md-2 col-xs-6">
+            <h5>STATUT</h5>
+            <h4 class="text-success">{{getLicenceStatus(iLicence.isActive)}}</h4>
+          </div>
+        </div>
+      </app-card>
+    </div>
+</div>

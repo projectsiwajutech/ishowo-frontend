@@ -1,0 +1,100 @@
+
+
+<!-- component for creation -->
+<it-order-details *ngIf="!visible" (closed)="updateOnClosed($event)" [subject]="'Commande'" [item]="selectedUpObject" ></it-order-details>
+
+
+<div class="" *ngIf="visible">
+
+      <div class="box-footer text-right">
+        <button type="button" (click)="hideForm()" class="btn btn-default"><i class="fa fa-arrow-left"></i> Fermer</button>
+        <button type="button" (click)="createCommand()" class="btn btn-default"><i class="fa fa-plus"></i> Créer</button>
+       </div>
+
+      <!-- zone de liste -->
+      <section class="content">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">Liste des commandes <strong>({{orders.length}})</strong></h3>
+                    <div class="pull-right"> Total: <strong>{{getTotalOrdersValue(orders) | formatMoney }}</strong></div>
+            
+                <hr>
+
+                <div class="row">
+                  <div class="col-md-3">
+                    <it-datepicker (selected)="getSelectedDate1($event)"></it-datepicker>
+                  </div>
+                  <div class="col-md-3">
+                    <it-datepicker (selected)="getSelectedDate2($event)"></it-datepicker>
+                  </div>
+                  <div class="col-md-6">
+                    <button type="button" (click)="searchData()" class="btn btn-success"><i class="fa fa-search"></i> Rechercher</button>
+                    <button type="button" (click)="printData()" class="btn btn-primary"><i class="fa fa-print"></i> Imprimer</button>
+
+                  </div>
+                </div>
+              </div>
+              <!-- /.box-header -->
+
+              <!-- pdf file printed -->
+              <div *ngIf="isPrinting" class="text-center alert-info"><strong> Génération de la liste des commandes en cours... </strong> </div>
+
+              <div *ngIf="isPrinting===false">
+                <it-pdfviewer [visible]="isOrdersListPdfVisible" [title]="'Liste des commandes'" [file]="generatedOrdersListPdf" (closed)="updateOnPdfClose($event)" ></it-pdfviewer>
+              </div>
+
+
+              <div class="box-body">
+
+                <table id="example2" class="table table-striped table-hover">
+                  <thead>
+                  <tr class="info">
+                    <th>#</th>
+                    <th>Date Commande</th>
+                    <th>Fournisseur</th>
+                    <th class="text-right">Montant commande</th>
+                    <th class="text-right">Montant payé</th>
+                    <th>Auteur</th>
+                    <th>&nbsp;</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+
+                  <tr class="" *ngIf="isLoading">
+                    <td colspan="6"> <div class="text-center alert-info"><strong> Affichage de la liste des commandes en cours </strong> </div> </td>
+                  </tr>
+
+                  <tr *ngFor="let item of orders | itPaginator:pageStartIndex:pageLimit; trackBy: trackByFn; let i = index ;" >
+                    <td>{{i+1}}</td>
+                    <td>{{item.date | date:'dd/MM/yyyy HH:mm'}}</td>
+                    <td>{{item.supplier.name}}</td>
+                    <td class="text-right">{{item.amount | formatMoney}}</td>
+                    <td class="text-right">{{item.amount_paid | formatMoney}}</td>
+                    <td>{{getOrderer(item.agent)}}</td>
+                    <td>
+                      <a  title="Détails" class="item-click" (click)="viewDetails(item)"> <i class="glyphicon glyphicon-folder-open"></i> </a>
+                    </td>
+                  </tr>
+                  </tbody>
+                  <tfoot>
+                  </tfoot>
+                </table>
+
+                <p-paginator [rows]="pageLimit" [totalRecords]="(orders).length" (onPageChange)="paginate($event)" [rowsPerPageOptions]="limitTable"></p-paginator>
+                <div>
+                  <br>
+                </div>
+              </div>
+              <!-- /.box -->
+
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+        </div>
+      </section>
+      <!-- /.content -->
+
+</div>

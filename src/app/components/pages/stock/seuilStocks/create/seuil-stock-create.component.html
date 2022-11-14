@@ -1,0 +1,73 @@
+<div #createModal></div>
+<div class="modal-header">
+  <h5 class="modal-title">Nouvelle Définition de seuil de Stock</h5>
+  <button type="button" class="close basic-close" data-dismiss="modal" aria-lab0el="Close" (click)="close()"><span
+      aria-hidden="true">&times;</span></button>
+</div>
+<div class="modal-body">
+  <form role="form" (ngSubmit)="save(userForm.value)" #userForm="ngForm">
+    <!-- <div class="text-center">
+      <img class="rounded mb-3" src="assets/images/params/agency.jpg" width="40%" alt="">
+    </div> -->
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="vdfd">Catégorie</label>
+          <select class="form-control" name="category" [(ngModel)]="selectedCategory" required #category="ngModel"
+            (focus)="updateProdOnCat()" (change)="updateProdOnCat()">
+            <option *ngFor="let item of categories" [ngValue]="item">{{item.name}}</option>
+          </select>
+          <small class="error_msg text-danger font-italic" *ngIf="category.dirty && category.hasError('required')">
+            Catégorie du produit non indiqué</small>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="vdfd">Produit</label>
+          <select class="form-control" id="prod" name="prod" [(ngModel)]="item.product" required #prod="ngModel"
+            (focus)="updateMeasTypOnProd()" (change)="updateMeasTypOnProd()" (mouseover)="updateMeasTypOnProd()">
+            <option style="background-color: #c1c1c1;" ngValue="" disabled selected>Veuillez choisir un
+              produit</option>
+            <option (mouseover)="updateMeasTypOnProd()" *ngFor="let item of products" [ngValue]="item">{{item.name}}</option>
+          </select>
+          <small class="error_msg text-danger font-italic" *ngIf="prod.dirty && prod.hasError('required')">
+            Veuillez sélectionnez un produit!</small>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="vdfd">Type de Mesure</label>
+          <select class="form-control" id="mestyp" name="meastyp" (focus)="updateQuantityOnTypeMes()" (change)="updateQuantityOnTypeMes()" [(ngModel)]="item.produit_measure_type.measure_type"
+            required #meastyp="ngModel">
+            <option style="background-color: #c1c1c1;" ngValue="" disabled selected>Veuillez choisir un
+              type de mesure</option>
+            <option *ngFor="let item of measureTypes" [ngValue]="item">{{item.name}}</option>
+          </select>
+          <small class="error_msg text-danger font-italic" *ngIf="meastyp.dirty && meastyp.hasError('required')">
+            Type de mesure non indiqué</small>
+        </div>
+      </div>
+    </div>
+    <div class="row d-flex justify-content-center pb-3 pt-2">
+      <div class="col-md-4">
+          <label for="vdfd">Quantité Critique</label>
+          <input type="number" id="quant" maxlength="5" class="form-control" [(ngModel)]="item.quantity" name="quant"
+          placeholder="Quantité" required #quant>
+        <small class="error_msg text-danger font-italic" *ngIf="quant.dirty && quant.hasError('required')">
+          Quantité Invalide</small>
+      </div>
+    </div>
+    <div class="app-modal-footer row pt-3">
+      <button type="button" class="btn btn-light col-sm-6" data-dismiss="modal" (click)="close()"><i
+          class="fa fa-times me-2 ms-n21"></i>&nbsp; Annuler</button>
+      <button type="submit" class="btn btn-primary col-sm-6" [disabled]="!userForm.valid || show">
+        <span *ngIf="!show"><i class="fa fa-save me-2 ms-n21"></i> Enregistrer</span><span *ngIf="show">Veuillez
+          Patientez... &nbsp;</span>
+        <span *ngIf="show" class="spinner-border" role="status" style="width: 1.3rem; height: 1.3rem;"></span>
+      </button>
+    </div>
+
+  </form>
+</div>

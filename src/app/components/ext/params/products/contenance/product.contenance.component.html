@@ -1,0 +1,32 @@
+
+
+<div class="row bg-gray-light cp_cont_line">
+  <div class="col-md-1 textInDiv">
+    {{index+1}}
+  </div>
+
+  <div class="col-md-3">
+    <select class="form-control" name="bulk" [(ngModel)]="item.bulk" #bulk="ngModel" (change)="updateInternalComponent()">
+      <option *ngFor="let el of measure_types" [ngValue]="el">{{el.measure_type.name}}</option>
+    </select>
+  </div>
+
+  <div class="col-md-1 textInDiv">
+    contient
+  </div>
+
+  <div class="col-md-3">
+    <input type="number" class="form-control" (keyup)="updateInternalComponent()" [(ngModel)]="item.quantity" name="quantity" maxlength="5" placeholder=""/>
+  </div>
+
+  <div class="col-md-3">
+    <select class="form-control" name="retail" [(ngModel)]="item.retail" #retail="ngModel" (change)="updateInternalComponent()">
+      <option *ngFor="let el of measure_types" [ngValue]="el">{{el.measure_type.name}}</option>
+    </select>
+  </div>
+  <div class="1">
+    <a  title="Retirer" class="item-click" (click)="removeAssociation($event)"> <i class="glyphicon glyphicon-remove error_msg2 bg-red"></i> </a>
+  </div>
+
+</div>
+
